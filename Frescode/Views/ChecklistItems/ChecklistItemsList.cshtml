@@ -1,0 +1,182 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "checklists";
+}
+
+@section DataTables{
+    <script type="text/javascript" src="/assets/js/pages/datatables_custom_items.js"></script>
+
+    <script>
+        ko.bindingHandlers.bootstrapSwitchOn = {
+            init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                $elem = $(element);
+                $(element).bootstrapSwitch();
+                $(element).bootstrapSwitch('state', ko.utils.unwrapObservable(valueAccessor())); // Set intial state
+                $(element).on('switchChange.bootstrapSwitch', function(event, state) {
+                    valueAccessor()(state);
+                });
+            },
+            update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                var vStatus = $(element).bootstrapSwitch('state');
+                var vmStatus = ko.utils.unwrapObservable(valueAccessor());
+                if (vStatus != vmStatus) {
+                    $(element).bootstrapSwitch('state', vmStatus);
+                }
+            }
+        };
+
+
+        userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+        checklistId = @Html.Raw(Json.Encode(ViewBag.ChecklistId));
+
+        function ChecklistItemsListViewModel() {
+            var self = this;
+
+            self.ChecklistItemsList = ko.observableArray();
+            self.ChecklistName = ko.observable();
+            self.ChecklistProjectName = ko.observable();
+            self.ChecklistProjectId = ko.observable();
+        }
+
+        function ChecklistItemViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.Name = ko.observable();
+            self.DateOfLastChange = ko.observable();
+            self.ChangedBy = ko.observable();
+            self.Status = ko.observable();
+
+            self.DefectSpotsCount = ko.observable();
+            self.Description = ko.observable();
+            self.GotoItemCommand = function() {
+                //window.location.href = "/Checklist/ChecklistsList?projectId=" + self.Id();
+            }
+            self.InitSubscribtions = function() {
+                self.Status.subscribe(function() {
+                    $.getq('itemsStatus',
+                        '/ChecklistItems/ChecklistItemSet?checklistItemId=' + self.Id() + '&newState=' + self.Status()
+                    );
+                });
+            }
+        }
+
+        function getChecklistItems(callback) {
+            $.getJSON('/ChecklistItems/GetChecklistitemsList?userId=' + userId + '&checklistId=' + checklistId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        var rootViewModel = new ChecklistItemsListViewModel();
+
+        function fillViewModel(checklistitemsList) {
+            $(document).ready(function() {
+                rootViewModel.ChecklistItemsList.removeAll();
+                rootViewModel.ChecklistName(checklistitemsList.ChecklistName);
+                rootViewModel.ChecklistProjectName(checklistitemsList.ChecklistProjectName);
+                rootViewModel.ChecklistProjectId(checklistitemsList.ChecklistProjectId);
+                _.each(checklistitemsList.ChecklistItemsList, function(checklistItem) {
+                    var checklistViewModel = new ChecklistItemViewModel();
+                    checklistViewModel.Id(checklistItem.Id);
+                    checklistViewModel.Name(checklistItem.Name);
+                    checklistViewModel.DateOfLastChange(checklistItem.DateOfLastChange);
+                    checklistViewModel.ChangedBy(checklistItem.ChangedBy);
+                    checklistViewModel.Status(checklistItem.Status);
+                    checklistViewModel.DefectSpotsCount(checklistItem.DefectSpotsCount);
+                    checklistViewModel.Description(checklistItem.Description);
+                    rootViewModel.ChecklistItemsList.push(checklistViewModel);
+                    checklistViewModel.InitSubscribtions();
+                });
+                initCheckboxes();
+                initDataTables();
+            });
+        }
+
+        getChecklistItems(function(checklistItems) {
+            fillViewModel(checklistItems);
+        });
+    </script>
+}
+
+@section Header
+{
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+                <h3>
+                    <a href="checklists.html" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Cheklist Items</span>
+                </h3>
+                <ul class="breadcrumb breadcrumb-caret position-right">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a data-bind="
+                        text: ChecklistProjectName,
+                        attr: { href: '/Project/ProjectsList?userId=' + userId }
+                        "></a></li>
+                    <li><a data-bind="
+                        text: ChecklistName,
+                        attr: { href: '/Checklist/ChecklistsList?userId=' + userId + '&projectId=' + ChecklistProjectId() }
+                        "></a></li>
+                    <li class="active">Checklist items</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<div class="page-content">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><i class="icon-clipboard2"></i><span data-bind="text: ChecklistName">Semi-conductor converters items</span></h4>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable-basic table-hover">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Last Edited</th>
+                            <th>Edited by</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <!-- ko foreach: ChecklistItemsList -->
+                    <tr class="whitespace hoverhref" data-url="#" data-bind="
+                        attr: {
+                            'data-description' : Description,
+                            'data-quantity' : DefectSpotsCount,
+                        }"
+                        >
+                            <td data-bind="html: Name"></td>
+                            <td data-bind="html: DateOfLastChange"></td>
+                            <td data-bind="html: ChangedBy"></td>
+                            <td class='checkboxcolumn'>
+                                <input type="checkbox" data-on-text="On" data-off-text="Off" data-bind="bootstrapSwitchOn: Status" />
+                            </td>
+                        </tr>
+                    <!-- /ko -->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    ko.applyBindings(rootViewModel);
+</script>

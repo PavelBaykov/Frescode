@@ -1,0 +1,170 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "checklists";
+}
+
+@section DataTables{
+    <script type="text/javascript" src="/assets/js/pages/datatables_custom_viewitem.js"></script>
+
+    <script>
+        userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+        checklistItemId = @Html.Raw(Json.Encode(ViewBag.ChecklistItemId));
+
+        function ChecklistItemDescriptionViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.DefectSpotsList = ko.observableArray();
+            self.Description = ko.observable();
+            self.ChecklistName = ko.observable();
+            self.ProjectName = ko.observable();
+            self.InspectionDrawingPath = ko.observable();
+        }
+
+        function DefectSpotViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.OrderNumber = ko.observable();
+            self.Description = ko.observable();
+            self.AttachedPictures = ko.observable();
+        }
+
+        function getChecklistItemDetails(callback) {
+            $.getJSON('/ChecklistItems/GetChecklistitemDetails?userId=' + userId + '&checklistItemId=' + checklistItemId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        var rootViewModel = new ChecklistItemDescriptionViewModel();
+
+        function fillViewModel(checklistDetails) {
+            $(document).ready(function() {
+                debugger;
+                rootViewModel.DefectSpotsList.removeAll();
+                rootViewModel.Description(checklistDetails.Description);
+                rootViewModel.ChecklistName(checklistDetails.ChecklistName);
+                rootViewModel.ProjectName(checklistDetails.ProjectName);
+                rootViewModel.InspectionDrawingPath(checklistDetails.InspectionDrawingPath);
+                _.each(checklistDetails.DefectSpotsList, function(defectSpot) {
+                    var defectSpotViewModel = new DefectSpotViewModel();
+                    defectSpotViewModel.Id(defectSpot.Id);
+                    defectSpotViewModel.OrderNumber(defectSpot.OrderNumber);
+                    defectSpotViewModel.Description(defectSpot.Description);
+                    defectSpotViewModel.AttachedPictures(defectSpot.AttachedPictures);
+                    rootViewModel.DefectSpotsList.push(defectSpotViewModel);
+                });
+                initDataTables();
+            });
+        }
+
+        getChecklistItemDetails(function(checklistDetails) {
+            fillViewModel(checklistDetails);
+        });
+    </script>
+}
+
+@section Header
+{
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+                <h3>
+                    <a href="items.html" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Item view</span>
+                </h3>
+                <ul class="breadcrumb breadcrumb-caret position-right">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html">Project Hanolulu</a></li>
+                    <li><a href="checklists.html">Semi-conductor Converters a really long name of a checklist</a></li>
+                    <li><a href="items.html">Conductor BCE</a></li>
+                    <li class="active">Details</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+<div class="page-content">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><i class="icon-clipboard2"></i>Semi-conductor converters items</h4>
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <span class="mobileBold">Description:</span>
+                    </div>
+                    <div class="col-md-10 col-sm-10" data-bind="html: Description">
+                        
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <span class="mobileBold">Defect spot list:</span>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <table class="table datatable-basic table-hover defectspots-table">
+                            <tbody>
+                                <!-- ko foreach: DefectSpotsList -->
+                                <tr data-bind="
+                                    attr: {
+                                            'data-images' : AttachedPictures
+                                        }
+                                    "
+                                    class="hoverhref">
+                                        <td>1</td>
+                                        <td>A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot </td>
+                                        <td class="detailedItemArrow"></td>
+                                </tr>
+                                <!-- /ko -->
+                                <tr class="newDefectedSpot hoverhref">
+                                    <td><i class="icon-plus3"></i></td>
+                                    <td><a href="AddSpot.html">Add new defected spot...</a></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <span class="mobileBold">Inspection drawing:</span>
+                    </div>
+                    <div class="col-lg-10 col-sm-10">
+                        <div class="thumbnail">
+                            <div class="thumb">
+                                <img src="assets/images/placeholder.jpg" alt="">
+                                <div class="caption-overflow">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    ko.applyBindings(rootViewModel);
+</script>

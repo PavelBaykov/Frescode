@@ -1,0 +1,96 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+    
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="/assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/core.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+    <!-- Core JS files -->
+    <script type="text/javascript" src="/assets/js/plugins/loaders/pace.min.js"></script>
+    <script type="text/javascript" src="/assets/js/core/libraries/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/core/libraries/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/loaders/blockui.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/ui/nicescroll.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/ui/drilldown.js"></script>
+    <!-- /core JS files -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.com/libraries/underscore.js/"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script type="text/javascript" src="/Scripts/ajaxq.js"></script>
+
+    <!--DataTables config-->
+    <script type="text/javascript" src="/assets/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/forms/selects/select2.min.js"></script>
+    <!--<script type="text/javascript" src="/assets/js/core/app.js"></script>-->
+
+    @RenderSection("DataTables", false)
+
+    <!-- Theme JS files -->
+    <script type="text/javascript" src="/assets/js/plugins/forms/styling/uniform.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/forms/styling/switchery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/forms/styling/switch.min.js"></script>
+    <script type="text/javascript" src="/assets/js/pages/form_checkboxes_radios.js"></script>
+    <!-- /theme JS files -->
+
+    <!--<script type="text/javascript" src="/assets/js/pages/dashboard.js"></script>-->
+    <!-- /theme JS files -->
+    <!--Custom CSS-->
+    <link href="/assets/css/Custom.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <!-- Main navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/Project/ProjectsList"><img src="/assets/images/logo_light.png" alt=""></a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+
+
+            <li class="dropdown dropdown-user">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="/assets/images/placeholder.jpg" alt="">
+                    <span>Pavel</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- /main navbar -->
+    <!-- Second navbar -->	<!-- /second navbar -->
+    <!-- Page header -->
+    @RenderSection("Header")
+    <!-- /page header -->
+
+    <div class="page-container">
+        <!-- Page content -->
+            
+
+        @RenderBody()
+
+        <!-- /main content -->
+        <!-- Footer -->
+        <div class="footer text-muted">
+            &copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+        </div>
+        <!-- /footer -->
+
+    </div>
+    <!-- /page content -->
+    <!--Custom JS-->
+    <script type="text/javascript">
+
+    </script>
+
+
+</body>
+</html>

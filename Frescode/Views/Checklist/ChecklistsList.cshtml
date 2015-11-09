@@ -1,0 +1,131 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "checklists";
+}
+
+@section DataTables{
+    <script type="text/javascript" src="/assets/js/pages/datatables_custom_checklists.js"></script>
+}
+
+@section Header
+{
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h3>
+                <a href="/Project/ProjectsList" style="color:black"><i class="icon-arrow-left52 position-left" style="margin-right:11px"></i></a><span class="text-semibold">Checklists</span>
+            </h3>
+            <ul class="breadcrumb breadcrumb-caret position-right">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">Project Hanolulu</a></li>
+                <li class="active">Checklists</li>
+            </ul>
+        </div>
+    </div>
+</div>
+}
+
+<script>
+    userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+    projectId = @Html.Raw(Json.Encode(ViewBag.ProjectId));
+
+    function ChecklistsListViewModel() {
+        var self = this;
+
+        self.ChecklistsList = ko.observableArray();
+    }
+
+    function ChecklistViewModel() {
+        var self = this;
+
+        self.Id = ko.observable();
+        self.Name = ko.observable();
+        self.DateOfLastChange = ko.observable();
+        self.ChangedBy = ko.observable();
+        self.Status = ko.observable();
+        self.GotoChecklistItemsListCommand = function() {
+            window.location.href = "/ChecklistItems/ChecklistItemsList?userId=" + userId + "&checklistId=" + self.Id();
+        }
+    }
+
+    function getChecklists(callback) {
+        $.getJSON('/Checklist/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
+            .error(function (e) {
+                if (e.status == 500 || e.status == 400) {
+                    var message = 'Error ' + e.status + '\r\n' +
+                        'Response: ' + e.responseText;
+                    console.log(message);
+                    alert(message);
+                }
+            })
+            .done(function (data) {
+                if ($.isFunction(callback)) {
+                    callback(data);
+                }
+            });
+    }
+
+    var rootViewModel = new ChecklistsListViewModel();
+
+    function fillViewModel(checklistsList) {
+        $(document).ready(function() {
+            rootViewModel.ChecklistsList.removeAll();
+            _.each(checklistsList.ChecklistsList, function(checklist) {
+                var checklistViewModel = new ChecklistViewModel();
+                checklistViewModel.Id(checklist.Id);
+                checklistViewModel.Name(checklist.Name);
+                checklistViewModel.DateOfLastChange(checklist.DateOfLastChange);
+                checklistViewModel.ChangedBy(checklist.ChangedBy);
+                checklistViewModel.Status(checklist.Status);
+                rootViewModel.ChecklistsList.push(checklistViewModel);
+            });
+            initDataTables();
+        });
+    }
+
+    getChecklists(function(projects) {
+        fillViewModel(projects);
+    });
+</script>
+
+<div class="page-content">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><i class="icon-list-unordered"></i>Project hanolulu checklists</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable-basic table-hover">
+                    <thead>
+                    <tr>
+                        <th>Checklist</th>
+                        <th>Last Edited</th>
+                        <th>Edited by</th>
+                        <th>Status</th>
+                        <!--<th class="text-center">Actions</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- ko foreach: ChecklistsList -->
+                    <tr class="whitespace hoverhref" data-bind="click: GotoChecklistItemsListCommand">
+                        <td data-bind="html: Name"></td>
+                        <td data-bind="html: DateOfLastChange"></td>
+                        <td data-bind="html: ChangedBy"></td>
+                        <td>
+                            <span class="label label-primary"
+                                      data-bind="text: Status"></span>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    ko.applyBindings(rootViewModel);
+</script>
