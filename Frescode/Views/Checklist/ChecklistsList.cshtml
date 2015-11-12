@@ -1,95 +1,83 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "checklists";
-}
-
-@section DataTables{
-    <script type="text/javascript" src="/assets/js/pages/datatables_custom_checklists.js"></script>
+    ViewBag.Title = "Checklists";
 }
 
 @section Header
 {
-<div class="page-header">
-    <div class="page-header-content">
-        <div class="page-title">
-            <h3>
-                <a href="/Project/ProjectsList" style="color:black"><i class="icon-arrow-left52 position-left" style="margin-right:11px"></i></a><span class="text-semibold">Checklists</span>
-            </h3>
-            <ul class="breadcrumb breadcrumb-caret position-right">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="projects.html">Project Hanolulu</a></li>
-                <li class="active">Checklists</li>
-            </ul>
-        </div>
-    </div>
-</div>
+    @Html.Partial("_Breadcrumb")
 }
 
-<script>
-    userId = @Html.Raw(Json.Encode(ViewBag.UserId));
-    projectId = @Html.Raw(Json.Encode(ViewBag.ProjectId));
+@section AdditionalScripts {
+    <script type="text/javascript" src="/assets/js/pages/datatables_custom_checklists.js"></script>
 
-    function ChecklistsListViewModel() {
-        var self = this;
+    <script>
+        userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+        projectId = @Html.Raw(Json.Encode(ViewBag.ProjectId));
 
-        self.ChecklistsList = ko.observableArray();
-    }
+        function ChecklistsListViewModel() {
+            var self = this;
 
-    function ChecklistViewModel() {
-        var self = this;
-
-        self.Id = ko.observable();
-        self.Name = ko.observable();
-        self.DateOfLastChange = ko.observable();
-        self.ChangedBy = ko.observable();
-        self.Status = ko.observable();
-        self.GotoChecklistItemsListCommand = function() {
-            window.location.href = "/ChecklistItems/ChecklistItemsList?userId=" + userId + "&checklistId=" + self.Id();
+            self.ChecklistsList = ko.observableArray();
         }
-    }
 
-    function getChecklists(callback) {
-        $.getJSON('/Checklist/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
-            .error(function (e) {
-                if (e.status == 500 || e.status == 400) {
-                    var message = 'Error ' + e.status + '\r\n' +
-                        'Response: ' + e.responseText;
-                    console.log(message);
-                    alert(message);
-                }
-            })
-            .done(function (data) {
-                if ($.isFunction(callback)) {
-                    callback(data);
-                }
+        function ChecklistViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.Name = ko.observable();
+            self.DateOfLastChange = ko.observable();
+            self.ChangedBy = ko.observable();
+            self.Status = ko.observable();
+            self.GotoChecklistItemsListCommand = function() {
+                window.location.href = "Checklist/" + self.Id() + "/";
+            }
+        }
+
+        function getChecklists(callback) {
+            $.getJSON('/Checklist/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        rootViewModel.MainViewModel(new ChecklistsListViewModel());
+        var mainViewModel = rootViewModel.MainViewModel();
+
+        function fillViewModel(checklistsList) {
+            $(document).ready(function() {
+                mainViewModel.ChecklistsList.removeAll();
+                _.each(checklistsList.ChecklistsList, function(checklist) {
+                    var checklistViewModel = new ChecklistViewModel();
+                    checklistViewModel.Id(checklist.Id);
+                    checklistViewModel.Name(checklist.Name);
+                    checklistViewModel.DateOfLastChange(checklist.DateOfLastChange);
+                    checklistViewModel.ChangedBy(checklist.ChangedBy);
+                    checklistViewModel.Status(checklist.Status);
+                    mainViewModel.ChecklistsList.push(checklistViewModel);
+                });
+                initDataTables();
             });
-    }
+        }
 
-    var rootViewModel = new ChecklistsListViewModel();
-
-    function fillViewModel(checklistsList) {
-        $(document).ready(function() {
-            rootViewModel.ChecklistsList.removeAll();
-            _.each(checklistsList.ChecklistsList, function(checklist) {
-                var checklistViewModel = new ChecklistViewModel();
-                checklistViewModel.Id(checklist.Id);
-                checklistViewModel.Name(checklist.Name);
-                checklistViewModel.DateOfLastChange(checklist.DateOfLastChange);
-                checklistViewModel.ChangedBy(checklist.ChangedBy);
-                checklistViewModel.Status(checklist.Status);
-                rootViewModel.ChecklistsList.push(checklistViewModel);
-            });
-            initDataTables();
+        getChecklists(function(projects) {
+            fillViewModel(projects);
         });
-    }
+    </script>
+}
 
-    getChecklists(function(projects) {
-        fillViewModel(projects);
-    });
-</script>
-
-<div class="page-content">
+<div id="main_content" class="page-content">
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
@@ -126,6 +114,3 @@
         </div>
     </div>
 </div>
-<script>
-    ko.applyBindings(rootViewModel);
-</script>

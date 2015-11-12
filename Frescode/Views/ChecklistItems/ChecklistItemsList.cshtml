@@ -1,10 +1,15 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "checklists";
+    ViewBag.Title = "Checklist Item";
 }
 
-@section DataTables{
+@section Header
+{
+    @Html.Partial("_Breadcrumb")
+}
+
+@section AdditionalScripts{
     <script type="text/javascript" src="/assets/js/pages/datatables_custom_items.js"></script>
 
     <script>
@@ -79,14 +84,15 @@
                 });
         }
 
-        var rootViewModel = new ChecklistItemsListViewModel();
+        rootViewModel.MainViewModel(new ChecklistItemsListViewModel());
+        var mainViewModel = rootViewModel.MainViewModel();
 
         function fillViewModel(checklistitemsList) {
             $(document).ready(function() {
-                rootViewModel.ChecklistItemsList.removeAll();
-                rootViewModel.ChecklistName(checklistitemsList.ChecklistName);
-                rootViewModel.ChecklistProjectName(checklistitemsList.ChecklistProjectName);
-                rootViewModel.ChecklistProjectId(checklistitemsList.ChecklistProjectId);
+                mainViewModel.ChecklistItemsList.removeAll();
+                mainViewModel.ChecklistName(checklistitemsList.ChecklistName);
+                mainViewModel.ChecklistProjectName(checklistitemsList.ChecklistProjectName);
+                mainViewModel.ChecklistProjectId(checklistitemsList.ChecklistProjectId);
                 _.each(checklistitemsList.ChecklistItemsList, function(checklistItem) {
                     var checklistViewModel = new ChecklistItemViewModel();
                     checklistViewModel.Id(checklistItem.Id);
@@ -96,7 +102,7 @@
                     checklistViewModel.Status(checklistItem.Status);
                     checklistViewModel.DefectSpotsCount(checklistItem.DefectSpotsCount);
                     checklistViewModel.Description(checklistItem.Description);
-                    rootViewModel.ChecklistItemsList.push(checklistViewModel);
+                    mainViewModel.ChecklistItemsList.push(checklistViewModel);
                     checklistViewModel.InitSubscribtions();
                 });
                 initCheckboxes();
@@ -110,39 +116,12 @@
     </script>
 }
 
-@section Header
-{
-    <div class="page-header">
-        <div class="page-header-content">
-            <div class="page-title">
-                <h3>
-                    <a href="checklists.html" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Cheklist Items</span>
-                </h3>
-                <ul class="breadcrumb breadcrumb-caret position-right">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a data-bind="
-                        text: ChecklistProjectName,
-                        attr: { href: '/Project/ProjectsList?userId=' + userId }
-                        "></a></li>
-                    <li><a data-bind="
-                        text: ChecklistName,
-                        attr: { href: '/Checklist/ChecklistsList?userId=' + userId + '&projectId=' + ChecklistProjectId() }
-                        "></a></li>
-                    <li class="active">Checklist items</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-}
-
-
-
-<div class="page-content">
+<div id="main_content" class="page-content">
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title"><i class="icon-clipboard2"></i><span data-bind="text: ChecklistName">Semi-conductor converters items</span></h4>
+                <h4 class="panel-title"><i class="icon-clipboard2"></i><span data-bind="text: ChecklistName"></span></h4>
             </div>
             <div class="panel-body">
                 <table class="table datatable-basic table-hover">
@@ -155,20 +134,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                    
                     <!-- ko foreach: ChecklistItemsList -->
                     <tr class="whitespace hoverhref" data-url="#" data-bind="
                         attr: {
                             'data-description' : Description,
                             'data-quantity' : DefectSpotsCount,
-                        }"
-                        >
-                            <td data-bind="html: Name"></td>
-                            <td data-bind="html: DateOfLastChange"></td>
-                            <td data-bind="html: ChangedBy"></td>
-                            <td class='checkboxcolumn'>
-                                <input type="checkbox" data-on-text="On" data-off-text="Off" data-bind="bootstrapSwitchOn: Status" />
-                            </td>
-                        </tr>
+                        }">
+                        <td data-bind="html: Name"></td>
+                        <td data-bind="html: DateOfLastChange"></td>
+                        <td data-bind="html: ChangedBy"></td>
+                        <td class='checkboxcolumn'>
+                            <input type="checkbox" data-on-text="On" data-off-text="Off" data-bind="bootstrapSwitchOn: Status"/>
+                        </td>
+                    </tr>
                     <!-- /ko -->
 
                     </tbody>
@@ -177,6 +156,3 @@
         </div>
     </div>
 </div>
-<script>
-    ko.applyBindings(rootViewModel);
-</script>

@@ -47,3 +47,10 @@ tr.shown td.detailedItemArrow {
 	font-weight: 700;
 	}
 } 
+
+.panel-collapse{
+	background-color: #F5F5F5;
+}
+.panel-heading {
+    cursor: pointer;
+}

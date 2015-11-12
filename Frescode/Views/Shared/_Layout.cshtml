@@ -33,8 +33,6 @@
     <script type="text/javascript" src="/assets/js/plugins/forms/selects/select2.min.js"></script>
     <!--<script type="text/javascript" src="/assets/js/core/app.js"></script>-->
 
-    @RenderSection("DataTables", false)
-
     <!-- Theme JS files -->
     <script type="text/javascript" src="/assets/js/plugins/forms/styling/uniform.min.js"></script>
     <script type="text/javascript" src="/assets/js/plugins/forms/styling/switchery.min.js"></script>
@@ -46,6 +44,16 @@
     <!-- /theme JS files -->
     <!--Custom CSS-->
     <link href="/assets/css/Custom.css" rel="stylesheet" type="text/css">
+
+    <script>
+        var rootViewModel = {
+            MainViewModel: ko.observable(),
+            BreadcrumbViewModel: ko.observable()
+        };
+    </script>
+
+    @RenderSection("AdditionalScripts", false)
+
 
 </head>
 <body>
@@ -88,7 +96,8 @@
     <!-- /page content -->
     <!--Custom JS-->
     <script type="text/javascript">
-
+        ko.applyBindings(rootViewModel.MainViewModel, document.getElementById('main_content'));
+        ko.applyBindings(rootViewModel.BreadcrumbViewModel, document.getElementById('breadcrumb_view'));
     </script>
 
 

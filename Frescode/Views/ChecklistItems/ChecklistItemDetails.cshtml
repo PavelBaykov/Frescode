@@ -1,11 +1,20 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "checklists";
+    ViewBag.Title = "Details";
 }
 
-@section DataTables{
+@section AdditionalScripts{
     <script type="text/javascript" src="/assets/js/pages/datatables_custom_viewitem.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" media="screen">
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/jquery.fs.zoetrope.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/toe.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/imgViewer.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/printThis.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/dist/imgNotes.min.js"></script>
 
     <script>
         userId = @Html.Raw(Json.Encode(ViewBag.UserId));
@@ -14,21 +23,60 @@
         function ChecklistItemDescriptionViewModel() {
             var self = this;
 
-            self.Id = ko.observable();
+            self.Id = ko.observable(-1);
             self.DefectSpotsList = ko.observableArray();
+            self.SortDefectSpotsCommand = function() {
+                self.DefectSpotsList.sort(function(left, right) {
+                    return left.OrderNumber() == right.OrderNumber() ? 0 : (left.OrderNumber() < right.OrderNumber() ? -1 : 1);
+                });
+            }
+            self.CreateDefectSpotCommand = function() {
+                var newDefectSpot = new DefectSpotViewModel();
+                newDefectSpot.ChecklistItemId(self.Id());
+                newDefectSpot.Description("Enter description...");
+                newDefectSpot.AttachedPictures("");
+                self.DefectSpotsList.push(newDefectSpot);
+                return newDefectSpot;
+            }
             self.Description = ko.observable();
             self.ChecklistName = ko.observable();
             self.ProjectName = ko.observable();
             self.InspectionDrawingPath = ko.observable();
+            self.AddDefectSpotPath = ko.observable("/ChecklistItems/DefectSpotAddition?userId=" + userId + "&checklistItemId=" + self.Id());
+            
         }
 
         function DefectSpotViewModel() {
             var self = this;
 
-            self.Id = ko.observable();
+            self.Id = ko.observable(-1);
+            self.ChecklistItemId = ko.observable();
             self.OrderNumber = ko.observable();
             self.Description = ko.observable();
             self.AttachedPictures = ko.observable();
+            self.X = ko.observable();
+            self.Y = ko.observable();
+
+            self.SaveDefectSpotsCommand = function() {
+                var dto = {
+                    OrderNumber : self.OrderNumber(),
+                    X : self.X(),
+                    Y : self.Y(),
+                    Description : self.Description(),
+                    ChecklistItemId: self.ChecklistItemId(),
+                    Id : self.Id()
+                }
+                //TODO replace with ordered requests
+                $.ajax({
+                    url: '/ChecklistItems/AddDefectSpot',
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(data) {
+                        self.Id(data.Id);
+                    },
+                    data: dto
+                });
+            }
         }
 
         function getChecklistItemDetails(callback) {
@@ -48,23 +96,26 @@
                 });
         }
 
-        var rootViewModel = new ChecklistItemDescriptionViewModel();
-
+        rootViewModel.MainViewModel(new ChecklistItemDescriptionViewModel());
+        var mainViewModel = rootViewModel.MainViewModel();
         function fillViewModel(checklistDetails) {
             $(document).ready(function() {
-                debugger;
-                rootViewModel.DefectSpotsList.removeAll();
-                rootViewModel.Description(checklistDetails.Description);
-                rootViewModel.ChecklistName(checklistDetails.ChecklistName);
-                rootViewModel.ProjectName(checklistDetails.ProjectName);
-                rootViewModel.InspectionDrawingPath(checklistDetails.InspectionDrawingPath);
+                mainViewModel.DefectSpotsList.removeAll();
+                mainViewModel.Id(checklistDetails.Id);
+                mainViewModel.Description(checklistDetails.Description);
+                mainViewModel.ChecklistName(checklistDetails.ChecklistName);
+                mainViewModel.ProjectName(checklistDetails.ProjectName);
+                mainViewModel.InspectionDrawingPath(checklistDetails.InspectionDrawingPath);
                 _.each(checklistDetails.DefectSpotsList, function(defectSpot) {
                     var defectSpotViewModel = new DefectSpotViewModel();
                     defectSpotViewModel.Id(defectSpot.Id);
+                    defectSpotViewModel.ChecklistItemId(checklistDetails.Id);
                     defectSpotViewModel.OrderNumber(defectSpot.OrderNumber);
                     defectSpotViewModel.Description(defectSpot.Description);
                     defectSpotViewModel.AttachedPictures(defectSpot.AttachedPictures);
-                    rootViewModel.DefectSpotsList.push(defectSpotViewModel);
+                    defectSpotViewModel.X(defectSpot.X);
+                    defectSpotViewModel.Y(defectSpot.Y);
+                    mainViewModel.DefectSpotsList.push(defectSpotViewModel);
                 });
                 initDataTables();
             });
@@ -72,34 +123,156 @@
 
         getChecklistItemDetails(function(checklistDetails) {
             fillViewModel(checklistDetails);
+            initInspectionDrawing();
         });
+
+        function initInspectionDrawing() {
+            var markersInited = false;
+
+            var $img = $("#image").imgNotes({
+                onEdit: function(ev, elem) {
+                    var $elem = $(elem);
+
+                    $('#NoteDialog').remove();
+                    return $('<div id="NoteDialog"></div>').dialog({
+                        title: "Note Editor",
+                        resizable: false,
+                        modal: true,
+                        height: "300",
+                        width: "450",
+                        position: { my: "left bottom", at: "right top", of: elem },
+                        buttons: {
+                            "Save": function() {
+                                var txt = $('textarea', this).val();
+                                $elem.data("ViewModel").Description(txt);
+                                $elem.data("ViewModel").SaveDefectSpotsCommand();
+                                $(this).dialog("close");
+                            },
+                            "Delete": function() {
+                                mainViewModel.DefectSpotsList.remove($elem.data("ViewModel"));
+                                $elem.trigger("remove");
+                                $(this).dialog("close");
+                            },
+
+                            "Cancel": function() {
+                                $(this).dialog("close");
+                            }
+                        },
+                        open: function(event, ui) {
+                            $(this).css("overflow", "hidden");
+                            var textarea = $('<textarea id="txt" style="height:100%; width:100%;">');
+                            textarea.val($elem.data("ViewModel").Description());
+                            $(this).html(textarea);
+                        },
+                        close: function(event, ui) {
+                        }
+                    });
+                },
+                onUpdateMarker: function(elem) {
+                    var $elem = $(elem);
+                    var $img = $(this.img);
+
+                    var pos = $img.imgViewer("imgToView", $elem.data("relx"), $elem.data("rely"));
+                    if (markersInited) {
+                        var viewModel = $elem.data("ViewModel");
+                        if (viewModel && $elem.data("relx") && $elem.data("rely")) {
+                            viewModel.X($elem.data("relx"));
+                            viewModel.Y($elem.data("rely"));
+                        }
+                    }
+
+                    var zoom = $img.imgViewer("option", "zoom");
+                    if (pos) {
+                        $elem.css({
+                            left: (pos.x - $elem.data("xOffset")),
+                            top: (pos.y - $elem.data("yOffset")),
+                            position: "absolute",
+                            transform: "scale(" + zoom + "," + zoom + ")"
+                        });
+                    }
+                },
+                onAdd: function() {
+                    this.options.vAll = "bottom";
+                    this.options.hAll = "middle";
+                    var elem = $(document.createElement('div'))
+                        .css({ width: '27px', height: '40px', 'text-align': 'center', color: '#fff', 'font-weight': 'bold', 'font-size': '14px' })
+                        .append($('<p>' + this.noteCount + '</p>').css({ 'z-index': 1, position: 'relative', top: '0px' }))
+                        .prepend($('<img>', { src: '/assets/css/icons/marker_black.png', width: '27px', height: '40px' }).css({ position: 'absolute', top: '-2px', left: '0px' }));
+                    if (markersInited) {
+                        var newDefectSpot = mainViewModel.CreateDefectSpotCommand();
+                        debugger;
+                        newDefectSpot.OrderNumber(this.noteCount);
+                        mainViewModel.SortDefectSpotsCommand();
+                        elem.data("ViewModel", newDefectSpot);
+                    } else {
+                        var noteCount = this.noteCount;
+                        var viewModel = _.find(mainViewModel.DefectSpotsList(), function(spot) { return spot.OrderNumber() == noteCount });
+                        elem.data("ViewModel", viewModel);
+                    }
+                    return elem;
+                }
+            });
+
+            var markers = _.map(mainViewModel.DefectSpotsList(),
+                function(defectSpot) {
+                    return {
+                        x: defectSpot.X(),
+                        y: defectSpot.Y(),
+                        note: defectSpot.Description()
+                    }
+                });
+
+            $img.imgNotes("import", markers);
+            markersInited = true;
+
+            var $toggle = $("#toggleEdit");
+            $toggle.css("margin", "10px");
+            if ($img.imgNotes("option", "canEdit")) {
+                $toggle.text("View");
+            } else {
+                $toggle.text("Edit");
+            }
+            $toggle.on("click", function() {
+                var $this = $(this);
+                if ($this.text() == "Edit") {
+                    $this.text("View");
+                    $img.imgNotes("option", "canEdit", true);
+                } else {
+                    $this.text('Edit');
+                    $img.imgNotes('option', 'canEdit', false);
+                }
+            });
+            var $export = $("#export");
+            $export.on("click", function() {
+                var $table = $("<table/>").addClass("gridtable");
+                var notes = $img.imgNotes('export');
+                $table.append("<th>X</th><th>Y</th><th>NOTE</th>");
+                $.each(notes, function(index, item) {
+                    $table.append("<tr><td>" + item.x + "</td><td>" + item.y + "</td><td>" + item.note + "</td></tr>");
+                });
+                $('#txt').html($table);
+            });
+            $export.hide();
+            var $clear = $("#clear");
+            $clear.hide();
+            $clear.on("click", function() {
+                $img.imgNotes('clear');
+            });
+            var $print = $("#print");
+            $print.hide();
+            $print.on("click", function() {
+                $(".viewport").printThis();
+            });
+        }
     </script>
 }
 
 @section Header
 {
-    <div class="page-header">
-        <div class="page-header-content">
-            <div class="page-title">
-                <h3>
-                    <a href="items.html" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Item view</span>
-                </h3>
-                <ul class="breadcrumb breadcrumb-caret position-right">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="projects.html">Project Hanolulu</a></li>
-                    <li><a href="checklists.html">Semi-conductor Converters a really long name of a checklist</a></li>
-                    <li><a href="items.html">Conductor BCE</a></li>
-                    <li class="active">Details</li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
+    @Html.Partial("_Breadcrumb")
 }
 
-
-
-<div class="page-content">
+<div id="main_content" class="page-content">
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
@@ -122,27 +295,106 @@
                         <span class="mobileBold">Defect spot list:</span>
                     </div>
                     <div class="col-md-10 col-sm-10">
-                        <table class="table datatable-basic table-hover defectspots-table">
-                            <tbody>
-                                <!-- ko foreach: DefectSpotsList -->
-                                <tr data-bind="
+                        <!--<table class="table table-hover defectspots-table">
+                            <tbody>-->
+                            <!-- ko foreach: DefectSpotsList -->
+                            <!--<tr data-bind="
                                     attr: {
                                             'data-images' : AttachedPictures
                                         }
                                     "
-                                    class="hoverhref">
-                                        <td>1</td>
-                                        <td>A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot </td>
-                                        <td class="detailedItemArrow"></td>
-                                </tr>
-                                <!-- /ko -->
-                                <tr class="newDefectedSpot hoverhref">
-                                    <td><i class="icon-plus3"></i></td>
-                                    <td><a href="AddSpot.html">Add new defected spot...</a></td>
-                                    <td></td>
-                                </tr>
+                                class="hoverhref">
+                                <td data-bind="html: OrderNumber"></td>
+                                <td data-bind="html: Description"></td>
+                                <td class="detailedItemArrow"></td>
+                            </tr>-->
+                            <!-- /ko -->
+                            <!--<tr class="newDefectedSpot hoverhref">
+                                <td><i class="icon-plus3"></i></td>
+                                <td><a data-bind="attr: { href: AddDefectSpotPath }">Add new defected spot...</a></td>
+                                <td></td>
+                            </tr>
                             </tbody>
-                        </table>
+                        </table>-->
+
+                        <div class="panel-group panel-group-control panel-group-control-right content-group-lg">
+                            <div class="panel panel-white">
+                                <div class="panel-heading collapsed" data-toggle="collapse" href="#collapsible-control-right-group1">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                            1
+                                        </div>
+                                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                                            <div class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" href="#collapsible-control-right-group1">
+                                                    A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="collapsible-control-right-group1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="col-lg-2 col-sm-3 col-xs-4">
+                                            <div class="thumbnail">
+                                                <div class="thumb">
+                                                    <span>
+                                                        <a href="assets/images/demo/0.png" data-popup="lightbox" rel="gallery1" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding:0px">
+                                                            <img src="assets/images/demo/0.png" alt="">
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2 col-sm-3 col-xs-4">
+                                            <div class="thumbnail">
+                                                <div class="thumb">
+                                                    <span>
+                                                        <a href="assets/images/demo/1.png" data-popup="lightbox" rel="gallery1" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding:0px">
+                                                            <img src="assets/images/demo/1.png" alt="">
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="panel panel-white">
+                                <div class="panel-heading " data-toggle="collapse" href="#collapsible-control-right-group2">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                            2
+                                        </div>
+                                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                                            <div class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" href="#collapsible-control-right-group2">
+                                                    A really long description of a defect spot
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="collapsible-control-right-group2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="col-lg-2 col-sm-3 col-xs-4">
+                                            <div class="thumbnail">
+                                                <div class="thumb">
+                                                    <span>
+                                                        <a href="assets/images/demo/2.png" data-popup="lightbox" rel="gallery1" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding:0px">
+                                                            <img src="assets/images/demo/2.png" alt="">
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -153,9 +405,17 @@
                     <div class="col-lg-10 col-sm-10">
                         <div class="thumbnail">
                             <div class="thumb">
-                                <img src="assets/images/placeholder.jpg" alt="">
-                                <div class="caption-overflow">
+                                <div id="imgdiv" style="text-align: center;">
+                                    <img id="image" data-bind="
+                                     attr: {
+                                        src: InspectionDrawingPath
+                                     }
+                                     " style="border: 30px solid #ccc; padding:20px;" width="80%" />
+                                    <br />
+                                    <button id="toggleEdit">Edit</button>	<button id="export">Export</button> <button id="clear">Clear</button> <button id="print">Print</button>
                                 </div>
+                                <div id=txt></div>
+                                
                             </div>
                         </div>
                     </div>
@@ -165,6 +425,3 @@
     </div>
 
 </div>
-<script>
-    ko.applyBindings(rootViewModel);
-</script>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
@@ -30,6 +31,15 @@ namespace Frescode.Controllers
             ViewBag.ProjectId = projectId;
             ViewBag.UserId = userId;
             return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetBreadcrumbText(int checklistId)
+        {
+            var checklist = await _rootContext.Checklists
+                .Include(x => x.ChecklistTemplate)
+                .SingleOrDefaultAsync(x => x.Id == checklistId);
+            return Json(new {Text = checklist?.ChecklistTemplate?.Name}, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

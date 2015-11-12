@@ -10,6 +10,7 @@ namespace Frescode.DAL.Entities
         public DateTime DateCreated { get; set; }
         public User CreatedBy { get; set; }
         public InspectionDrawingData InspectionDrawingData { get; set; }
+        public int InspectionDrawingDataId { get; set; }
     }
 
     public class InspectionDrawingData

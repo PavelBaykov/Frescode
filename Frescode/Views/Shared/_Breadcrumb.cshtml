@@ -1,0 +1,64 @@
+﻿<script>
+    function BreadcrumbViewModel() {
+        var self = this;
+
+        self.Path = ko.observable();
+        self.Text = ko.observable();
+    }
+
+    function FetchBreadcrumbText(path, textObservable) {
+        $.getJSON(path + "/GetBreadcrumbText")
+            .error(function(e) {
+                if (e.status === 500 || e.status === 400) {
+                    var message = 'Error ' + e.status + '\r\n';
+                    console.log(message);
+                }
+            })
+            .done(function(data) {
+                textObservable(data.Text);
+            });
+    }
+
+
+    var breadcrumbs = ko.observableArray([]);
+
+    var path = window.location.pathname.split('/');
+    if (path.length > 1) {
+        var segments = [];
+        segments[0] = "/" + path[1] + "/" + path[2] + "/";
+        var i = 1;
+        while (i < path.length / 2 - 1) {
+            var previousSegment = segments[i - 1];
+            segments[i] = previousSegment + path[1 + 2 * i] + "/" + path[2 + 2 * i] + "/";
+            i += 1;
+        }
+
+        _.each(segments, function(s) {
+            var viewModel = new BreadcrumbViewModel();
+            viewModel.Path(s);
+            breadcrumbs.push(viewModel);
+            FetchBreadcrumbText(s, viewModel.Text);
+        });
+    }
+    rootViewModel.BreadcrumbViewModel({ BreadcrumbsList: breadcrumbs });
+    var breadcrumbViewModel = rootViewModel.BreadcrumbViewModel();
+
+</script>
+
+<div id="breadcrumb_view" class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h3>
+                <a href="items.html" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Item view</span>
+            </h3>
+            <ul class="breadcrumb breadcrumb-caret position-right">
+                <li><a href="/">Home</a></li>
+
+                <!-- ko foreach: breadcrumbViewModel.BreadcrumbsList -->
+                <li><a data-bind="attr: { href: Path }, text: Text"></a></li>
+                <!-- /ko -->
+                <li class="active">@Html.Raw(ViewBag.Title)</li>
+            </ul>
+        </div>
+    </div>
+</div>

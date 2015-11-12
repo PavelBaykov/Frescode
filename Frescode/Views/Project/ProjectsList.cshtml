@@ -1,94 +1,83 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "projects";
+    ViewBag.Title = "Projects List";
 }
-
-@section DataTables{
-    <script type="text/javascript" src="/assets/js/pages/datatables_basic.js"></script>
-}
-
-<script>
-    userId = @Html.Raw(Json.Encode(ViewBag.UserId));
-
-    function ProjectsListViewModel() {
-        var self = this;
-
-        self.ProjectsList = ko.observableArray();
-    }
-
-    function ProjectViewModel() {
-        var self = this;
-
-        self.Id = ko.observable();
-        self.Name = ko.observable();
-        self.DateOfLastChange = ko.observable();
-        self.ChangedBy = ko.observable();
-        self.Status = ko.observable();
-        self.GotoChecklistsListCommand = function() {
-            window.location.href = "/Checklist/ChecklistsList?userId=" + userId +"&projectId=" + self.Id();
-        }
-    }
-
-    function getProjects(callback) {
-        $.getJSON('/Project/GetProjectsList?userId=' + userId)
-            .error(function (e) {
-                if (e.status == 500 || e.status == 400) {
-                    var message = 'Error ' + e.status + '\r\n' +
-                        'Response: ' + e.responseText;
-                    console.log(message);
-                    alert(message);
-                }
-            })
-            .done(function (data) {
-                if ($.isFunction(callback)) {
-                    callback(data);
-                }
-            });
-    }
-
-    var rootViewModel = new ProjectsListViewModel();
-    
-    function fillViewModel(projectsList) {
-        $(document).ready(function() {
-            rootViewModel.ProjectsList.removeAll();
-            _.each(projectsList.ProjectsList, function(project) {
-                var projectViewModel = new ProjectViewModel();
-                projectViewModel.Id(project.Id);
-                projectViewModel.Name(project.Name);
-                projectViewModel.DateOfLastChange(project.DateOfLastChange);
-                projectViewModel.ChangedBy(project.ChangedBy);
-                projectViewModel.Status(project.Status);
-                rootViewModel.ProjectsList.push(projectViewModel);
-            });
-            initDataTables();
-        });
-    }
-
-    getProjects(function(projects) {
-        fillViewModel(projects);
-    });
-
-</script>
 
 @section Header
 {
-    <div class="page-header">
-        <div class="page-header-content">
-            <div class="page-title">
-                <h3>
-                    <a href="" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Projects list</span>
-                </h3>
-                <ul class="breadcrumb breadcrumb-caret position-right">
-                    <li><a href="index.html">Home</a></li>
-                    <li class="active">Projects</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_Breadcrumb")
 }
 
-<div class="page-content">
+@section AdditionalScripts{
+    <script type="text/javascript" src="/assets/js/pages/datatables_basic.js"></script>
+
+    <script>
+        userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+
+        function ProjectsListViewModel() {
+            var self = this;
+
+            self.ProjectsList = ko.observableArray();
+        }
+
+        function ProjectViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.Name = ko.observable();
+            self.DateOfLastChange = ko.observable();
+            self.ChangedBy = ko.observable();
+            self.Status = ko.observable();
+            self.GotoChecklistsListCommand = function() {
+                window.location.href = "Project/" +self.Id() + "/";
+            }
+        }
+
+        function getProjects(callback) {
+            $.getJSON('/Project/GetProjectsList?userId=' + userId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        rootViewModel.MainViewModel(new ProjectsListViewModel());
+        var mainViewModel = rootViewModel.MainViewModel();
+
+        function fillViewModel(projectsList) {
+            $(document).ready(function() {
+                mainViewModel.ProjectsList.removeAll();
+                _.each(projectsList.ProjectsList, function(project) {
+                    var projectViewModel = new ProjectViewModel();
+                    projectViewModel.Id(project.Id);
+                    projectViewModel.Name(project.Name);
+                    projectViewModel.DateOfLastChange(project.DateOfLastChange);
+                    projectViewModel.ChangedBy(project.ChangedBy);
+                    projectViewModel.Status(project.Status);
+                    mainViewModel.ProjectsList.push(projectViewModel);
+                });
+                initDataTables();
+            });
+        }
+
+        getProjects(function(projects) {
+            fillViewModel(projects);
+        });
+
+    </script>
+}
+
+<div id="main_content" class="page-content">
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
@@ -130,6 +119,3 @@
         </div>
     </div>
 </div>
-<script>
-    ko.applyBindings(rootViewModel);
-</script>

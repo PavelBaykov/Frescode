@@ -179,12 +179,16 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="BL\CommandsHandler\AddDefectSpotCommandHandler.cs" />
     <Compile Include="BL\CommandsHandler\ChecklistItemChangeStateCommandHandler.cs" />
     <Compile Include="BL\CommandsHandler\CommandHandlerBase.cs" />
+    <Compile Include="BL\Commands\AddDefectSpotCommand.cs" />
     <Compile Include="BL\Commands\ChecklistItemChangeStateCommand.cs" />
     <Compile Include="Controllers\ChecklistController.cs" />
     <Compile Include="Controllers\ChecklistItemsController.cs" />
+    <Compile Include="Controllers\InspectionDrawingController.cs" />
     <Compile Include="Controllers\PictureController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\Entities\Checklist.cs" />
     <Compile Include="DAL\Entities\ChecklistItem.cs" />
     <Compile Include="DAL\Entities\ChecklistItemStatus.cs" />
@@ -227,6 +231,9 @@
     <Content Include="assets\css\icons\glyphicons\glyphicons-halflings-regular.svg" />
     <Content Include="assets\css\icons\icomoon\fonts\icomoon.svg" />
     <Content Include="assets\css\icons\icomoon\styles.css" />
+    <Content Include="assets\css\icons\marker_black.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\demo_data\maps\vector\gdp_demo_data.js" />
     <Content Include="assets\demo_data\wizard\additional.html" />
     <Content Include="assets\demo_data\wizard\education.html" />
@@ -1588,6 +1595,19 @@
     <Content Include="assets\js\plugins\forms\wizards\form_wizard\form_wizard.min.js" />
     <Content Include="assets\js\plugins\forms\wizards\steps.min.js" />
     <Content Include="assets\js\plugins\forms\wizards\stepy.min.js" />
+    <Content Include="assets\js\plugins\imgNotes\dist\imgNotes.js" />
+    <Content Include="assets\js\plugins\imgNotes\dist\imgNotes.min.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\imgViewer.min.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\jquery-loader.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\jquery-ui-loader.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\jquery.fs.zoetrope.min.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\jquery.mousewheel.min.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\jquery\jquery-ui.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\jquery\jquery.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\printThis.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\qunit\qunit.css" />
+    <Content Include="assets\js\plugins\imgNotes\libs\qunit\qunit.js" />
+    <Content Include="assets\js\plugins\imgNotes\libs\toe.min.js" />
     <Content Include="assets\js\plugins\internationalization\i18next.min.js" />
     <Content Include="assets\js\plugins\loaders\blockui.min.js" />
     <Content Include="assets\js\plugins\loaders\pace.min.js" />
@@ -3820,10 +3840,13 @@
     </Content>
     <Content Include="Views\ChecklistItems\ChecklistItemsList.cshtml" />
     <Content Include="Views\ChecklistItems\ChecklistItemDetails.cshtml" />
+    <Content Include="Views\ChecklistItems\DefectSpotAddition.cshtml" />
+    <Content Include="Views\Shared\_Breadcrumb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Picture\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -119,6 +119,11 @@ namespace Frescode.DAL
                 .HasRequired(picture => picture.PictureData)
                 .WithMany()
                 .HasForeignKey(p => p.PictureId);
+
+            modelBuilder.Entity<InspectionDrawing>()
+                .HasRequired(inspectionDrawing => inspectionDrawing.InspectionDrawingData)
+                .WithMany()
+                .HasForeignKey(x => x.InspectionDrawingDataId);
         }
     }
 }

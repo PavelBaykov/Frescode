@@ -7,6 +7,7 @@ using Frescode.BL.Commands;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
+using WebGrease.Css.Ast.Selectors;
 
 namespace Frescode.Controllers
 {
@@ -19,6 +20,14 @@ namespace Frescode.Controllers
         {
             _mediator = mediator;
             _rootContext = rootContext;
+        }
+
+        public async Task<ActionResult> GetBreadcrumbText(int checklistItemId)
+        {
+            var checklistItem = await _rootContext.ChecklistItems
+                .Include(x => x.ItemTemplate)
+                .SingleOrDefaultAsync(x => x.Id == checklistItemId);
+            return Json(new { Text = checklistItem?.ItemTemplate?.Name }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ChecklistItemsList(int userId, int checklistId)
@@ -34,6 +43,32 @@ namespace Frescode.Controllers
             ViewBag.UserId = userId;
             return View();
         }
+
+        public ActionResult DefectSpotAddition(int userId, int checklistItemId)
+        {
+            ViewBag.UserId = userId;
+            ViewBag.ChecklistItemId = checklistItemId;
+            return View();
+        }
+
+        public class SpotDto
+        {
+            public int Id { get; set; }
+            public string Description { get; set; }
+            public int OrderNumber{ get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+            public int ChecklistItemId { get; set; }
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddDefectSpot(SpotDto spotDto)
+        {
+            var addDefectCommand = new AddDefectSpotCommand(spotDto.Id, spotDto.Description, spotDto.OrderNumber, spotDto.X, spotDto.Y,
+                spotDto.ChecklistItemId);
+            await _mediator.PublishAsync(addDefectCommand);
+            return Json(new { defectSpotId = addDefectCommand.Id});
+        }
+
 
         [HttpGet]
         public ActionResult GetChecklistItemsList(int userId, int checklistId)
@@ -75,18 +110,24 @@ namespace Frescode.Controllers
                 .Include(x => x.Checklist.ChecklistTemplate)
                 .Include(x => x.Checklist.Project)
                 .Include(x => x.ItemTemplate)
+                .Include(x => x.ItemTemplate.InspectionDrawing)
                 .SingleOrDefault(x => x.Id == checklistItemId);
 
             var viewModel = new ChecklistItemDescriptionViewModel();
+            viewModel.Id = checklistItem.Id;
             viewModel.ChecklistName = checklistItem.Checklist.ChecklistTemplate.Name;
             viewModel.Description = checklistItem.ItemTemplate.Description;
             viewModel.ProjectName = checklistItem.Checklist.Project.Name;
             viewModel.DefectSpotsList = new List<DefectSpotViewModel>();
+            viewModel.InspectionDrawingPath = $"/InspectionDrawing/GetInspectionDrawing?inspectionDrawingId={checklistItem.ItemTemplate.InspectionDrawing.InspectionDrawingDataId}";
             foreach (var defectSpot in checklistItem.DefectionSpots)
             {
                 var defectSpotViewModel = new DefectSpotViewModel();
+                defectSpotViewModel.Id = defectSpot.Id;
                 defectSpotViewModel.Description = defectSpot.Description;
                 defectSpotViewModel.OrderNumber = defectSpot.OrderNumber;
+                defectSpotViewModel.X = defectSpot.X;
+                defectSpotViewModel.Y = defectSpot.Y;
                 defectSpotViewModel.AttachedPictures = string.Empty;
                 foreach (var attachedPicture in defectSpot.AttachedPictures)
                 {
@@ -148,6 +189,13 @@ namespace Frescode.Controllers
         public int Id { get; set; }
         public string AttachedPictures { get; set; }
         public int OrderNumber { get; set; }
+        public string Description { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public class AddDefectSpotDto
+    {
         public string Description { get; set; }
     }
 }
