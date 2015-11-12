@@ -9,11 +9,11 @@
 *
 * ---------------------------------------------------------------------------- */
 
-$(function() {
+function initGallery() {
 
 	// Initialize lightbox
     $('[data-popup="lightbox"]').fancybox({
         padding: 3
     });
     
-});
+};

@@ -7,7 +7,6 @@ using Frescode.BL.Commands;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
-using WebGrease.Css.Ast.Selectors;
 
 namespace Frescode.Controllers
 {
@@ -30,6 +29,13 @@ namespace Frescode.Controllers
             return Json(new { Text = checklistItem?.ItemTemplate?.Name }, JsonRequestBehavior.AllowGet);
         }
 
+        public async Task<ActionResult> GetBreadcrumbDefectSpotText(int defectSpotId)
+        {
+            var defectSpot = await _rootContext.DefectionSpots
+                .SingleOrDefaultAsync(x => x.Id == defectSpotId);
+            return Json(new { Text = defectSpot.OrderNumber }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ChecklistItemsList(int userId, int checklistId)
         {
             ViewBag.ChecklistId = checklistId;
@@ -44,10 +50,47 @@ namespace Frescode.Controllers
             return View();
         }
 
-        public ActionResult DefectSpotAddition(int userId, int checklistItemId)
+        public class AddSpotViewModel
+        {
+            public AddSpotViewModel()
+            {
+                AttachedPictures = new List<PictureViewModel>();
+            }
+
+            public string Description { get; set; }
+            public List<PictureViewModel> AttachedPictures { get; set; }
+        }
+        public class PictureViewModel
+        {
+            public string Path { get; set; }
+            public string Timestamp { get; set; }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDefectSpot(int userId, int defectSpotId)
+        {
+            var defectSpot = await _rootContext.DefectionSpots
+                .Include(x => x.AttachedPictures)
+                .SingleOrDefaultAsync(x => x.Id == defectSpotId);
+
+            var viewModel = new AddSpotViewModel();
+            foreach (var picture in defectSpot.AttachedPictures)
+            {
+                var pictureViewModel = new PictureViewModel
+                {
+                    Path = $"/Picture/GetPicture?pictureId={picture.PictureId}",
+                    Timestamp = picture.DateCaptured.ToShortDateString()
+                };
+
+                viewModel.AttachedPictures.Add(pictureViewModel);
+            }
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult DefectSpotAddition(int userId, int defectSpotId)
         {
             ViewBag.UserId = userId;
-            ViewBag.ChecklistItemId = checklistItemId;
+            ViewBag.DefectSpotId = defectSpotId;
             return View();
         }
 
@@ -128,13 +171,11 @@ namespace Frescode.Controllers
                 defectSpotViewModel.OrderNumber = defectSpot.OrderNumber;
                 defectSpotViewModel.X = defectSpot.X;
                 defectSpotViewModel.Y = defectSpot.Y;
-                defectSpotViewModel.AttachedPictures = string.Empty;
-                foreach (var attachedPicture in defectSpot.AttachedPictures)
-                {
-                    defectSpotViewModel.AttachedPictures +=
-                        $"/Picture/GetPicture?pictureId={attachedPicture.PictureId},";
-                }
-                defectSpotViewModel.AttachedPictures = defectSpotViewModel.AttachedPictures.TrimEnd(',');
+                defectSpotViewModel.AttachedPictures =
+                    defectSpot
+                        .AttachedPictures
+                        .Select(x => $"/Picture/GetPicture?pictureId={x.PictureId}")
+                        .ToList();
                 viewModel.DefectSpotsList.Add(defectSpotViewModel);
             }
 
@@ -187,7 +228,7 @@ namespace Frescode.Controllers
     public class DefectSpotViewModel
     {
         public int Id { get; set; }
-        public string AttachedPictures { get; set; }
+        public List<string> AttachedPictures { get; set; }
         public int OrderNumber { get; set; }
         public string Description { get; set; }
         public double X { get; set; }

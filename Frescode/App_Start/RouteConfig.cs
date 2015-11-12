@@ -10,6 +10,17 @@ namespace Frescode
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+               name: "nestedDefectSpotItem",
+               url: "User/{userId}/Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}",
+               defaults: new { controller = "ChecklistItems", action = "DefectSpotAddition" }
+            );
+            routes.MapRoute(
+               name: "defectSpotBreadcrumb",
+               url: "User/{userId}/Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/GetBreadcrumbText",
+               defaults: new { controller = "ChecklistItems", action = "GetBreadcrumbDefectSpotText" }
+            );
+
+            routes.MapRoute(
                name: "nestedChecklistItem",
                url: "User/{userId}/Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}",
                defaults: new { controller = "ChecklistItems", action = "ChecklistItemDetails" }

@@ -24,7 +24,7 @@ function format ( r ) {
         '</tr>'+
     '</table>'+
     '<div <!--class="text-center"-->'+
-    '<button type="button" class="btn btn-primary" style="margin-left:50px; margin-top:10px;" href ="ViewItem.html>'+
+    '<button type="button" class="btn btn-primary" style="margin-left:50px; margin-top:10px;">'+
     '<i class="icon-cog3 position-left"></i>' + 'View item details</button>'+
     '</div>';
     }
@@ -82,20 +82,24 @@ function initDataTables() {
     $('.datatable-basic tbody').on('click', 'td:not(.checkboxcolumn)', function () {
         var tr = $(this).closest('tr');
         var row = mainTable.row( tr );
+        var attr = tr.data("url");
 
-        if ( row.child.isShown() ) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child(format(tr),'detailedItem' ).show();
-            tr.addClass('shown');
-            $(this).closest('tr').next(tr).find('.btn').on('click',function(){
-                window.location.href='ViewItem.html';
-            });
+        if (typeof attr !== typeof undefined && attr !== false)
+        {
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child(format(tr),'detailedItem' ).show();
+                tr.addClass('shown');
+                $(this).closest('tr').next(tr).find('.btn').on('click',function(){
+                    window.location.href=attr;
+                });
 
+            }
         }
     } );
 

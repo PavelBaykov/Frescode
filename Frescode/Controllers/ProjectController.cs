@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
@@ -67,6 +68,13 @@ namespace Frescode.Controllers
 
         public ActionResult ProjectsList(int userId)
         {
+            var cookie = new HttpCookie("test_cookie")
+            {
+                Value = DateTime.Now.ToString("dd.MM.yyyy"),
+                Expires = DateTime.Now.AddMinutes(10),
+            };
+            Response.SetCookie(cookie);
+
             ViewBag.UserId = userId;
             return View();
         }

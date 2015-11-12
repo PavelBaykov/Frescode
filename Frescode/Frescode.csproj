@@ -216,6 +216,30 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\add\css\demo-ie8.css" />
+    <Content Include="assets\add\css\demo.css" />
+    <Content Include="assets\add\css\jquery.fileupload-noscript.css" />
+    <Content Include="assets\add\css\jquery.fileupload-ui-noscript.css" />
+    <Content Include="assets\add\css\jquery.fileupload-ui.css" />
+    <Content Include="assets\add\css\jquery.fileupload.css" />
+    <Content Include="assets\add\css\style.css" />
+    <Content Include="assets\add\img\loading.gif" />
+    <Content Include="assets\add\img\progressbar.gif" />
+    <Content Include="assets\add\js\app.js" />
+    <Content Include="assets\add\js\cors\jquery.postmessage-transport.js" />
+    <Content Include="assets\add\js\cors\jquery.xdr-transport.js" />
+    <Content Include="assets\add\js\jquery.fileupload-angular.js" />
+    <Content Include="assets\add\js\jquery.fileupload-audio.js" />
+    <Content Include="assets\add\js\jquery.fileupload-image.js" />
+    <Content Include="assets\add\js\jquery.fileupload-jquery-ui.js" />
+    <Content Include="assets\add\js\jquery.fileupload-process.js" />
+    <Content Include="assets\add\js\jquery.fileupload-ui.js" />
+    <Content Include="assets\add\js\jquery.fileupload-validate.js" />
+    <Content Include="assets\add\js\jquery.fileupload-video.js" />
+    <Content Include="assets\add\js\jquery.fileupload.js" />
+    <Content Include="assets\add\js\jquery.iframe-transport.js" />
+    <Content Include="assets\add\js\main.js" />
+    <Content Include="assets\add\js\vendor\jquery.ui.widget.js" />
     <Content Include="assets\css\bootstrap.css" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\colors.css" />
@@ -500,6 +524,8 @@
     <Content Include="assets\images\logo_icon_light.png" />
     <Content Include="assets\images\logo_light.png" />
     <Content Include="assets\images\placeholder.jpg" />
+    <Content Include="assets\images\placeholder_dummy.png" />
+    <Content Include="assets\images\plus.png" />
     <Content Include="assets\images\pnotify\danger.png" />
     <Content Include="assets\images\pnotify\default.png" />
     <Content Include="assets\images\pnotify\info.png" />

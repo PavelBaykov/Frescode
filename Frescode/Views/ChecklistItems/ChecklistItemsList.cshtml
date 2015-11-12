@@ -55,9 +55,6 @@
 
             self.DefectSpotsCount = ko.observable();
             self.Description = ko.observable();
-            self.GotoItemCommand = function() {
-                //window.location.href = "/Checklist/ChecklistsList?projectId=" + self.Id();
-            }
             self.InitSubscribtions = function() {
                 self.Status.subscribe(function() {
                     $.getq('itemsStatus',
@@ -140,6 +137,7 @@
                         attr: {
                             'data-description' : Description,
                             'data-quantity' : DefectSpotsCount,
+                            'data-url': 'Details/' + Id() +'/'
                         }">
                         <td data-bind="html: Name"></td>
                         <td data-bind="html: DateOfLastChange"></td>
