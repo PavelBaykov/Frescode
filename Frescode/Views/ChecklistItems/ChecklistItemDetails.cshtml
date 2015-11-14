@@ -38,8 +38,10 @@
                 newDefectSpot.Description("Enter description...");
                 newDefectSpot.AttachedPictures("");
                 var defectSpotWithMaxOrderNumber = _.max(self.DefectSpotsList(), function(x) { return x.OrderNumber() });
-                if (defectSpotWithMaxOrderNumber < 0)
+                if (!defectSpotWithMaxOrderNumber || !defectSpotWithMaxOrderNumber.OrderNumber || defectSpotWithMaxOrderNumber < 0)
                     defectSpotWithMaxOrderNumber = 0;
+                else
+                    defectSpotWithMaxOrderNumber = defectSpotWithMaxOrderNumber.OrderNumber();  
                 newDefectSpot.OrderNumber(defectSpotWithMaxOrderNumber + 1);
                 self.DefectSpotsList.push(newDefectSpot);
                 newDefectSpot.SaveDefectSpotCommand();

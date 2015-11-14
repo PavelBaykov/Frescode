@@ -82,18 +82,17 @@
 
         function fillViewModel(defectSpot) {
             $(document).ready(function() {
-                mainViewModel.Description(defectSpot);
+                mainViewModel.Description(defectSpot.Description);
                 _.each(defectSpot.AttachedPictures, function(picture) {
                     var pictureViewModel = new PictureViewModel();
                     pictureViewModel.Path(picture.Path);
-                    pictureViewModel.Timestamp(picture.TimeStamp);
+                    pictureViewModel.Timestamp(picture.Timestamp);
                     mainViewModel.AttachedPictures.push(pictureViewModel);
                 });
             });
         }
 
         getAddSpotViewModel(function(defectSpot) {
-            debugger;
             fillViewModel(defectSpot);
         });
     </script>
@@ -104,7 +103,7 @@
     <div class="content-wrapper">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title"><i class=" icon-wrench"></i><span>Conductor BCE item overview</span></h4>
+                <h4 class="panel-title"><i class=" icon-wrench"></i><span>???????</span></h4>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -117,56 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-
-                    <!-- ko foreach: AttachedPictures -->
-                    <div class="col-lg-2 col-md-3 col-sm-4  col-xs-12 remove">
-                        <div class="thumbnail">
-                            <div class="thumb">
-                                <img src="/assets/images/placeholder.jpg" alt="">
-                                <div class="caption-overflow">
-                                    <span>
-                                        <a data-bind="attr: { href: Path }" data-popup="lightbox" rel="gallery" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-zoomin3"></i></a>
-                                        <a onclick="removePicture(this)" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-folder-remove"></i></a>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="caption text-center" data-bind="html: Timestamp"></div>
-                        </div>
-                    </div>
-                    <!-- /ko -->
-
-                </div>
-
                 <!--Загрузка фотографий-->
-                <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
-                    <!-- Redirect browsers with JavaScript disabled to the origin page -->
-                    <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
-                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-                    <div class="row fileupload-buttonbar">
-                        <div class="col-lg-7">
-                            <!-- The fileinput-button span is used to style the file input field as button -->
-                            <span class="btn btn-success fileinput-button">
-                                <i class="glyphicon glyphicon-plus"></i>
-                                <span>Add defect spot picture</span>
-                                <input type="file" name="files[]" multiple>
-                            </span>
-                            <!-- The global file processing state -->
-                            <span class="fileupload-process"></span>
-                        </div>
-                        <!-- The global progress state -->
-                        <div class="col-lg-5 fileupload-progress fade">
-                            <!-- The global progress bar -->
-                            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                                <div class="progress-bar progress-bar-success" style="width: 0%;"></div>
-                            </div>
-                            <!-- The extended global progress state -->
-                            <div class="progress-extended">&nbsp;</div>
-                        </div>
-                    </div>
-                    <!-- The table listing the files available for upload/download -->
-                    <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
-                </form>
                 <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
                     <div class="slides"></div>
                     <h3 class="title"></h3>
@@ -178,6 +128,7 @@
                 </div>
                 <!-- The template to display files available for upload -->
                 <script id="template-upload" type="text/x-tmpl">
+                    
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
                     <tr class="template-upload fade">
                         <td>
@@ -207,6 +158,7 @@
                         </td>
                     </tr>
                     {% } %}
+                
                 </script>
                 <!-- The template to display files available for download -->
                 <script id="template-download" type="text/x-tmpl">
@@ -214,33 +166,33 @@
                     <tr class="template-download fade">
                         <td>
                             <span class="preview">
-                                {% if (file.thumbnailUrl) { %}
-                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                                {% if (file.ThumbnailUrl) { %}
+                                <a href="{%=file.Url%}" title="{%=file.Name%}" download="{%=file.Name%}" data-gallery><img src="{%=file.ThumbnailUrl%}"></a>
                                 {% } %}
                             </span>
                         </td>
                         <td>
                             <p class="name">
-                                {% if (file.url) { %}
-                                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                                {% if (file.Url) { %}
+                                <a href="{%=file.Url%}" title="{%=file.Name%}" download="{%=file.Name%}" {%=file.ThumbnailUrl?'data-gallery':''%}>{%=file.Name%}</a>
                                 {% } else { %}
-                                <span>{%=file.name%}</span>
+                                <span>{%=file.Name%}</span>
                                 {% } %}
                             </p>
-                            {% if (file.error) { %}
-                            <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+                            {% if (file.Error) { %}
+                            <div><span class="label label-danger">Error</span> {%=file.Error%}</div>
                             {% } %}
                         </td>
                         <td>
-                            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+                            <span class="size">{%=o.formatFileSize(file.Size)%}</span>
                         </td>
                         <td>
-                            {% if (file.deleteUrl) { %}
-                            <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                            {% if (file.DeleteUrl) { %}
+                            <button class="btn btn-danger delete" data-type="{%=file.DeleteType%}" data-url="{%=file.DeleteUrl%}" >
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <span>Delete</span>
                             </button>
-                            <input type="checkbox" name="delete" value="1" class="toggle">
+                            <input style="margin-left: 15px" type="checkbox" name="delete" value="1" class="toggle">
                             {% } else { %}
                             <button class="btn btn-warning cancel">
                                 <i class="glyphicon glyphicon-ban-circle"></i>
@@ -252,25 +204,53 @@
                     {% } %}
                 </script>
                 <!--/Загрузка фотографий-->
+
+                <form id="fileupload" action="UploadFiles" method="POST" enctype="multipart/form-data">
+
+                    <!-- The table listing the files available for upload/download -->
+                    <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+
+                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                    <div class="row fileupload-buttonbar">
+                        <div class="col-lg-7">
+                            <!-- The fileinput-button span is used to style the file input field as button -->
+                            <span class="btn btn-success fileinput-button">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Add defect spot picture</span>
+                                <input type="file" name="files[]" multiple>
+                            </span>
+                            <button type="submit" class="btn btn-primary start">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span>Start upload</span>
+                            </button>
+                            <!-- The global file processing state -->
+                            <span class="fileupload-process"></span>
+                        </div>
+                        <!-- The global progress state -->
+                        <div class="col-lg-5 fileupload-progress fade">
+                            <!-- The global progress bar -->
+                            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar progress-bar-success" style="width: 0%;"></div>
+                            </div>
+                            <!-- The extended global progress state -->
+                            <div class="progress-extended">&nbsp;</div>
+                        </div>
+                    </div>
+                </form>
             </div>
 
         </div>
         <!-- /Main content -->
-        <!-- Footer -->
-        <div class="footer text-muted">
-            &copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
-        </div>
-        <!-- /footer -->
     </div>
 </div>
 <script type="text/javascript">
 		/*Удаление фото*/
-		removePicture = function(el) {
-		    $(el).parents(".remove").remove()
-		};
+        removePicture = function(el) {
+            $(el).parents(".remove").remove();
+        };
 
 		/*Добавление фото*/
-		addPicture = function(el){
+        addPicture = function(el) {
 			$('<div class="col-lg-2 col-md-3 col-xs-12 remove">'+
 								'<div class="thumbnail">'+
 									'<div class="thumb">'+

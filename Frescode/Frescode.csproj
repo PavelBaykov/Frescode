@@ -186,6 +186,7 @@
     <Compile Include="BL\Commands\ChecklistItemChangeStateCommand.cs" />
     <Compile Include="Controllers\ChecklistController.cs" />
     <Compile Include="Controllers\ChecklistItemsController.cs" />
+    <Compile Include="Controllers\DefectSpotPictureController.cs" />
     <Compile Include="Controllers\InspectionDrawingController.cs" />
     <Compile Include="Controllers\PictureController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -2547,6 +2548,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-file-bindings.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -3871,6 +3873,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DefectSpotPicture\" />
     <Folder Include="Views\Picture\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

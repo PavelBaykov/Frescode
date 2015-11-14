@@ -331,6 +331,7 @@ namespace Frescode.Controllers
             var picture1 = new Picture
             {
                 DateCaptured = DateTime.UtcNow,
+                Name = "Picture 1",
                 PictureData = new PictureData
                 {
                     Data = floorPlanBytes
@@ -339,6 +340,7 @@ namespace Frescode.Controllers
             var picture2 = new Picture
             {
                 DateCaptured = DateTime.UtcNow,
+                Name = "Picture 2",
                 PictureData = new PictureData
                 {
                     Data = floorPlanBytes
@@ -349,6 +351,9 @@ namespace Frescode.Controllers
 
             checklistItem1.DefectionSpots.Add(defectSpot1);
             checklistItem2.DefectionSpots.Add(defectSpot2);
+
+            _rootContext.DefectionSpots.Add(defectSpot1);
+            _rootContext.DefectionSpots.Add(defectSpot2);
 
             user1.Projects.Add(project1);
             user1.ProjectOwned = project1;

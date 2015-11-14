@@ -94,6 +94,13 @@ namespace Frescode.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult UploadAddSpotImage(int defectSpotId)
+        {
+            return Json(new {});
+        }
+
+
         public class SpotDto
         {
             public int Id { get; set; }

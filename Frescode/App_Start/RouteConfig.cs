@@ -7,7 +7,23 @@ namespace Frescode
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            //TODO refactoring!!!
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+               name: "nestedDefectionDownloading",
+               url: "User/{userId}/Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/UploadFiles",
+               defaults: new { controller = "DefectSpotPicture", action = "GetFiles" },
+               constraints: new { httpMethod = new HttpMethodConstraint("GET")}
+            );
+
+            routes.MapRoute(
+               name: "nestedDefectionUploadin",
+               url: "User/{userId}/Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/UploadFiles",
+               defaults: new { controller = "DefectSpotPicture", action = "UploadFiles" },
+               constraints: new { httpMethod = new HttpMethodConstraint("POST")}
+            );
 
             routes.MapRoute(
                name: "nestedDefectSpotItem",
