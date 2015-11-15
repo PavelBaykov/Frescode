@@ -46,6 +46,8 @@
                 self.DefectSpotsList.push(newDefectSpot);
                 newDefectSpot.SaveDefectSpotCommand();
                 initGallery();
+                //TODO move to function
+                $(".viewport").css("top", $("#image").offset().top + 50 + "px");
                 return newDefectSpot;
             }
             self.Description = ko.observable();
@@ -135,9 +137,9 @@
 
         getChecklistItemDetails(function(checklistDetails) {
             fillViewModel(checklistDetails);
-            initInspectionDrawing();
             initFancyBox(window, document, jQuery);
             initGallery();
+            initInspectionDrawing();
         });
 
         function initInspectionDrawing() {
@@ -223,6 +225,7 @@
                         var viewModel = _.find(mainViewModel.DefectSpotsList(), function(spot) { return spot.OrderNumber() == noteCount });
                         elem.data("ViewModel", viewModel);
                     }
+
                     return elem;
                 }
             });
@@ -256,27 +259,25 @@
                     $img.imgNotes('option', 'canEdit', false);
                 }
             });
-            var $export = $("#export");
-            $export.on("click", function() {
-                var $table = $("<table/>").addClass("gridtable");
-                var notes = $img.imgNotes('export');
-                $table.append("<th>X</th><th>Y</th><th>NOTE</th>");
-                $.each(notes, function(index, item) {
-                    $table.append("<tr><td>" + item.x + "</td><td>" + item.y + "</td><td>" + item.note + "</td></tr>");
-                });
-                $('#txt').html($table);
-            });
-            $export.hide();
-            var $clear = $("#clear");
-            $clear.hide();
-            $clear.on("click", function() {
-                $img.imgNotes('clear');
-            });
-            var $print = $("#print");
-            $print.hide();
-            $print.on("click", function() {
-                $(".viewport").printThis();
-            });
+            
+
+            $viewport = $(".viewport");
+            $('#accordeon').on('show.bs.collapse', function (e) {
+                $viewport.hide();
+            })
+            $('#accordeon').on('shown.bs.collapse', function (e) {
+                //TODO move to function
+                $(".viewport").css("top", $("#image").offset().top + 50 + "px")
+                $viewport.show();
+            })
+            $('#accordeon').on('hide.bs.collapse', function (e) {
+                $viewport.hide();
+            })
+            $('#accordeon').on('hidden.bs.collapse', function (e) {
+                //TODO move to function
+                $(".viewport").css("top", $("#image").offset().top + 50 + "px")
+                $viewport.show();
+            })
         }
     </script>
 }
@@ -309,7 +310,7 @@
                         <span class="mobileBold">Defect spot list:</span>
                     </div>
                     <div class="col-md-10 col-sm-10">
-                        <div class="panel-group panel-group-control panel-group-control-right content-group-lg">
+                        <div id="accordeon" class="panel-group panel-group-control panel-group-control-right content-group-lg">
 
                             <!-- ko foreach: DefectSpotsList -->
                             <div class="panel panel-white">
