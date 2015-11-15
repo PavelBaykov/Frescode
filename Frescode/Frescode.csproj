@@ -61,6 +61,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -189,6 +197,7 @@
     <Compile Include="Controllers\DefectSpotPictureController.cs" />
     <Compile Include="Controllers\InspectionDrawingController.cs" />
     <Compile Include="Controllers\PictureController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\Entities\Checklist.cs" />
     <Compile Include="DAL\Entities\ChecklistItem.cs" />
@@ -3875,6 +3884,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\DefectSpotPicture\" />
     <Folder Include="Views\Picture\" />
+    <Folder Include="Views\Report\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
