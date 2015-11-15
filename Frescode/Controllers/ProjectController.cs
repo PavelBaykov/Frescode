@@ -111,7 +111,8 @@ namespace Frescode.Controllers
                 Password = "123456",
                 UserRole = UserRole.Reader,
                 Projects = new List<Project>(),
-                Customer = customer
+                Customer = customer,
+                ProjectsOwned = new List<Project>()
             };
             #region user 1
             var user2 = new User
@@ -356,7 +357,7 @@ namespace Frescode.Controllers
             _rootContext.DefectionSpots.Add(defectSpot2);
 
             user1.Projects.Add(project1);
-            user1.ProjectOwned = project1;
+            user1.ProjectsOwned.Add(project1);
             customer.Users.Add(user1);
             customer.Projects.Add(project1);
 

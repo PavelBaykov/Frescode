@@ -34,7 +34,8 @@ namespace Frescode.DAL
 
             modelBuilder.Entity<Project>()
                 .HasRequired(project => project.Owner)
-                .WithOptional(user => user.ProjectOwned);
+                .WithMany(user => user.ProjectsOwned)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Project>()
                 .HasMany(project => project.Checklists)
@@ -50,7 +51,7 @@ namespace Frescode.DAL
                 .WithMany(project => project.Members);
 
             modelBuilder.Entity<User>()
-                .HasOptional(user => user.ProjectOwned)
+                .HasMany(user => user.ProjectsOwned)
                 .WithRequired(project => project.Owner);
 
             modelBuilder.Entity<Customer>()

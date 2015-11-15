@@ -16,6 +16,6 @@ namespace Frescode.DAL.Entities
         public object LastChangedItem { get; set; }
         public ICollection<Project> Projects { get; set; } 
         public Customer Customer { get; set; }
-        public Project ProjectOwned { get; set; }
+        public ICollection<Project> ProjectsOwned { get; set; }
     }
 }
