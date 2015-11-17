@@ -24,8 +24,12 @@
         promise.complete = promise.always;
 
         // Create a deep copy of the arguments, and enqueue this request.
-        var clonedOptions = $.extend(true, {}, opts);
         enqueue(function () {
+            if (typeof opts === "function") {
+                opts = opts();
+            }
+            var clonedOptions = $.extend(true, {}, opts);
+            
             // Send off the ajax request now that the item has been removed from the queue
             var jqXHR = $.ajax.apply(window, [clonedOptions]);
 

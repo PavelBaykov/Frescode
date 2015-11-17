@@ -51,6 +51,7 @@ namespace Frescode.Controllers
                 .Include(x => x.Checklists.Select(w => w.Items))
                 .SingleOrDefault(x => x.Id == projectId);
             var viewModel = new ChecklistsListViewModel();
+            viewModel.ProjectName = project.Name;
             foreach (var checklist in project.Checklists)
             {
                 var checklistViewModel = new ChecklistViewModel
@@ -76,6 +77,7 @@ namespace Frescode.Controllers
             ChecklistsList = new List<ChecklistViewModel>();
         }
         public List<ChecklistViewModel> ChecklistsList { get; }
+        public string ProjectName { get; set; }
     }
 
     public class ChecklistViewModel

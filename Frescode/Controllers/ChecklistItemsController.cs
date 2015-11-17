@@ -116,7 +116,7 @@ namespace Frescode.Controllers
             var addDefectCommand = new AddDefectSpotCommand(spotDto.Id, spotDto.Description, spotDto.OrderNumber, spotDto.X, spotDto.Y,
                 spotDto.ChecklistItemId);
             await _mediator.PublishAsync(addDefectCommand);
-            return Json(new { defectSpotId = addDefectCommand.Id});
+            return Json(new { Id = addDefectCommand.Id});
         }
 
 

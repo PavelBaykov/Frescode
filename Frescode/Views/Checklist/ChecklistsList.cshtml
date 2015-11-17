@@ -20,6 +20,7 @@
             var self = this;
 
             self.ChecklistsList = ko.observableArray();
+            self.ProjectName = ko.observable();
         }
 
         function ChecklistViewModel() {
@@ -58,6 +59,7 @@
         function fillViewModel(checklistsList) {
             $(document).ready(function() {
                 mainViewModel.ChecklistsList.removeAll();
+                mainViewModel.ProjectName(checklistsList.ProjectName);
                 _.each(checklistsList.ChecklistsList, function(checklist) {
                     var checklistViewModel = new ChecklistViewModel();
                     checklistViewModel.Id(checklist.Id);
@@ -82,7 +84,7 @@
     <div class="content-wrapper">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title"><i class="icon-list-unordered"></i>Project hanolulu checklists</h4>
+                <h4 class="panel-title"><i class="icon-list-unordered"></i><span data-bind="text: ProjectName() + ' checklists'"></span></h4>
             </div>
             <div class="panel-body">
                 <table class="table datatable-basic table-hover">

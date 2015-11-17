@@ -41,7 +41,7 @@
                 if (!defectSpotWithMaxOrderNumber || !defectSpotWithMaxOrderNumber.OrderNumber || defectSpotWithMaxOrderNumber < 0)
                     defectSpotWithMaxOrderNumber = 0;
                 else
-                    defectSpotWithMaxOrderNumber = defectSpotWithMaxOrderNumber.OrderNumber();  
+                    defectSpotWithMaxOrderNumber = defectSpotWithMaxOrderNumber.OrderNumber();
                 newDefectSpot.OrderNumber(defectSpotWithMaxOrderNumber + 1);
                 self.DefectSpotsList.push(newDefectSpot);
                 newDefectSpot.SaveDefectSpotCommand();
@@ -55,39 +55,44 @@
             self.ProjectName = ko.observable();
             self.InspectionDrawingPath = ko.observable();
             self.AddDefectSpotPath = ko.observable("/ChecklistItems/DefectSpotAddition?userId=" + userId + "&checklistItemId=" + self.Id());
-            
+
         }
 
+        var internalMaxGuid = 1;
         function DefectSpotViewModel() {
             var self = this;
 
             self.Id = ko.observable(-1);
+            self.InternalGuid = ko.observable(++internalMaxGuid);
             self.ChecklistItemId = ko.observable();
             self.OrderNumber = ko.observable();
             self.Description = ko.observable();
             self.AttachedPictures = ko.observableArray();
             self.X = ko.observable();
             self.Y = ko.observable();
-
-            self.SaveDefectSpotCommand = function() {
+            
+            var getAjaxOpt = function() {
                 var dto = {
-                    OrderNumber : self.OrderNumber(),
-                    X : self.X(),
-                    Y : self.Y(),
-                    Description : self.Description(),
+                    OrderNumber: self.OrderNumber(),
+                    X: self.X(),
+                    Y: self.Y(),
+                    Description: self.Description(),
                     ChecklistItemId: self.ChecklistItemId(),
-                    Id : self.Id()
+                    Id: self.Id()
                 }
-                //TODO replace with ordered requests
-                $.ajax({
+
+                return {
                     url: '/ChecklistItems/AddDefectSpot',
                     type: 'post',
-                    dataType: 'json',
                     success: function(data) {
                         self.Id(data.Id);
                     },
                     data: dto
-                });
+                };
+            }
+
+            self.SaveDefectSpotCommand = function() {
+                $.ajaxq('item_' + self.InternalGuid(), getAjaxOpt);
             }
         }
 
@@ -110,6 +115,7 @@
 
         rootViewModel.MainViewModel(new ChecklistItemDescriptionViewModel());
         var mainViewModel = rootViewModel.MainViewModel();
+
         function fillViewModel(checklistDetails) {
             $(document).ready(function() {
                 mainViewModel.DefectSpotsList.removeAll();
@@ -186,17 +192,28 @@
                     });
                 },
                 onUpdateMarker: function(elem) {
+
                     var $elem = $(elem);
                     var $img = $(this.img);
 
                     var pos = $img.imgViewer("imgToView", $elem.data("relx"), $elem.data("rely"));
-                    if (markersInited) {
-                        var viewModel = $elem.data("ViewModel");
-                        if (viewModel && $elem.data("relx") && $elem.data("rely")) {
+                    var viewModel;
+                    viewModel = $elem.data("ViewModel");
+                    if (viewModel && markersInited) {
+                        if (viewModel.X() !== $elem.data("relx") || viewModel.Y() !== $elem.data("rely")) {
                             viewModel.X($elem.data("relx"));
                             viewModel.Y($elem.data("rely"));
+                            viewModel.SaveDefectSpotCommand();
                         }
                     }
+                    if (!viewModel) {
+                        viewModel = _.find(mainViewModel.DefectSpotsList(), function(spot) {
+                            return spot.X() == $elem.data("relx") && spot.Y() == $elem.data("rely");
+                        });
+                    }
+                    
+
+                    $(elem).find(".noteCount").html(viewModel.OrderNumber());
 
                     var zoom = $img.imgViewer("option", "zoom");
                     if (pos) {
@@ -213,16 +230,12 @@
                     this.options.hAll = "middle";
                     var elem = $(document.createElement('div'))
                         .css({ width: '27px', height: '40px', 'text-align': 'center', color: '#fff', 'font-weight': 'bold', 'font-size': '14px' })
-                        .append($('<p>' + this.noteCount + '</p>').css({ 'z-index': 1, position: 'relative', top: '0px' }))
                         .prepend($('<img>', { src: '/assets/css/icons/marker_black.png', width: '27px', height: '40px' }).css({ position: 'absolute', top: '-2px', left: '0px' }));
+                    elem.append($('<p class="noteCount"></p>').css({ 'z-index': 1, position: 'relative', top: '0' }));
+
                     if (markersInited) {
-                        var newDefectSpot = mainViewModel.CreateDefectSpotCommand();
-                        newDefectSpot.SaveDefectSpotCommand();
+                        var viewModel = mainViewModel.CreateDefectSpotCommand();
                         mainViewModel.SortDefectSpotsCommand();
-                        elem.data("ViewModel", newDefectSpot);
-                    } else {
-                        var noteCount = this.noteCount;
-                        var viewModel = _.find(mainViewModel.DefectSpotsList(), function(spot) { return spot.OrderNumber() == noteCount });
                         elem.data("ViewModel", viewModel);
                     }
 
@@ -235,11 +248,10 @@
                     return {
                         x: defectSpot.X(),
                         y: defectSpot.Y(),
-                        note: defectSpot.Description()
+                        note: defectSpot.Description(),
                     }
                 });
-
-            $img.imgNotes("import", markers);
+            $img.imgNotes("import", _.filter(markers, function(m) { return m.x !== 0 && m.y !== 0 }));
             markersInited = true;
 
             var $toggle = $("#toggleEdit");
@@ -259,21 +271,21 @@
                     $img.imgNotes('option', 'canEdit', false);
                 }
             });
-            
 
-            $viewport = $(".viewport");
-            $('#accordeon').on('show.bs.collapse', function (e) {
+
+            var $viewport = $(".viewport");
+            $('#accordeon').on('show.bs.collapse', function(e) {
                 $viewport.hide();
-            })
-            $('#accordeon').on('shown.bs.collapse', function (e) {
+            });
+            $('#accordeon').on('shown.bs.collapse', function(e) {
                 //TODO move to function
                 $(".viewport").css("top", $("#image").offset().top + 50 + "px")
                 $viewport.show();
             })
-            $('#accordeon').on('hide.bs.collapse', function (e) {
+            $('#accordeon').on('hide.bs.collapse', function(e) {
                 $viewport.hide();
             })
-            $('#accordeon').on('hidden.bs.collapse', function (e) {
+            $('#accordeon').on('hidden.bs.collapse', function(e) {
                 //TODO move to function
                 $(".viewport").css("top", $("#image").offset().top + 50 + "px")
                 $viewport.show();
@@ -294,7 +306,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-lg-4 col-md-5 col-sm-5 col-xs-10">
-                        <h4 class="panel-title"><i class="icon-clipboard2"></i>Semi-conductor converters items</h4>
+                        <h4 class="panel-title"><i class="icon-clipboard2"></i><span data-bind="text: ChecklistName() + ' items'"></span></h4>
                     </div>
                     <div class="col-lg-2 col-md-1 col-sm-1 col-xs-4">
                         <button type="button" class=" btn btn-success btn-labeled btn-xlg">
