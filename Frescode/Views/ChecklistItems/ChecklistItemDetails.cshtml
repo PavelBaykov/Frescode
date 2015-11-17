@@ -292,7 +292,16 @@
     <div class="content-wrapper">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title"><i class="icon-clipboard2"></i>Semi-conductor converters items</h4>
+                <div class="row">
+                    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-10">
+                        <h4 class="panel-title"><i class="icon-clipboard2"></i>Semi-conductor converters items</h4>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-4">
+                        <button type="button" class=" btn btn-success btn-labeled btn-xlg">
+                            <b><i class="icon-file-pdf"></i></b>Generate report
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="panel-body">
 
@@ -326,21 +335,31 @@
                                 </div>
                                 <div data-bind="attr: { id: 'collapsible-control-right-group' + $index() }" class="panel-collapse collapse">
                                     <div class="panel-body">
-
-                                        <!-- ko foreach: AttachedPictures -->
-                                        <div class="col-lg-2 col-sm-3 col-xs-4">
-                                            <div class="thumbnail">
-                                                <div class="thumb">
-                                                    <span>
-                                                        <a data-bind="attr: { href: $data, rel: 'gallery' + $parent.OrderNumber(), 'data-popup' : 'lightbox' }" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding: 0px">
-                                                            <img data-bind="attr: { src: $data }" alt="" >
-                                                        </a>
-                                                    </span>
+                                        <div class="row">
+                                            <!-- ko foreach: AttachedPictures -->
+                                            <div class="col-lg-2 col-sm-3 col-xs-4">
+                                                <div class="thumbnail">
+                                                    <div class="thumb">
+                                                        <span>
+                                                            <a data-bind="attr: { href: $data, rel: 'gallery' + $parent.OrderNumber(), 'data-popup' : 'lightbox' }" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding: 0px">
+                                                                <img data-bind="attr: { src: $data }" alt="">
+                                                            </a>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <!-- /ko -->
                                         </div>
-                                        <!-- /ko -->
-
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                                    <b><i class="icon-pencil7"></i></b> Edit defect spot
+                                                </button>
+                                                <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                                    <b><i class="icon-bin"></i></b> Delete defect spot
+                                                </button>
+                                            </div>
+                                        </div>	
                                     </div>
                                 </div>
                             </div>
