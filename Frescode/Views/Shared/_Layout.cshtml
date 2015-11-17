@@ -60,11 +60,9 @@
     <!-- Main navbar -->
     <div class="navbar navbar-inverse">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/Project/ProjectsList"><img src="/assets/images/logo_light.png" alt=""></a>
+            <a class="navbar-brand" href="/User/@Html.Raw(Json.Encode(ViewBag.UserId))/"><img src="/assets/images/logo_light.png" alt=""></a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-
-
             <li class="dropdown dropdown-user">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                     <img src="/assets/images/placeholder.jpg" alt="">

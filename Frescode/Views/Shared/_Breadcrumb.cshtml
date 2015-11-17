@@ -22,6 +22,8 @@
 
     var breadcrumbs = ko.observableArray([]);
 
+    var backPath = "";
+
     var path = window.location.pathname.split('/');
     if (path.length > 1) {
         var segments = [];
@@ -39,8 +41,13 @@
             breadcrumbs.push(viewModel);
             FetchBreadcrumbText(s, viewModel.Text);
         });
+        if (segments.length > 1) {
+            backPath = segments[segments.length - 2];
+        } else {
+            backPath = "#";
+        }
     }
-    rootViewModel.BreadcrumbViewModel({ BreadcrumbsList: breadcrumbs });
+    rootViewModel.BreadcrumbViewModel({ BreadcrumbsList: breadcrumbs, BackPath: ko.observable(backPath) });
     var breadcrumbViewModel = rootViewModel.BreadcrumbViewModel();
 
 </script>
@@ -49,7 +56,7 @@
     <div class="page-header-content">
         <div class="page-title">
             <h3>
-                <a href="items.html" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Item view</span>
+                <a data-bind="attr: { href: BackPath }" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">Item view</span>
             </h3>
             <ul class="breadcrumb breadcrumb-caret position-right">
                 <li><a href="/">Home</a></li>
