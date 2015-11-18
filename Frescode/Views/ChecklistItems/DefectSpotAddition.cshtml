@@ -1,7 +1,7 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "Defect spot details";
+    ViewBag.Title = "Defect Spot Details";
 }
 
 @section Header
@@ -50,10 +50,9 @@
 
             //Defect spot Id
             self.Id = ko.observable();
+            self.OrderNumber = ko.observable("");
             self.Description = ko.observable();
             self.SaveDescriptionCommand = function() {
-                alert(self.Id())
-                alert(self.Description())
                 $.ajaxq("checklist_item_description_saving",
                 {
                     url: '/ChecklistItems/SaveChecklistItemDescription',
@@ -97,6 +96,7 @@
         function fillViewModel(defectSpot) {
             $(document).ready(function() {
                 mainViewModel.Id(defectSpot.Id);
+                mainViewModel.OrderNumber(defectSpot.OrderNumber);
                 mainViewModel.Description(defectSpot.Description);
                 _.each(defectSpot.AttachedPictures, function(picture) {
                     var pictureViewModel = new PictureViewModel();
@@ -118,7 +118,7 @@
     <div class="content-wrapper">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title"><i class=" icon-wrench"></i><span>???????</span></h4>
+                <h4 class="panel-title"><i class=" icon-wrench"></i><span data-bind="text: 'Defect Spot #' + OrderNumber()"></span></h4>
             </div>
             <div class="panel-body">
                 <div class="row">

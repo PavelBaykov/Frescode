@@ -55,6 +55,7 @@ namespace Frescode.Controllers
             }
 
             public int Id { get; set; }
+            public int OrderNumber { get; set; }
             public string Description { get; set; }
             public List<PictureViewModel> AttachedPictures { get; set; }
         }
@@ -71,9 +72,12 @@ namespace Frescode.Controllers
                 .Include(x => x.AttachedPictures)
                 .SingleOrDefaultAsync(x => x.Id == defectSpotId);
 
-            var viewModel = new AddSpotViewModel();
-            viewModel.Id = defectSpot.Id;
-            viewModel.Description = defectSpot.Description;
+            var viewModel = new AddSpotViewModel
+            {
+                Id = defectSpot.Id,
+                OrderNumber = defectSpot.OrderNumber,
+                Description = defectSpot.Description
+            };
             foreach (var picture in defectSpot.AttachedPictures)
             {
                 var pictureViewModel = new PictureViewModel
