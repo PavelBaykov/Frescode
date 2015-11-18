@@ -6,7 +6,7 @@
 
 @section Header
 {
-    @Html.Partial("_Breadcrumb")
+   
 }
 
 @section AdditionalScripts{
@@ -35,7 +35,7 @@
         }
 
         function getProjects(callback) {
-            $.getJSON('/Project/GetProjectsList?userId=' + userId)
+            $.getJSON('/GetProjectsList')
                 .error(function(e) {
                     if (e.status == 500 || e.status == 400) {
                         var message = 'Error ' + e.status + '\r\n' +

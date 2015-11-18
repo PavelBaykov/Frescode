@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Frescode.Auth;
 using Frescode.BL.Commands;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
@@ -34,17 +33,17 @@ namespace Frescode.Controllers
             return Json(new { Text = defectSpot.OrderNumber }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ChecklistItemsList(string userId, int checklistId)
+        public ActionResult ChecklistItemsList(int checklistId)
         {
             ViewBag.ChecklistId = checklistId;
-            ViewBag.UserId = userId;
+            ViewBag.UserId = User.Identity.Name;
             return View();
         }
 
-        public ActionResult ChecklistItemDetails(string userId, int checklistItemId)
+        public ActionResult ChecklistItemDetails(int checklistItemId)
         {
             ViewBag.ChecklistItemId = checklistItemId;
-            ViewBag.UserId = userId;
+            ViewBag.UserId = User.Identity.Name;
             return View();
         }
 
@@ -92,9 +91,9 @@ namespace Frescode.Controllers
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DefectSpotAddition(string userId, int defectSpotId)
+        public ActionResult DefectSpotAddition(int defectSpotId)
         {
-            ViewBag.UserId = userId;
+            ViewBag.UserId = User.Identity.Name;
             ViewBag.DefectSpotId = defectSpotId;
             return View();
         }
@@ -151,7 +150,7 @@ namespace Frescode.Controllers
 
 
         [HttpGet]
-        public ActionResult GetChecklistItemsList(string userId, int checklistId)
+        public ActionResult GetChecklistItemsList(int checklistId)
         {
             var checklist = Context.Checklists
                 .Include(x => x.Items.Select(w => w.ItemTemplate))
@@ -183,7 +182,7 @@ namespace Frescode.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetChecklistItemDetails(string userId, int checklistItemId)
+        public ActionResult GetChecklistItemDetails(int checklistItemId)
         {
             var checklistItem = Context.ChecklistItems
                 .Include(x => x.DefectionSpots.Select(q => q.AttachedPictures))

@@ -18,10 +18,10 @@ namespace Frescode.Controllers
             
         }
 
-        public ActionResult ChecklistsList(string userId, int projectId)
+        public ActionResult ChecklistsList(int projectId)
         {
             ViewBag.ProjectId = projectId;
-            ViewBag.UserId = userId;
+            ViewBag.UserId = User.Identity.Name;
             return View();
         }
 

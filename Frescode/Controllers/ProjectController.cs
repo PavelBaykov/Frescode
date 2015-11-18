@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Frescode.Auth;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
@@ -32,9 +31,9 @@ namespace Frescode.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetProjectsList(string userId)
+        public ActionResult GetProjectsList()
         {
-            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.UserName == userId);
+            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.UserName == User.Identity.Name);
 
             var viewModel = new ProjectsListViewModel();
             foreach (var project in user.Projects)
@@ -66,16 +65,9 @@ namespace Frescode.Controllers
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ProjectsList(string userId)
+        public ActionResult ProjectsList()
         {
-            var cookie = new HttpCookie("test_cookie")
-            {
-                Value = DateTime.Now.ToString("dd.MM.yyyy"),
-                Expires = DateTime.Now.AddMinutes(10),
-            };
-            Response.SetCookie(cookie);
-
-            ViewBag.UserId = userId;
+            ViewBag.UserId = User.Identity.Name;
             return View();
         }
 
