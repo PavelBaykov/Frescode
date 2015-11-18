@@ -136,6 +136,14 @@ namespace Frescode.Controllers
             return Json(new { Id = addDefectCommand.Id});
         }
 
+        [HttpGet]
+        public ActionResult DeleteDefectSpot(int defectSpotId)
+        {
+            Context.DefectionSpots.Remove(Context.DefectionSpots.Single(x => x.Id == defectSpotId));
+            Context.SaveChanges();
+            return Json(new {}, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         public ActionResult GetChecklistItemsList(int userId, int checklistId)

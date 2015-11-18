@@ -55,7 +55,20 @@
             self.ProjectName = ko.observable();
             self.InspectionDrawingPath = ko.observable();
             self.AddDefectSpotPath = ko.observable("/ChecklistItems/DefectSpotAddition?userId=" + userId + "&checklistItemId=" + self.Id());
-
+            
+            self.DeleteDefectSpotCommand = function(defectSpot) {
+                var getDeleteOpt = function() {
+                    return {
+                        url: '/ChecklistItems/DeleteDefectSpot?defectSpotId=' + defectSpot.Id(),
+                        type: 'get'
+                    }
+                }
+                $.ajaxq('item_' + defectSpot.InternalGuid(), getDeleteOpt);
+                var divToRemove = _.filter($(".viewport").find("div"), function(div) { return $(div).data("ViewModel") === defectSpot; })[0];
+                $(divToRemove).remove();
+                self.DefectSpotsList.remove(defectSpot);
+                $(".viewport").css("top", $("#image").offset().top + 50 + "px");
+            };
         }
 
         var internalMaxGuid = 1;
@@ -70,8 +83,11 @@
             self.AttachedPictures = ko.observableArray();
             self.X = ko.observable();
             self.Y = ko.observable();
+            self.EditDefectSpotCommand = function() {
+                window.location.href = "DefectSpot/" + self.Id() + "/";
+            };
             
-            var getAjaxOpt = function() {
+            var getCreateOpt = function() {
                 var dto = {
                     OrderNumber: self.OrderNumber(),
                     X: self.X(),
@@ -92,7 +108,7 @@
             }
 
             self.SaveDefectSpotCommand = function() {
-                $.ajaxq('item_' + self.InternalGuid(), getAjaxOpt);
+                $.ajaxq('item_' + self.InternalGuid(), getCreateOpt);
             }
         }
 
@@ -210,6 +226,7 @@
                         viewModel = _.find(mainViewModel.DefectSpotsList(), function(spot) {
                             return spot.X() == $elem.data("relx") && spot.Y() == $elem.data("rely");
                         });
+                        $elem.data("ViewModel", viewModel);
                     }
                     
 
@@ -359,10 +376,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <button type="button" class="btn  btn-success btn-labeled " style="margin:3px">
+                                                <button type="button" class="btn  btn-success btn-labeled " style="margin:3px" data-bind="click: EditDefectSpotCommand">
                                                     <b><i class="icon-pencil7"></i></b> Edit defect spot
                                                 </button>
-                                                <button type="button" class="btn  btn-success btn-labeled " style="margin:3px" data-toggle="modal" data-target="#modal_default">
+                                                <button type="button" class="btn  btn-success btn-labeled " style="margin:3px" data-toggle="modal" data-target="#modal_default" data-bind="click: $parent.DeleteDefectSpotCommand">
                                                     <b><i class="icon-bin"></i></b> Delete defect spot
                                                 </button>
                                             </div>
