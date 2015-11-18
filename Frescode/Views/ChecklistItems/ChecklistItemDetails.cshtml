@@ -308,11 +308,6 @@
                     <div class="col-lg-4 col-md-5 col-sm-5 col-xs-10">
                         <h4 class="panel-title"><i class="icon-clipboard2"></i><span data-bind="text: ChecklistName() + ' items'"></span></h4>
                     </div>
-                    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-4">
-                        <button type="button" class=" btn btn-success btn-labeled btn-xlg">
-                            <b><i class="icon-file-pdf"></i></b>Generate report
-                        </button>
-                    </div>
                 </div>
             </div>
             <div class="panel-body">
@@ -353,7 +348,7 @@
                                                 <div class="thumbnail">
                                                     <div class="thumb">
                                                         <span>
-                                                            <a data-bind="attr: { href: $data, rel: 'gallery' + $parent.OrderNumber(), 'data-popup' : 'lightbox' }" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding: 0px">
+                                                            <a data-bind="attr: { href: $data, rel: 'gallery' + $parent.OrderNumber(), 'data-popup' : 'lightbox' }" class="btn border-white text-white btn-flat btn-icon btn-rounded fancybox.image" style="padding: 0px">
                                                                 <img data-bind="attr: { src: $data }" alt="">
                                                             </a>
                                                         </span>
@@ -363,11 +358,11 @@
                                             <!-- /ko -->
                                         </div>
                                         <div class="row">
-                                            <div class="text-left">
-                                                <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <button type="button" class="btn  btn-success btn-labeled " style="margin:3px">
                                                     <b><i class="icon-pencil7"></i></b> Edit defect spot
                                                 </button>
-                                                <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                                <button type="button" class="btn  btn-success btn-labeled " style="margin:3px" data-toggle="modal" data-target="#modal_default">
                                                     <b><i class="icon-bin"></i></b> Delete defect spot
                                                 </button>
                                             </div>
