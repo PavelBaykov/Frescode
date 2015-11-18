@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/core.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/colors.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<!--<script type="text/javascript" src="ckeditor/ckeditor.js"></script>-->
+	<script type="text/javascript" src="assets/js/core/libraries/jquery_ui/datepicker.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/styling/switchery.min.js"></script>
+	<!--<script type="text/javascript" src="assets/js/pages/custom.js"></script>-->
+	<script type="text/javascript" src="assets/js/plugins/media/fancybox.min.js"></script>
+	<script type="text/javascript" src="assets/js/pages/gallery.js"></script>
+	<!-- /theme JS files -->
+
+
+
+	<link rel="stylesheet" href="assets/add/css/style.css">
+	<!-- blueimp Gallery styles -->
+	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" href="assets/add/css/jquery.fileupload.css">
+	<link rel="stylesheet" href="assets/add/css/jquery.fileupload-ui.css">
+	<!-- CSS adjustments for browsers with JavaScript disabled -->
+	<noscript><link rel="stylesheet" href="assets/add/css/jquery.fileupload-noscript.css"></noscript>
+	<noscript><link rel="stylesheet" href="assets/add/css/jquery.fileupload-ui-noscript.css"></noscript>
+	<!--Custom CSS-->
+	<link href="assets/css/Custom.css" rel="stylesheet" type="text/css">
+	<!--/Custom CSS-->
+
+</head>
+
+<body class="sidebar-xs">
+
+	<!-- Main navbar -->
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="index.html"><img src="assets/images/logo_light.png" alt=""></a>
+		</div>
+			<ul class="nav navbar-nav navbar-right">
+				
+				
+				<li class="dropdown dropdown-user">
+					<a class="dropdown-toggle" data-toggle="dropdown" >
+						<img src="assets/images/placeholder.jpg" alt="">
+						<span>Pavel</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	<!-- /main navbar -->
+
+	<!-- Page header -->
+	<div class="page-header">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h3>
+					<a href="index.html" style="color:black"><i  class="icon-arrow-left52 position-left" style="margin-right:11px"></i></a><span class="text-semibold">New defected spot</span>
+				</h3>
+				<ul class="breadcrumb breadcrumb-caret position-right">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="projects.html">Project Hanolulu</a></li>
+					<li><a href="checklists.html">Semi-conductor Converters a really long name of a checklist</a></li>
+					<li><a href="items.html">Conductor BCE</a></li>
+					<li class= "active">Add spot</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /page header -->
+
+	<!-- Page container -->
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content">
+
+			<!-- Main content -->
+			<div class="content-wrapper">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><i class=" icon-wrench"></i>Conductor BCE item overview</h4>
+					</div>	
+					<div class="panel-body">	
+						<div class="row">
+							<div class="col-md-2 col-sm-2">
+								<span class="mobileBold">Description:</span>
+							</div>
+							<div class="col-md-10 col-sm-10">
+			                    <div class="form-group">
+								  <textarea rows="5" cols="5" class="form-control" placeholder="Enter description of defect spot"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+
+							<div class="col-lg-2 col-md-3 col-sm-4  col-xs-12 remove">
+								<div class="thumbnail">
+									<div class="thumb">
+										<img src="assets/images/placeholder.jpg" alt="">
+										<div class="caption-overflow">
+											<span>
+												<a href="assets/images/placeholder.jpg" data-popup="lightbox" rel="gallery" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-zoomin3"></i></a>
+												<a onclick="removePicture(this)" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-folder-remove"></i></a>
+											</span>
+										</div>
+									</div>
+
+									<div class="caption text-center">
+										 01.06.1989
+									</div>
+								</div>
+							</div>
+
+							<div class="col-lg-2 col-md-3 col-xs-12 remove">
+								<div class="thumbnail">
+									<div class="thumb">
+										<img src="assets/images/placeholder.jpg" alt="">
+										<div class="caption-overflow">
+											<span>
+												<a href="assets/images/placeholder.jpg" data-popup="lightbox" rel="gallery" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-zoomin3"></i></a>
+												<a onclick="removePicture(this)" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-folder-remove"></i></a>
+											</span>
+										</div>
+									</div>
+
+									<div class="caption text-center">
+										 01.06.1989
+									</div>
+								</div>
+							</div>
+
+							<div class="col-lg-2 col-md-3 col-xs-12 remove">
+								<div class="thumbnail">
+									<div class="thumb">
+										<img src="assets/images/placeholder.jpg" alt="">
+										<div class="caption-overflow">
+											<span>
+												<a href="assets/images/placeholder.jpg" data-popup="lightbox" rel="gallery" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-zoomin3"></i></a>
+												<a onclick="removePicture(this)" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-folder-remove"></i></a>
+											</span>
+										</div>
+									</div>
+
+									<div class="caption text-center">
+										 01.06.1989
+									</div>
+								</div>
+							</div>
+							<!--<div class="col-lg-2 col-md-3  col-xs-12 remove">
+								<div class="thumbnail">
+									<div class="thumb">
+										<a onclick="addPicture(this);" ><img src="assets/images/placeholder_dummy.png" alt="">
+											<span class="newphoto text-center">
+												<i class="icon-plus2"></i>
+												Add new photo
+											</span></a>
+									</div>
+									<div class="caption text-center">
+										 <br>
+									</div>
+								</div>
+							</div>-->
+
+							
+						</div>
+						
+
+						<!--Загрузка фотографий-->
+						<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
+					        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+					        <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
+					        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+					        <div class="row fileupload-buttonbar">
+					            <div class="col-lg-7">
+					                <!-- The fileinput-button span is used to style the file input field as button -->
+					                <span class="btn btn-success fileinput-button btn-labeled btn-xlg">
+					                    <b><i class="glyphicon glyphicon-plus"></i></b>Add defect spot picture
+					                    <input type="file" name="files[]" multiple>
+					                </span>
+					                <!--<button type="submit" class="btn btn-primary start">
+					                    <i class="glyphicon glyphicon-upload"></i>
+					                    <span>Start upload</span>
+					                </button>
+					                <button type="reset" class="btn btn-warning cancel">
+					                    <i class="glyphicon glyphicon-ban-circle"></i>
+					                    <span>Cancel upload</span>
+					                </button>
+					                <button type="button" class="btn btn-danger delete">
+					                    <i class="glyphicon glyphicon-trash"></i>
+					                    <span>Delete</span>
+					                </button>
+					                <input type="checkbox" class="toggle">-->
+					                <!-- The global file processing state -->					                
+					                <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+											<b><i class="icon-floppy-disk"></i></b> Save description
+									</button>
+									<button type="button" class="btn  btn-success btn-labeled btn-xlg">
+											<b><i class="icon-bin"></i></b> Delete selected pictures
+									</button>
+					            </div>
+					            <!-- The global progress state -->
+					            <div class="col-lg-5 fileupload-progress fade">
+					                <!-- The global progress bar -->
+					                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+					                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+					                </div>
+					                <!-- The extended global progress state -->
+					                <div class="progress-extended">&nbsp;</div>
+					            </div>
+					        </div>
+					        <!-- The table listing the files available for upload/download -->
+					        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+					    </form>
+							<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+							    <div class="slides"></div>
+							    <h3 class="title"></h3>
+							    <a class="prev">‹</a>
+							    <a class="next">›</a>
+							    <a class="close">×</a>
+							    <a class="play-pause"></a>
+							    <ol class="indicator"></ol>
+							</div>
+							<!-- The template to display files available for upload -->
+							<script id="template-upload" type="text/x-tmpl">
+							{% for (var i=0, file; file=o.files[i]; i++) { %}
+							    <tr class="template-upload fade">
+							        <td>
+							            <span class="preview"></span>
+							        </td>
+							        <td>
+							            <p class="name">{%=file.name%}</p>
+							            <strong class="error text-danger"></strong>
+							        </td>
+							        <td>
+							            <p class="size">Processing...</p>
+							            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+							        </td>
+							        <td>
+							            {% if (!i && !o.options.autoUpload) { %}
+							                <button class="btn btn-primary start" disabled>
+							                    <i class="glyphicon glyphicon-upload"></i>
+							                    <span>Start</span>
+							                </button>
+							            {% } %}
+							            {% if (!i) { %}
+							                <button class="btn btn-warning cancel">
+							                    <i class="glyphicon glyphicon-ban-circle"></i>
+							                    <span>Cancel</span>
+							                </button>
+							            {% } %}
+							        </td>
+							    </tr>
+							{% } %}
+							</script>
+							<!-- The template to display files available for download -->
+							<script id="template-download" type="text/x-tmpl">
+							{% for (var i=0, file; file=o.files[i]; i++) { %}
+							    <tr class="template-download fade">
+							        <td>
+							            <span class="preview">
+							                {% if (file.thumbnailUrl) { %}
+							                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+							                {% } %}
+							            </span>
+							        </td>
+							        <td>
+							            <p class="name">
+							                {% if (file.url) { %}
+							                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+							                {% } else { %}
+							                    <span>{%=file.name%}</span>
+							                {% } %}
+							            </p>
+							            {% if (file.error) { %}
+							                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+							            {% } %}
+							        </td>
+							        <td>
+							            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+							        </td>
+							        <td>
+							            {% if (file.deleteUrl) { %}
+							                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+							                    <i class="glyphicon glyphicon-trash"></i>
+							                    <span>Delete</span>
+							                </button>
+							                <input type="checkbox" name="delete" value="1" class="toggle">
+							            {% } else { %}
+							                <button class="btn btn-warning cancel">
+							                    <i class="glyphicon glyphicon-ban-circle"></i>
+							                    <span>Cancel</span>
+							                </button>
+							            {% } %}
+							        </td>
+							    </tr>
+							{% } %}
+							</script>
+						<!--/Загрузка фотографий-->
+					</div>
+
+					<!--<div class="panel-footer">
+						<ul class="pull-left">
+						  <li><div class="text-right">
+							<button type="button" class="btn bg-blue"><i class="icon-floppy-disk"></i> Save spot</button>
+						  </div></li>
+						  <li><div class="text-right">
+							<button type="button" class="btn bg-blue"><i class="icon-cross2"></i> Cancel</button>
+						  </div></li>
+						</ul>
+
+					</div>-->
+				</div>
+
+			<!-- /Main content -->
+						
+			<!-- Footer -->
+			<div class="footer text-muted">
+				&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+			</div>
+			<!-- /footer -->
+		</div>
+
+		</div>
+		<!-- /page content -->
+
+	</div>
+	<!-- /page container -->
+
+	<!--Custom JS-->
+	<script type="text/javascript">
+		/*Удаление фото*/
+		removePicture = function(el) {
+		    $(el).parents(".remove").remove()       
+		};
+
+		/*Добавление фото*/
+		addPicture = function(el){
+			$('<div class="col-lg-2 col-md-3 col-xs-12 remove">'+
+								'<div class="thumbnail">'+
+									'<div class="thumb">'+
+										'<img src="assets/images/placeholder.jpg" alt="">'+
+										'<div class="caption-overflow">'+
+											'<span>'+
+												'<a href="assets/images/placeholder.jpg" data-popup="lightbox" rel="gallery" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-zoomin3"></i></a>'+
+												'<a onclick="removePicture(this)" class="btn bg-success-300 btn-xs btn-icon"><i class="icon-folder-remove"></i></a>'+
+											'</span>'+
+										'</div>'+
+									'</div>'+
+									'<div class="caption text-center">'+
+										 '01.06.1989'+
+									'</div>'+
+								'</div>'+
+							'</div>').insertBefore($(el).parents(".remove"));
+		};
+
+
+	</script>
+
+	<script src="assets/add/js/vendor/jquery.ui.widget.js"></script>
+	<!-- The Templates plugin is included to render the upload/download listings -->
+	<script src="http://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+	<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+	<script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+	<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+	<script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+	<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<!-- blueimp Gallery script -->
+	<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+	<script src="assets/add/js/jquery.iframe-transport.js"></script>
+	<!-- The basic File Upload plugin -->
+	<script src="assets/add/js/jquery.fileupload.js"></script>
+	<!-- The File Upload processing plugin -->
+	<script src="assets/add/js/jquery.fileupload-process.js"></script>
+	<!-- The File Upload image preview & resize plugin -->
+	<script src="assets/add/js/jquery.fileupload-image.js"></script>
+	<!-- The File Upload user interface plugin -->
+	<script src="assets/add/js/jquery.fileupload-ui.js"></script>
+	<!-- The main application script -->
+	<script src="assets/add/js/main.js"></script>
+	<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+	<!--[if (gte IE 8)&(lt IE 10)]>
+	<script src="js/cors/jquery.xdr-transport.js"></script>
+	<![endif]-->
+
+</body>
+</html>

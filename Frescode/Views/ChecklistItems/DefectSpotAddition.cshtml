@@ -212,16 +212,20 @@
 
                     <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                     <div class="row fileupload-buttonbar">
-                        <div class="col-lg-7">
+                        <div class="col-lg-12">
                             <!-- The fileinput-button span is used to style the file input field as button -->
-                            <span class="btn btn-success fileinput-button">
-                                <i class="glyphicon glyphicon-plus"></i>
-                                <span>Add defect spot picture</span>
+                            <span class="btn btn-success fileinput-button btn-labeled btn-xlg">
+                                <b><i class="glyphicon glyphicon-plus"></i></b>Add defect spot picture
                                 <input type="file" name="files[]" multiple>
                             </span>
-                            <button type="submit" class="btn btn-primary start">
-                                <i class="glyphicon glyphicon-upload"></i>
-                                <span>Start upload</span>
+                            <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                <b><i class="glyphicon glyphicon-upload"></i></b> Start upload
+                            </button>
+                            <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                <b><i class="icon-floppy-disk"></i></b> Save description
+                            </button>
+                            <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                                <b><i class="icon-bin"></i></b> Delete selected pictures
                             </button>
                             <!-- The global file processing state -->
                             <span class="fileupload-process"></span>
