@@ -5,18 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Frescode.Auth;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
+using MediatR;
 
 namespace Frescode.Controllers
 {
-    public class DefectSpotPictureController : Controller
+    public class DefectSpotPictureController : BaseController
     {
-        private readonly RootContext _rootContext;
-
-        public DefectSpotPictureController(RootContext rootContext)
+        public DefectSpotPictureController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
+            :base(authentication, mediator, rootContext)
         {
-            _rootContext = rootContext;
         }
 
         [HttpPost]
@@ -47,7 +47,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetFiles(int defectSpotId)
         {
-            var defectSpot = _rootContext.DefectionSpots
+            var defectSpot = Context.DefectionSpots
                 .Include(x => x.AttachedPictures)
                 .Single(x => x.Id == defectSpotId);
 
@@ -61,7 +61,7 @@ namespace Frescode.Controllers
 
         private void UploadWholeFile(int defectSpotId, HttpRequestBase request, List<FilesStatus> statuses)
         {
-            var defectSpot = _rootContext.DefectionSpots
+            var defectSpot = Context.DefectionSpots
                 .Include(x => x.AttachedPictures)
                 .Single(x => x.Id == defectSpotId);
 
@@ -87,7 +87,7 @@ namespace Frescode.Controllers
                 defectSpot.AttachedPictures.Add(picture);
                 addedPictures.Add(picture);
             }
-            _rootContext.SaveChanges();
+            Context.SaveChanges();
             statuses.AddRange(addedPictures.Select(picture => new FilesStatus(picture.Name, picture.PictureId)));
         }
 
@@ -110,9 +110,9 @@ namespace Frescode.Controllers
                 Name = fileName
             };
 
-            var defectSpot = _rootContext.DefectionSpots.Single(x => x.Id == defectSpotId);
+            var defectSpot = Context.DefectionSpots.Single(x => x.Id == defectSpotId);
             defectSpot.AttachedPictures.Add(picture);
-            _rootContext.SaveChanges();
+            Context.SaveChanges();
 
             statuses.Add(new FilesStatus(file.FileName, picture.PictureId));
         }

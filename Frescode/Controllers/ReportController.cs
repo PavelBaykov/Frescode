@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
@@ -10,23 +8,22 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.IO;
 using System;
+using Frescode.Auth;
 using PdfSharp.Drawing.Layout;
 
 namespace Frescode.Controllers
 {
-    public class ReportController : Controller
+    public class ReportController : BaseController
     {
-        private readonly RootContext _rootContext;
-
-        public ReportController(RootContext rootContext)
+        public ReportController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
+            :base(authentication, mediator, rootContext)
         {
-            _rootContext = rootContext;
         }
 
         [HttpGet]
         public ActionResult GenerateReport(int projectId)
         {
-            var project = _rootContext.Projects
+            var project = Context.Projects
                 .Include(x => x.Members)
                 .Include(x => x.Checklists)
                 .Include(x => x.Checklists.Select(c => c.ChecklistTemplate))

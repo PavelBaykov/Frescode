@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Frescode.Auth;
 using Frescode.BL.Commands;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
@@ -10,20 +11,16 @@ using MediatR;
 
 namespace Frescode.Controllers
 {
-    public class ChecklistItemsController : Controller
+    public class ChecklistItemsController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly RootContext _rootContext;
-
-        public ChecklistItemsController(IMediator mediator, RootContext rootContext)
+        public ChecklistItemsController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
+            : base(authentication, mediator, rootContext)
         {
-            _mediator = mediator;
-            _rootContext = rootContext;
         }
 
         public async Task<ActionResult> GetBreadcrumbText(int checklistItemId)
         {
-            var checklistItem = await _rootContext.ChecklistItems
+            var checklistItem = await Context.ChecklistItems
                 .Include(x => x.ItemTemplate)
                 .SingleOrDefaultAsync(x => x.Id == checklistItemId);
             return Json(new { Text = checklistItem?.ItemTemplate?.Name }, JsonRequestBehavior.AllowGet);
@@ -31,7 +28,7 @@ namespace Frescode.Controllers
 
         public async Task<ActionResult> GetBreadcrumbDefectSpotText(int defectSpotId)
         {
-            var defectSpot = await _rootContext.DefectionSpots
+            var defectSpot = await Context.DefectionSpots
                 .SingleOrDefaultAsync(x => x.Id == defectSpotId);
             return Json(new { Text = defectSpot.OrderNumber }, JsonRequestBehavior.AllowGet);
         }
@@ -69,7 +66,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> GetDefectSpot(int userId, int defectSpotId)
         {
-            var defectSpot = await _rootContext.DefectionSpots
+            var defectSpot = await Context.DefectionSpots
                 .Include(x => x.AttachedPictures)
                 .SingleOrDefaultAsync(x => x.Id == defectSpotId);
 
@@ -115,7 +112,7 @@ namespace Frescode.Controllers
         {
             var addDefectCommand = new AddDefectSpotCommand(spotDto.Id, spotDto.Description, spotDto.OrderNumber, spotDto.X, spotDto.Y,
                 spotDto.ChecklistItemId);
-            await _mediator.PublishAsync(addDefectCommand);
+            await Mediator.PublishAsync(addDefectCommand);
             return Json(new { Id = addDefectCommand.Id});
         }
 
@@ -123,7 +120,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetChecklistItemsList(int userId, int checklistId)
         {
-            var checklist = _rootContext.Checklists
+            var checklist = Context.Checklists
                 .Include(x => x.Items.Select(w => w.ItemTemplate))
                 .Include(x => x.Items.Select(w => w.ChangedBy))
                 .Include(x => x.Items.Select(w => w.DefectionSpots))
@@ -155,7 +152,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetChecklistItemDetails(int userId, int checklistItemId)
         {
-            var checklistItem = _rootContext.ChecklistItems
+            var checklistItem = Context.ChecklistItems
                 .Include(x => x.DefectionSpots.Select(q => q.AttachedPictures))
                 .Include(x => x.Checklist.ChecklistTemplate)
                 .Include(x => x.Checklist.Project)
@@ -192,7 +189,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> ChecklistItemSet(int checklistItemId, bool newState)
         {
-            await _mediator.PublishAsync(new ChecklistItemChangeStateCommand(checklistItemId, newState));
+            await Mediator.PublishAsync(new ChecklistItemChangeStateCommand(checklistItemId, newState));
 
             return Json(new {ok = true}, JsonRequestBehavior.AllowGet);
         }

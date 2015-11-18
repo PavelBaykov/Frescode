@@ -4,10 +4,13 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
+using Autofac.Extras.CommonServiceLocator;
 using Autofac.Features.Variance;
 using Autofac.Integration.Mvc;
+using Frescode.Auth;
 using Frescode.DAL;
 using MediatR;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Frescode
 {
@@ -28,6 +31,7 @@ namespace Frescode
                 .Where(t => t.Name.EndsWith("Handler")).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(typeof(IMediator).Assembly).AsImplementedInterfaces();
             builder.RegisterType<RootContext>().AsSelf();
+            builder.RegisterType<CustomAuthentication>().AsImplementedInterfaces();
 
             builder.RegisterSource(new ContravariantRegistrationSource());
             builder.Register<SingleInstanceFactory>(ctx =>
@@ -58,6 +62,8 @@ namespace Frescode
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            var csl = new AutofacServiceLocator(container);
+            ServiceLocator.SetLocatorProvider(() => csl);
         }
     }
 }

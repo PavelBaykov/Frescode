@@ -6,27 +6,24 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Frescode.Auth;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
 
 namespace Frescode.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly RootContext _rootContext;
-
-        public ProjectController(IMediator mediator, RootContext rootContext)
+        public ProjectController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
+            : base(authentication, mediator, rootContext)
         {
-            _mediator = mediator;
-            _rootContext = rootContext;
         }
 
         [HttpGet]
         public async Task<ActionResult> GetBreadcrumbText(int projectId)
         {
-            var project = await _rootContext.Projects
+            var project = await Context.Projects
                 .SingleOrDefaultAsync(x => x.Id == projectId);
             return Json(new { Text = project?.Name }, JsonRequestBehavior.AllowGet);
         }
@@ -34,7 +31,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetProjectsList(int userId)
         {
-            var user = _rootContext.Users.Include(x => x.Projects).SingleOrDefault(x => x.Id == userId);
+            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.Id == userId);
 
             var viewModel = new ProjectsListViewModel();
             foreach (var project in user.Projects)
@@ -82,19 +79,19 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> InitDb()
         {
-            _rootContext.Projects.RemoveRange(_rootContext.Projects);
-            _rootContext.Users.RemoveRange(_rootContext.Users);
-            _rootContext.Customers.RemoveRange(_rootContext.Customers);
-            _rootContext.Checklists.RemoveRange(_rootContext.Checklists);
-            _rootContext.ChecklistItems.RemoveRange(_rootContext.ChecklistItems);
-            _rootContext.ChecklistTemplates.RemoveRange(_rootContext.ChecklistTemplates);
-            _rootContext.ChecklistItemTemplates.RemoveRange(_rootContext.ChecklistItemTemplates);
-            _rootContext.DefectionSpots.RemoveRange(_rootContext.DefectionSpots);
-            _rootContext.InspectionDrawings.RemoveRange(_rootContext.InspectionDrawings);
-            _rootContext.InspectionDrawingDatas.RemoveRange(_rootContext.InspectionDrawingDatas);
-            _rootContext.Pictures.RemoveRange(_rootContext.Pictures);
-            _rootContext.PicturesData.RemoveRange(_rootContext.PicturesData);
-            _rootContext.SaveChanges();
+            Context.Projects.RemoveRange(Context.Projects);
+            Context.Users.RemoveRange(Context.Users);
+            Context.Customers.RemoveRange(Context.Customers);
+            Context.Checklists.RemoveRange(Context.Checklists);
+            Context.ChecklistItems.RemoveRange(Context.ChecklistItems);
+            Context.ChecklistTemplates.RemoveRange(Context.ChecklistTemplates);
+            Context.ChecklistItemTemplates.RemoveRange(Context.ChecklistItemTemplates);
+            Context.DefectionSpots.RemoveRange(Context.DefectionSpots);
+            Context.InspectionDrawings.RemoveRange(Context.InspectionDrawings);
+            Context.InspectionDrawingDatas.RemoveRange(Context.InspectionDrawingDatas);
+            Context.Pictures.RemoveRange(Context.Pictures);
+            Context.PicturesData.RemoveRange(Context.PicturesData);
+            Context.SaveChanges();
 
             var customer = new Customer
             {
@@ -353,28 +350,28 @@ namespace Frescode.Controllers
             checklistItem1.DefectionSpots.Add(defectSpot1);
             checklistItem2.DefectionSpots.Add(defectSpot2);
 
-            _rootContext.DefectionSpots.Add(defectSpot1);
-            _rootContext.DefectionSpots.Add(defectSpot2);
+            Context.DefectionSpots.Add(defectSpot1);
+            Context.DefectionSpots.Add(defectSpot2);
 
             user1.Projects.Add(project1);
             user1.ProjectsOwned.Add(project1);
             customer.Users.Add(user1);
             customer.Projects.Add(project1);
 
-            _rootContext.Projects.Add(project1);
-            _rootContext.Users.Add(user1);
-            _rootContext.Customers.Add(customer);
-            _rootContext.Checklists.Add(checklist1);
-            
-            _rootContext.ChecklistItems.Add(checklistItem1);
-            _rootContext.ChecklistItems.Add(checklistItem2);
-            _rootContext.ChecklistTemplates.Add(checklistTemplate);
-            _rootContext.ChecklistTemplates.Add(checklistTemplate2);
-            _rootContext.ChecklistItemTemplates.Add(checklistItemTemplate1);
-            _rootContext.ChecklistItemTemplates.Add(checklistItemTemplate2);
-            _rootContext.ChecklistItemTemplates.Add(checklistItemTemplate3);
-            _rootContext.ChecklistItemTemplates.Add(checklistItemTemplate4);
-            _rootContext.SaveChanges();
+            Context.Projects.Add(project1);
+            Context.Users.Add(user1);
+            Context.Customers.Add(customer);
+            Context.Checklists.Add(checklist1);
+
+            Context.ChecklistItems.Add(checklistItem1);
+            Context.ChecklistItems.Add(checklistItem2);
+            Context.ChecklistTemplates.Add(checklistTemplate);
+            Context.ChecklistTemplates.Add(checklistTemplate2);
+            Context.ChecklistItemTemplates.Add(checklistItemTemplate1);
+            Context.ChecklistItemTemplates.Add(checklistItemTemplate2);
+            Context.ChecklistItemTemplates.Add(checklistItemTemplate3);
+            Context.ChecklistItemTemplates.Add(checklistItemTemplate4);
+            Context.SaveChanges();
 
             return Json(new { ok = true}, JsonRequestBehavior.AllowGet);
         }

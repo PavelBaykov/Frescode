@@ -3,21 +3,19 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Frescode.Auth;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
 
 namespace Frescode.Controllers
 {
-    public class ChecklistController : Controller
+    public class ChecklistController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly RootContext _rootContext;
-
-        public ChecklistController(IMediator mediator, RootContext rootContext)
+        public ChecklistController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
+            : base(authentication, mediator, rootContext)
         {
-            _mediator = mediator;
-            _rootContext = rootContext;
+            
         }
 
         // GET: Checklist
@@ -36,7 +34,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> GetBreadcrumbText(int checklistId)
         {
-            var checklist = await _rootContext.Checklists
+            var checklist = await Context.Checklists
                 .Include(x => x.ChecklistTemplate)
                 .SingleOrDefaultAsync(x => x.Id == checklistId);
             return Json(new {Text = checklist?.ChecklistTemplate?.Name}, JsonRequestBehavior.AllowGet);
@@ -45,7 +43,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetChecklistsList(int projectId)
         {
-            var project = _rootContext.Projects
+            var project = Context.Projects
                 .Include(x => x.Checklists.Select(w => w.ChecklistTemplate))
                 .Include(x => x.Checklists.Select(w => w.ChangedBy))
                 .Include(x => x.Checklists.Select(w => w.Items))

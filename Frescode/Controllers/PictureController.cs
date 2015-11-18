@@ -1,28 +1,29 @@
 ﻿using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using Frescode.Auth;
 using Frescode.DAL;
+using MediatR;
 
 namespace Frescode.Controllers
 {
-    public class PictureController : Controller
+    public class PictureController : BaseController
     {
-        private readonly RootContext _rootContext;
 
-        public PictureController(RootContext rootContext)
+        public PictureController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
+            :base(authentication, mediator, rootContext)
         {
-            _rootContext = rootContext;
         }
 
         public ActionResult GetPicture(int pictureId)
         {
-            var picture = _rootContext.PicturesData.SingleOrDefault(x => x.Id == pictureId);
+            var picture = Context.PicturesData.SingleOrDefault(x => x.Id == pictureId);
             return File(picture.Data, "image/png");
         }
 
         public ActionResult GetPictureThumbnail(int pictureId)
         {
-            var picture = _rootContext.PicturesData.SingleOrDefault(x => x.Id == pictureId);
+            var picture = Context.PicturesData.SingleOrDefault(x => x.Id == pictureId);
             var thumbnail = new WebImage(picture.Data).Resize(150, 100);
 
             return File(thumbnail.GetBytes(), "image/png");
@@ -30,9 +31,9 @@ namespace Frescode.Controllers
 
         public ActionResult DeletePicture(int pictureId)
         {
-            var picture = _rootContext.Pictures.SingleOrDefault(x => x.Id == pictureId);
-            _rootContext.Pictures.Remove(picture);
-            _rootContext.SaveChanges();
+            var picture = Context.Pictures.SingleOrDefault(x => x.Id == pictureId);
+            Context.Pictures.Remove(picture);
+            Context.SaveChanges();
 
             return Json(new
             {
