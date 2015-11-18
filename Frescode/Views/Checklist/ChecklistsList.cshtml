@@ -21,6 +21,12 @@
 
             self.ChecklistsList = ko.observableArray();
             self.ProjectName = ko.observable();
+            self.GenerateReportCommand = function() {
+                window.open(
+                  "/Report/GenerateReport?projectId=" + projectId,
+                  "_blank"
+                );
+            };
         }
 
         function ChecklistViewModel() {
@@ -86,7 +92,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title"><i class="icon-list-unordered"></i><span data-bind="text: ProjectName() + ' checklists'"></span></h4>
                 <div class="heading-elements">
-                    <button type="button" class=" btn btn-success ">
+                    <button type="button" class=" btn btn-success " data-bind="click: GenerateReportCommand">
                         <b><i class="icon-file-pdf"></i></b>Generate report
                     </button>
                 </div>
