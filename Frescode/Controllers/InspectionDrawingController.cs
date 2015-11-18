@@ -5,6 +5,7 @@ using MediatR;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class InspectionDrawingController : BaseController
     {
         public InspectionDrawingController(IMediator mediator, RootContext rootContext)

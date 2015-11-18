@@ -11,6 +11,7 @@ using MediatR;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class ChecklistItemsController : BaseController
     {
         public ChecklistItemsController(IMediator mediator, RootContext rootContext)

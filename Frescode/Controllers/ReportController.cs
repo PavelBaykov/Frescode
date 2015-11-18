@@ -12,6 +12,7 @@ using PdfSharp.Drawing.Layout;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class ReportController : BaseController
     {
         public ReportController(IMediator mediator, RootContext rootContext)

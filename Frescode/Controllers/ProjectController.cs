@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class ProjectController : BaseController
     {
         public ProjectController(IMediator mediator, RootContext rootContext)

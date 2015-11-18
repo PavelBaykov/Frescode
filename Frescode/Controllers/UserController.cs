@@ -1,12 +1,12 @@
 ﻿using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Frescode.Auth;
 using Frescode.DAL;
 using MediatR;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
         public UserController(IMediator mediator, RootContext rootContext)

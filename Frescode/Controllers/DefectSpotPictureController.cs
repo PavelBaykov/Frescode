@@ -12,6 +12,7 @@ using MediatR;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class DefectSpotPictureController : BaseController
     {
         public DefectSpotPictureController(IMediator mediator, RootContext rootContext)

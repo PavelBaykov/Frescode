@@ -6,6 +6,7 @@ using MediatR;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class PictureController : BaseController
     {
 

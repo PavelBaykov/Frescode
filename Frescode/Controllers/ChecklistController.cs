@@ -9,6 +9,7 @@ using MediatR;
 
 namespace Frescode.Controllers
 {
+    [Authorize]
     public class ChecklistController : BaseController
     {
         public ChecklistController(IMediator mediator, RootContext rootContext)
