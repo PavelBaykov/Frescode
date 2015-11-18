@@ -22,7 +22,7 @@ namespace Frescode
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+            
             var builder = new ContainerBuilder();
 
             // Register your MVC controllers.
@@ -31,7 +31,7 @@ namespace Frescode
                 .Where(t => t.Name.EndsWith("Handler")).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(typeof(IMediator).Assembly).AsImplementedInterfaces();
             builder.RegisterType<RootContext>().AsSelf();
-            builder.RegisterType<CustomAuthentication>().AsImplementedInterfaces();
+            //builder.RegisterType<CustomAuthentication>().AsImplementedInterfaces();
 
             builder.RegisterSource(new ContravariantRegistrationSource());
             builder.Register<SingleInstanceFactory>(ctx =>
@@ -46,20 +46,6 @@ namespace Frescode
                 return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
             });
 
-            // OPTIONAL: Register model binders that require DI.
-            //builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
-            //builder.RegisterModelBinderProvider();
-
-            // OPTIONAL: Register web abstractions like HttpContextBase.
-            //builder.RegisterModule<AutofacWebTypesModule>();
-
-            // OPTIONAL: Enable property injection in view pages.
-            // builder.RegisterSource(new ViewRegistrationSource());
-
-            // OPTIONAL: Enable property injection into action filters.
-            //builder.RegisterFilterProvider();
-
-            // Set the dependency resolver to be Autofac.
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             var csl = new AutofacServiceLocator(container);

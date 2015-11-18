@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using Frescode.Auth;
 using Frescode.DAL;
 using MediatR;
 
@@ -8,8 +7,8 @@ namespace Frescode.Controllers
 {
     public class InspectionDrawingController : BaseController
     {
-        public InspectionDrawingController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            : base(authentication, mediator, rootContext)
+        public InspectionDrawingController(IMediator mediator, RootContext rootContext)
+            : base(mediator, rootContext)
         {
         }
 

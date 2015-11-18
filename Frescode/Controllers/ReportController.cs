@@ -8,15 +8,14 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.IO;
 using System;
-using Frescode.Auth;
 using PdfSharp.Drawing.Layout;
 
 namespace Frescode.Controllers
 {
     public class ReportController : BaseController
     {
-        public ReportController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            :base(authentication, mediator, rootContext)
+        public ReportController(IMediator mediator, RootContext rootContext)
+            :base(mediator, rootContext)
         {
         }
 

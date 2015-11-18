@@ -9,17 +9,18 @@ namespace Frescode.Controllers
 {
     public class UserController : BaseController
     {
-        public UserController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            :base(authentication, mediator, rootContext)
+        public UserController(IMediator mediator, RootContext rootContext)
+            :base(mediator, rootContext)
         {
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetBreadcrumbText(int userId)
+        public async Task<ActionResult> GetBreadcrumbText(string userId)
         {
             var user = await Context.Users
-                .SingleOrDefaultAsync(x => x.Id == userId);
+                .SingleOrDefaultAsync(x => x.UserName == userId);
             return Json(new { Text = $"{user.FirstName} {user.LastName}"}, JsonRequestBehavior.AllowGet);
         }
+
     }
 }

@@ -252,6 +252,7 @@
     <Compile Include="BL\CommandsHandler\CommandHandlerBase.cs" />
     <Compile Include="BL\Commands\AddDefectSpotCommand.cs" />
     <Compile Include="BL\Commands\ChecklistItemChangeStateCommand.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChecklistController.cs" />
     <Compile Include="Controllers\ChecklistItemsController.cs" />
@@ -3932,7 +3933,6 @@
     <Content Include="starters\assets\less\core\variables\variables.less" />
     <Content Include="Views\Project\ProjectsList.cshtml" />
     <Content Include="Views\Checklist\ChecklistsList.cshtml" />
-    <Content Include="Views\Checklist\Index.cshtml" />
     <Content Include="Scripts\knockout.mapping.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

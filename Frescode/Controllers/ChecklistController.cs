@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Frescode.Auth;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
@@ -12,19 +11,13 @@ namespace Frescode.Controllers
 {
     public class ChecklistController : BaseController
     {
-        public ChecklistController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            : base(authentication, mediator, rootContext)
+        public ChecklistController(IMediator mediator, RootContext rootContext)
+            : base(mediator, rootContext)
         {
             
         }
 
-        // GET: Checklist
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult ChecklistsList(int userId, int projectId)
+        public ActionResult ChecklistsList(string userId, int projectId)
         {
             ViewBag.ProjectId = projectId;
             ViewBag.UserId = userId;

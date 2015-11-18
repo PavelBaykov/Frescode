@@ -26,7 +26,7 @@ namespace Frescode.Auth
             {
                 if (User != null)
                 {
-                    return User.Username;
+                    return User.UserName;
                 }
                 return "anonym";
             }
@@ -36,7 +36,7 @@ namespace Frescode.Auth
         {
             if (!string.IsNullOrEmpty(userName))
             {
-                User = _rootContext.Users.Single(x => x.Username == userName);
+                User = _rootContext.Users.Single(x => x.UserName == userName);
             }
         }
     }

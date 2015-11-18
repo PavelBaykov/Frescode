@@ -10,13 +10,15 @@ using Frescode.Auth;
 using Frescode.DAL;
 using Frescode.DAL.Entities;
 using MediatR;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Frescode.Controllers
 {
     public class ProjectController : BaseController
     {
-        public ProjectController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            : base(authentication, mediator, rootContext)
+        public ProjectController(IMediator mediator, RootContext rootContext)
+            : base(mediator, rootContext)
         {
         }
 
@@ -29,9 +31,9 @@ namespace Frescode.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetProjectsList(int userId)
+        public ActionResult GetProjectsList(string userId)
         {
-            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.Id == userId);
+            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.UserName == userId);
 
             var viewModel = new ProjectsListViewModel();
             foreach (var project in user.Projects)
@@ -63,7 +65,7 @@ namespace Frescode.Controllers
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ProjectsList(int userId)
+        public ActionResult ProjectsList(string userId)
         {
             var cookie = new HttpCookie("test_cookie")
             {
@@ -79,19 +81,36 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> InitDb()
         {
-            Context.Projects.RemoveRange(Context.Projects);
-            Context.Users.RemoveRange(Context.Users);
-            Context.Customers.RemoveRange(Context.Customers);
-            Context.Checklists.RemoveRange(Context.Checklists);
-            Context.ChecklistItems.RemoveRange(Context.ChecklistItems);
-            Context.ChecklistTemplates.RemoveRange(Context.ChecklistTemplates);
-            Context.ChecklistItemTemplates.RemoveRange(Context.ChecklistItemTemplates);
-            Context.DefectionSpots.RemoveRange(Context.DefectionSpots);
-            Context.InspectionDrawings.RemoveRange(Context.InspectionDrawings);
-            Context.InspectionDrawingDatas.RemoveRange(Context.InspectionDrawingDatas);
-            Context.Pictures.RemoveRange(Context.Pictures);
-            Context.PicturesData.RemoveRange(Context.PicturesData);
-            Context.SaveChanges();
+            //DROP DB BEFORE USE!!!
+
+            var user1 = new User
+            {
+                FirstName = "Pavel",
+                LastName = "Baykov",
+                DateCreated = DateTime.UtcNow,
+                UserName = "pavelbaykov89@gmail.com",
+                Email = "pavelbaykov89@gmail.com",
+                UserRole = UserRole.Reader,
+                Projects = new List<Project>(),
+                ProjectsOwned = new List<Project>()
+            };
+            var user2 = new User
+            {
+                FirstName = "Paulus",
+                LastName = "Mikkola",
+                DateCreated = DateTime.UtcNow,
+                UserName = "paulus@gmail.com",
+                Email = "paulus@gmail.com",
+                UserRole = UserRole.Reader,
+                Projects = new List<Project>(),
+            };
+
+            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            userManager.Create(user1, "123456");
+            userManager.Create(user2, "123456");
+
+            user1 =  Context.Users.Single(x => x.UserName == user1.UserName);
+            user2 = Context.Users.Single(x => x.UserName == user2.UserName);
 
             var customer = new Customer
             {
@@ -99,32 +118,7 @@ namespace Frescode.Controllers
                 Users = new List<User>()
             };
             
-            var user1 = new User
-            {
-                FirstName = "Pavel",
-                LastName = "Baykov",
-                DateCreated = DateTime.UtcNow,
-                Username = "pavelbaykov89",
-                Password = "123456",
-                UserRole = UserRole.Reader,
-                Projects = new List<Project>(),
-                Customer = customer,
-                ProjectsOwned = new List<Project>()
-            };
-            #region user 1
-            var user2 = new User
-            {
-                FirstName = "Paulus",
-                LastName = "Mikkola",
-                DateCreated = DateTime.UtcNow,
-                Username = "pavelbaykov89",
-                Password = "123456",
-                UserRole = UserRole.Reader,
-                Projects = new List<Project>(),
-                Customer = customer
-            };
-            #endregion
-
+            
             var project1 = new Project
             {
                 Customer = customer,
@@ -359,7 +353,6 @@ namespace Frescode.Controllers
             customer.Projects.Add(project1);
 
             Context.Projects.Add(project1);
-            Context.Users.Add(user1);
             Context.Customers.Add(customer);
             Context.Checklists.Add(checklist1);
 
@@ -371,8 +364,8 @@ namespace Frescode.Controllers
             Context.ChecklistItemTemplates.Add(checklistItemTemplate2);
             Context.ChecklistItemTemplates.Add(checklistItemTemplate3);
             Context.ChecklistItemTemplates.Add(checklistItemTemplate4);
-            Context.SaveChanges();
 
+            Context.SaveChanges();
             return Json(new { ok = true}, JsonRequestBehavior.AllowGet);
         }
     }

@@ -11,7 +11,7 @@ using Frescode.DAL.Entities;
 
 namespace Frescode.Auth
 {
-    public class CustomAuthentication : IAuthentication
+   /* public class CustomAuthentication : IAuthentication
     {
         private readonly RootContext _rootContext;
 
@@ -30,7 +30,7 @@ namespace Frescode.Auth
 
         public User Login(string userName, string password, bool isPersistent)
         {
-            User retUser = _rootContext.Users.Single(x => x.Username == userName && x.Password == password);
+            User retUser = _rootContext.Users.Single(x => x.UserName == userName && x.Password == password);
             if (retUser != null)
             {
                 CreateCookie(userName, isPersistent);
@@ -111,5 +111,5 @@ namespace Frescode.Auth
             }
         }
         #endregion
-    }
+    }*/
 }

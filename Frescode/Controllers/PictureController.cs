@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using Frescode.Auth;
 using Frescode.DAL;
 using MediatR;
 
@@ -10,8 +9,8 @@ namespace Frescode.Controllers
     public class PictureController : BaseController
     {
 
-        public PictureController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            :base(authentication, mediator, rootContext)
+        public PictureController(IMediator mediator, RootContext rootContext)
+            :base(mediator, rootContext)
         {
         }
 

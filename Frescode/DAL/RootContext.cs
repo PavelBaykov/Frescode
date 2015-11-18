@@ -1,17 +1,22 @@
 ﻿using System.Data.Entity;
 using Frescode.DAL.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Frescode.DAL
 {
-    public class RootContext : DbContext
+    public class RootContext : IdentityDbContext<User>
     {
         public RootContext() : base("DefaultConnection")
         {
             
         }
 
+        public static RootContext Create()
+        {
+            return new RootContext();
+        }
+
         public DbSet<Project> Projects { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Checklist> Checklists { get; set; }
         public DbSet<ChecklistTemplate> ChecklistTemplates { get; set; }
@@ -42,7 +47,7 @@ namespace Frescode.DAL
                 .WithRequired(checklist => checklist.Project);
 
             modelBuilder.Entity<User>()
-                .HasRequired(user => user.Customer)
+                .HasOptional(user => user.Customer)
                 .WithMany(customer => customer.Users)
                 .WillCascadeOnDelete(false);
 
@@ -60,7 +65,7 @@ namespace Frescode.DAL
 
             modelBuilder.Entity<Customer>()
                 .HasMany(customer => customer.Users)
-                .WithRequired(user => user.Customer);
+                .WithOptional(user => user.Customer);
 
             modelBuilder.Entity<Checklist>()
                 .HasMany(checklist => checklist.Items)

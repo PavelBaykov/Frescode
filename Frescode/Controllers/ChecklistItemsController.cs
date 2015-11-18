@@ -13,8 +13,8 @@ namespace Frescode.Controllers
 {
     public class ChecklistItemsController : BaseController
     {
-        public ChecklistItemsController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            : base(authentication, mediator, rootContext)
+        public ChecklistItemsController(IMediator mediator, RootContext rootContext)
+            : base(mediator, rootContext)
         {
         }
 
@@ -33,14 +33,14 @@ namespace Frescode.Controllers
             return Json(new { Text = defectSpot.OrderNumber }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ChecklistItemsList(int userId, int checklistId)
+        public ActionResult ChecklistItemsList(string userId, int checklistId)
         {
             ViewBag.ChecklistId = checklistId;
             ViewBag.UserId = userId;
             return View();
         }
 
-        public ActionResult ChecklistItemDetails(int userId, int checklistItemId)
+        public ActionResult ChecklistItemDetails(string userId, int checklistItemId)
         {
             ViewBag.ChecklistItemId = checklistItemId;
             ViewBag.UserId = userId;
@@ -66,7 +66,7 @@ namespace Frescode.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetDefectSpot(int userId, int defectSpotId)
+        public async Task<ActionResult> GetDefectSpot(string userId, int defectSpotId)
         {
             var defectSpot = await Context.DefectionSpots
                 .Include(x => x.AttachedPictures)
@@ -91,7 +91,7 @@ namespace Frescode.Controllers
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DefectSpotAddition(int userId, int defectSpotId)
+        public ActionResult DefectSpotAddition(string userId, int defectSpotId)
         {
             ViewBag.UserId = userId;
             ViewBag.DefectSpotId = defectSpotId;
@@ -150,7 +150,7 @@ namespace Frescode.Controllers
 
 
         [HttpGet]
-        public ActionResult GetChecklistItemsList(int userId, int checklistId)
+        public ActionResult GetChecklistItemsList(string userId, int checklistId)
         {
             var checklist = Context.Checklists
                 .Include(x => x.Items.Select(w => w.ItemTemplate))
@@ -182,7 +182,7 @@ namespace Frescode.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetChecklistItemDetails(int userId, int checklistItemId)
+        public ActionResult GetChecklistItemDetails(string userId, int checklistItemId)
         {
             var checklistItem = Context.ChecklistItems
                 .Include(x => x.DefectionSpots.Select(q => q.AttachedPictures))

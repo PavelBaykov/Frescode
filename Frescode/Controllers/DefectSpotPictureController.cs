@@ -14,8 +14,8 @@ namespace Frescode.Controllers
 {
     public class DefectSpotPictureController : BaseController
     {
-        public DefectSpotPictureController(IAuthentication authentication, IMediator mediator, RootContext rootContext)
-            :base(authentication, mediator, rootContext)
+        public DefectSpotPictureController(IMediator mediator, RootContext rootContext)
+            :base(mediator, rootContext)
         {
         }
 
