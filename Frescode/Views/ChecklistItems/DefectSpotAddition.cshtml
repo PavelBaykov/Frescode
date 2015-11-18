@@ -1,7 +1,7 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "Checklist Item";
+    ViewBag.Title = "Defect spot details";
 }
 
 @section Header
@@ -44,11 +44,25 @@
         userId = @Html.Raw(Json.Encode(ViewBag.UserId));
         defectSpotId = @Html.Raw(Json.Encode(ViewBag.DefectSpotId));
 
+        //View model of defect spot
         function AddSpotViewModel() {
             var self = this;
 
+            //Defect spot Id
+            self.Id = ko.observable();
             self.Description = ko.observable();
-            self.AddDefectSpotCommand = function() {
+            self.SaveDescriptionCommand = function() {
+                alert(self.Id())
+                alert(self.Description())
+                $.ajaxq("checklist_item_description_saving",
+                {
+                    url: '/ChecklistItems/SaveChecklistItemDescription',
+                    type: 'post',
+                    data: {
+                        Id: self.Id(),
+                        Description: self.Description()
+                    }
+                });
             }
             self.AttachedPictures = ko.observableArray();
         }
@@ -82,6 +96,7 @@
 
         function fillViewModel(defectSpot) {
             $(document).ready(function() {
+                mainViewModel.Id(defectSpot.Id);
                 mainViewModel.Description(defectSpot.Description);
                 _.each(defectSpot.AttachedPictures, function(picture) {
                     var pictureViewModel = new PictureViewModel();
@@ -221,7 +236,7 @@
                             <button type="button" class="btn  btn-success btn-labeled btn-xlg">
                                 <b><i class="glyphicon glyphicon-upload"></i></b> Start upload
                             </button>
-                            <button type="button" class="btn  btn-success btn-labeled btn-xlg">
+                            <button type="button" class="btn  btn-success btn-labeled btn-xlg" data-bind="click: SaveDescriptionCommand">
                                 <b><i class="icon-floppy-disk"></i></b> Save description
                             </button>
                             <button type="button" class="btn  btn-success btn-labeled btn-xlg">

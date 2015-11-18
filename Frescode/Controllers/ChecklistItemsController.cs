@@ -54,6 +54,7 @@ namespace Frescode.Controllers
                 AttachedPictures = new List<PictureViewModel>();
             }
 
+            public int Id { get; set; }
             public string Description { get; set; }
             public List<PictureViewModel> AttachedPictures { get; set; }
         }
@@ -71,6 +72,8 @@ namespace Frescode.Controllers
                 .SingleOrDefaultAsync(x => x.Id == defectSpotId);
 
             var viewModel = new AddSpotViewModel();
+            viewModel.Id = defectSpot.Id;
+            viewModel.Description = defectSpot.Description;
             foreach (var picture in defectSpot.AttachedPictures)
             {
                 var pictureViewModel = new PictureViewModel
@@ -94,6 +97,23 @@ namespace Frescode.Controllers
         [HttpPost]
         public ActionResult UploadAddSpotImage(int defectSpotId)
         {
+            return Json(new {});
+        }
+
+
+        public class DescriptionDto
+        {
+            public int Id { get; set; }
+            public string Description { get; set; }
+        }
+        [HttpPost]
+        public ActionResult SaveChecklistItemDescription(DescriptionDto dto)
+        {
+            string defectSpotDescription = dto.Description;
+            int defectSpotId = dto.Id;
+            var defectSpot = Context.DefectionSpots.Single(x => x.Id == defectSpotId);
+            defectSpot.Description = defectSpotDescription;
+            Context.SaveChanges();
             return Json(new {});
         }
 

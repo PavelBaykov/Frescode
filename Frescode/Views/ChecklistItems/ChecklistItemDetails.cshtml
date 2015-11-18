@@ -35,7 +35,7 @@
             self.CreateDefectSpotCommand = function() {
                 var newDefectSpot = new DefectSpotViewModel();
                 newDefectSpot.ChecklistItemId(self.Id());
-                newDefectSpot.Description("Enter description...");
+                newDefectSpot.Description("Defect spot description");
                 newDefectSpot.AttachedPictures("");
                 var defectSpotWithMaxOrderNumber = _.max(self.DefectSpotsList(), function(x) { return x.OrderNumber() });
                 if (!defectSpotWithMaxOrderNumber || !defectSpotWithMaxOrderNumber.OrderNumber || defectSpotWithMaxOrderNumber < 0)
