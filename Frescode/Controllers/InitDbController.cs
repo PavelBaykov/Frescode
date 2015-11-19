@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -23,8 +24,6 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> InitDb()
         {
-            //DROP DB BEFORE USE!!!
-
             var user1 = new User
             {
                 FirstName = "Pavel",
