@@ -257,6 +257,7 @@
     <Compile Include="Controllers\ChecklistController.cs" />
     <Compile Include="Controllers\ChecklistItemsController.cs" />
     <Compile Include="Controllers\DefectSpotPictureController.cs" />
+    <Compile Include="Controllers\InitDbController.cs" />
     <Compile Include="Controllers\InspectionDrawingController.cs" />
     <Compile Include="Controllers\PdfConverterController.cs" />
     <Compile Include="Controllers\PictureController.cs" />
@@ -3947,6 +3948,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\DefectSpotPicture\" />
+    <Folder Include="Views\InitDb\" />
     <Folder Include="Views\PdfController\" />
     <Folder Include="Views\Picture\" />
     <Folder Include="Views\Report\" />
