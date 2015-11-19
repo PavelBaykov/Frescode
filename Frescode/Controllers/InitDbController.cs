@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -237,9 +236,11 @@ namespace Frescode.Controllers
             checklistItemTemplate2.Descendants.Add(checklistItem2);
             checklist1.Items.Add(checklistItem1);
             checklist1.Items.Add(checklistItem2);
+            Context.ChecklistItems.Add(checklistItem1);
+            Context.ChecklistItems.Add(checklistItem2);
 
-            checklist2.ChecklistInit();
-            checklist3.ChecklistInit();
+            checklist2.ChecklistInit(Context);
+            checklist3.ChecklistInit(Context);
 
             var defectSpot1 = new DefectionSpot
             {

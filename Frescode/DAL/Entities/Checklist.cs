@@ -14,11 +14,11 @@ namespace Frescode.DAL.Entities
         public User ChangedBy { get; set; }
         public Project Project { get; set; }
 
-        public void ChecklistInit()
+        public void ChecklistInit(RootContext rootContext)
         {
             foreach (var tempItem in ChecklistTemplate.Items)
             {
-                var checkListItem_tmp = new ChecklistItem
+                var checkListItemTmp = new ChecklistItem
                 {
                     Checklist = this,
                     ItemTemplate = tempItem,
@@ -26,9 +26,9 @@ namespace Frescode.DAL.Entities
                     DateOfLastChange = DateTime.UtcNow,
                     ChangedBy = Project.ChangedBy
                 };
-                Items.Add(checkListItem_tmp);
-                tempItem.Descendants.Add(checkListItem_tmp);
-                
+                Items.Add(checkListItemTmp);
+                tempItem.Descendants.Add(checkListItemTmp);
+                rootContext.ChecklistItems.Add(checkListItemTmp);
             }
         }
 
