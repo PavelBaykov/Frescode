@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Frescode.BL.Commands;
 using Frescode.DAL;
@@ -39,8 +40,23 @@ namespace Frescode.BL.CommandsHandler
             defectionSpot.Y = notification.Y;
             defectionSpot.Description = notification.Description;
             defectionSpot.OrderNumber = notification.OrderNumber;
+
+            await NormalizeOrderNumbers(notification.ChecklistItemId);
             await _rootContext.SaveChangesAsync();
             notification.Id = defectionSpot.Id;
+        }
+
+        private async Task NormalizeOrderNumbers(int checklistItemId)
+        {
+            var defectSpots = (await _rootContext.ChecklistItems
+                .Include(x => x.DefectionSpots)
+                .SingleAsync(x => x.Id == checklistItemId)).DefectionSpots.OrderBy(x => x.OrderNumber).ToList();
+
+            int index = 1;
+            foreach (var defectSpot in defectSpots)
+            {
+                defectSpot.OrderNumber = index++;
+            }
         }
     }
 }
