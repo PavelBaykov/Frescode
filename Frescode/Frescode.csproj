@@ -2630,7 +2630,9 @@
     <Content Include="assets\css\icons\icomoon\fonts\icomoon.eot" />
     <Content Include="assets\css\icons\icomoon\fonts\icomoon.ttf" />
     <Content Include="assets\css\icons\icomoon\fonts\icomoon.woff" />
+    <None Include="Properties\PublishProfiles\inspectionreport - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\inspectionreport - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\inspectionreport - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\inspectionreport - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="PublishProfiles\Local.pubxml" />
