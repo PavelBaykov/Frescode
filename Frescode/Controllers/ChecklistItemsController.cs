@@ -30,7 +30,7 @@ namespace Frescode.Controllers
         {
             var defectSpot = await Context.DefectionSpots
                 .SingleOrDefaultAsync(x => x.Id == defectSpotId);
-            return Json(new { Text = defectSpot.OrderNumber }, JsonRequestBehavior.AllowGet);
+            return Json(new { Text = $"Defect spot #{defectSpot.OrderNumber}" }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ChecklistItemsList(int checklistId)

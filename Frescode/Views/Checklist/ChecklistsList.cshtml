@@ -20,7 +20,7 @@
             var self = this;
 
             self.ChecklistsList = ko.observableArray();
-            self.ProjectName = ko.observable();
+            self.ProjectName = ko.observable("");
             self.GenerateReportCommand = function() {
                 window.open(
                   "/Report/GenerateReport?projectId=" + projectId,
