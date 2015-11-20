@@ -1,0 +1,350 @@
+@functions {
+
+	//
+	// Page class for ChecklistItemTemplates
+	//
+	public class cChecklistItemTemplates_edit<C, S> : cChecklistItemTemplates_edit_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			var value = ew_ExecuteScalar("SELECT max(ordernumber) FROM ChecklistItemTemplates WHERE Checklist_Id = "+Convert.ToInt32(rsnew["Checklist_Id"]));
+			if (value.GetType() != typeof(DBNull))
+				rsnew["OrderNumber"] = Convert.ToInt32(value)+1;
+			else
+				rsnew["OrderNumber"] = 1;
+			return true;
+		}
+
+		// Recordset Deleting event
+		public override bool Row_Deleting(OrderedDictionary rs) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+				string sDeleteSql = "DELETE FROM ChecklistItems WHERE ItemTemplate_id="+rs["Id"];
+			ew_Execute(sDeleteSql);
+			return true;
+		}
+	}
+
+	// ChecklistItemTemplates_edit	
+	public static cChecklistItemTemplates_edit<cConnection, cAdvancedSecurity> ChecklistItemTemplates_edit {
+		get { return (cChecklistItemTemplates_edit<cConnection, cAdvancedSecurity>)ew_PageData["ChecklistItemTemplates_edit"]; }
+		set { ew_PageData["ChecklistItemTemplates_edit"] = value; }
+	}
+
+	// CurrentPage
+	public static cChecklistItemTemplates_edit<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cChecklistItemTemplates_edit<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cChecklistItemTemplates_edit<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create master table object (ChecklistTemplates)
+	if (ChecklistTemplates == null) {
+		ChecklistTemplates = new cChecklistTemplates_master();
+	}
+
+	// Create page object
+	if (ChecklistItemTemplates_edit == null) {
+		ChecklistItemTemplates_edit = new cChecklistItemTemplates_edit<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	ChecklistItemTemplates_edit.Page_Init();
+
+	// Page main
+	ChecklistItemTemplates_edit.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	ChecklistItemTemplates_edit.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var ChecklistItemTemplates_edit = new ew_Page("ChecklistItemTemplates_edit");
+ChecklistItemTemplates_edit.PageID = "edit"; // Page ID
+var EW_PAGE_ID = ChecklistItemTemplates_edit.PageID; // For backward compatibility
+
+// Form object
+var fChecklistItemTemplatesedit = new ew_Form("fChecklistItemTemplatesedit");
+
+// Validate form
+fChecklistItemTemplatesedit.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+		elm = this.GetElements("x" + infix + "_Checklist_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(ChecklistItemTemplates.Checklist_Id.ReqErrMsg.Replace("%s", ChecklistItemTemplates.Checklist_Id.FldCaption))))");
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fChecklistItemTemplatesedit.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fChecklistItemTemplatesedit.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fChecklistItemTemplatesedit.Lists["x_Checklist_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistItemTemplatesedit.Lists["x_InspectionDrawing_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(ChecklistItemTemplates.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(ChecklistItemTemplates.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	ChecklistItemTemplates_edit.ShowPageHeader();
+}
+@{
+	ChecklistItemTemplates_edit.ShowMessage();
+}
+<form name="fChecklistItemTemplatesedit" id="fChecklistItemTemplatesedit" class="form-horizontal ewForm ewEditForm" action="@ew_CurrentPage()" method="post">
+@if (ChecklistItemTemplates_edit.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@ChecklistItemTemplates_edit.Token">
+} 
+<input type="hidden" name="t" value="ChecklistItemTemplates">
+<input type="hidden" name="a_edit" id="a_edit" value="U">
+<div>
+@if (ChecklistItemTemplates.Id.Visible) { // Id.Visible (begin)
+	<div id="r_Id" class="form-group">
+		<label id="elh_ChecklistItemTemplates_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(ChecklistItemTemplates.Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(ChecklistItemTemplates.Id.CellAttributes))>
+<span id="el_ChecklistItemTemplates_Id">
+<span @(Html.Raw(ChecklistItemTemplates.Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(ChecklistItemTemplates.Id.EditValue)</p></span>
+</span>
+<input type="hidden" data-field="x_Id" name="x_Id" id="x_Id" value="@(ChecklistItemTemplates.Id.CurrentValue)">
+@Html.Raw(ChecklistItemTemplates.Id.CustomMsg)</div></div>
+	</div>
+} @* Id.Visible (end) *@ 
+@if (ChecklistItemTemplates.zName.Visible) { // zName.Visible (begin)
+	<div id="r_zName" class="form-group">
+		<label id="elh_ChecklistItemTemplates_zName" for="x_zName" class="col-sm-2 control-label ewLabel">@Html.Raw(ChecklistItemTemplates.zName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(ChecklistItemTemplates.zName.CellAttributes))>
+<span id="el_ChecklistItemTemplates_zName">
+<textarea data-field="x_zName" name="x_zName" id="x_zName" cols="35" rows="4" placeholder="@ChecklistItemTemplates.zName.PlaceHolder" @(Html.Raw(ChecklistItemTemplates.zName.EditAttributes))>@ChecklistItemTemplates.zName.EditValue</textarea>
+</span>
+@Html.Raw(ChecklistItemTemplates.zName.CustomMsg)</div></div>
+	</div>
+} @* zName.Visible (end) *@ 
+@if (ChecklistItemTemplates.Description.Visible) { // Description.Visible (begin)
+	<div id="r_Description" class="form-group">
+		<label id="elh_ChecklistItemTemplates_Description" for="x_Description" class="col-sm-2 control-label ewLabel">@Html.Raw(ChecklistItemTemplates.Description.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(ChecklistItemTemplates.Description.CellAttributes))>
+<span id="el_ChecklistItemTemplates_Description">
+<textarea data-field="x_Description" name="x_Description" id="x_Description" cols="35" rows="4" placeholder="@ChecklistItemTemplates.Description.PlaceHolder" @(Html.Raw(ChecklistItemTemplates.Description.EditAttributes))>@ChecklistItemTemplates.Description.EditValue</textarea>
+</span>
+@Html.Raw(ChecklistItemTemplates.Description.CustomMsg)</div></div>
+	</div>
+} @* Description.Visible (end) *@ 
+@if (ChecklistItemTemplates.Checklist_Id.Visible) { // Checklist_Id.Visible (begin)
+	<div id="r_Checklist_Id" class="form-group">
+		<label id="elh_ChecklistItemTemplates_Checklist_Id" for="x_Checklist_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(ChecklistItemTemplates.Checklist_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(ChecklistItemTemplates.Checklist_Id.CellAttributes))>
+@if (ew_NotEmpty(ChecklistItemTemplates.Checklist_Id.SessionValue)) {
+<span id="el_ChecklistItemTemplates_Checklist_Id">
+<span @(Html.Raw(ChecklistItemTemplates.Checklist_Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(ChecklistItemTemplates.Checklist_Id.ViewValue)</p></span>
+</span>
+<input type="hidden" id="x_Checklist_Id" name="x_Checklist_Id" value="@ChecklistItemTemplates.Checklist_Id.CurrentValue">
+} else {
+<span id="el_ChecklistItemTemplates_Checklist_Id">
+<select data-field="x_Checklist_Id" id="x_Checklist_Id" name="x_Checklist_Id" @(Html.Raw(ChecklistItemTemplates.Checklist_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(ChecklistItemTemplates.Checklist_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)ChecklistItemTemplates.Checklist_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], ChecklistItemTemplates.Checklist_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [Name] AS [DispFld], '' AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[ChecklistTemplates]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(ChecklistItemTemplates_edit.GetCustomValue("FldSelectFilter", "Checklist_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+ChecklistItemTemplates.Lookup_Selecting(ChecklistItemTemplates.Checklist_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_Checklist_Id" id="s_x_Checklist_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=3">
+</span>
+}
+@Html.Raw(ChecklistItemTemplates.Checklist_Id.CustomMsg)</div></div>
+	</div>
+} @* Checklist_Id.Visible (end) *@ 
+@if (ChecklistItemTemplates.InspectionDrawing_Id.Visible) { // InspectionDrawing_Id.Visible (begin)
+	<div id="r_InspectionDrawing_Id" class="form-group">
+		<label id="elh_ChecklistItemTemplates_InspectionDrawing_Id" for="x_InspectionDrawing_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(ChecklistItemTemplates.InspectionDrawing_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(ChecklistItemTemplates.InspectionDrawing_Id.CellAttributes))>
+<span id="el_ChecklistItemTemplates_InspectionDrawing_Id">
+<select data-field="x_InspectionDrawing_Id" id="x_InspectionDrawing_Id" name="x_InspectionDrawing_Id" @(Html.Raw(ChecklistItemTemplates.InspectionDrawing_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(ChecklistItemTemplates.InspectionDrawing_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)ChecklistItemTemplates.InspectionDrawing_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], ChecklistItemTemplates.InspectionDrawing_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [Name] AS [DispFld], '' AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[InspectionDrawings]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(ChecklistItemTemplates_edit.GetCustomValue("FldSelectFilter", "InspectionDrawing_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+ChecklistItemTemplates.Lookup_Selecting(ChecklistItemTemplates.InspectionDrawing_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_InspectionDrawing_Id" id="s_x_InspectionDrawing_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=3">
+</span>
+@Html.Raw(ChecklistItemTemplates.InspectionDrawing_Id.CustomMsg)</div></div>
+	</div>
+} @* InspectionDrawing_Id.Visible (end) *@ 
+</div>
+@if (ChecklistItemTemplates_edit.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	ChecklistItemTemplates_edit.Recordset.Close();
+	ChecklistItemTemplates_edit.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+@{
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("SaveBtn"))</button>
+}
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fChecklistItemTemplatesedit.Init();
+</script>
+@{
+	ChecklistItemTemplates_edit.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	ChecklistItemTemplates_edit.Page_Terminate();
+}

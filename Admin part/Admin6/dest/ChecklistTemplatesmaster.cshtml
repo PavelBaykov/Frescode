@@ -1,0 +1,35 @@
+@{
+
+	// Id
+	// zName
+
+}
+@if (ChecklistTemplates.Visible) { // ChecklistTemplates.Visible (begin)
+<!-- <h4 class="ewMasterCaption">@(Html.Raw(ChecklistTemplates.TableCaption))</h4> -->
+<table id="tbl_ChecklistTemplatesmaster" class="table table-bordered table-striped ewViewTable">
+	<tbody>
+		@if (ChecklistTemplates.Id.Visible) { // Id.Visible (begin)
+		<tr id="r_Id">
+			<td>@Html.Raw(ChecklistTemplates.Id.FldCaption)</td>
+			<td @(Html.Raw(ChecklistTemplates.Id.CellAttributes))>
+<span id="el_ChecklistTemplates_Id" class="form-group">
+<span @(Html.Raw(ChecklistTemplates.Id.ViewAttributes))>
+@Html.Raw(ChecklistTemplates.Id.ListViewValue)</span>
+</span>
+</td>
+		</tr>
+		} @* Id.Visible (end) *@
+		@if (ChecklistTemplates.zName.Visible) { // zName.Visible (begin)
+		<tr id="r_zName">
+			<td>@Html.Raw(ChecklistTemplates.zName.FldCaption)</td>
+			<td @(Html.Raw(ChecklistTemplates.zName.CellAttributes))>
+<span id="el_ChecklistTemplates_zName" class="form-group">
+<span @(Html.Raw(ChecklistTemplates.zName.ViewAttributes))>
+@Html.Raw(ChecklistTemplates.zName.ListViewValue)</span>
+</span>
+</td>
+		</tr>
+		} @* zName.Visible (end) *@
+	</tbody>
+</table>
+} @* ChecklistTemplates.Visible (end) *@

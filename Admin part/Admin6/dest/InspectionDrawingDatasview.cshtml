@@ -1,0 +1,180 @@
+@functions {
+
+	//
+	// Page class for InspectionDrawingDatas
+	//
+	public class cInspectionDrawingDatas_view<C, S> : cInspectionDrawingDatas_view_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// InspectionDrawingDatas_view	
+	public static cInspectionDrawingDatas_view<cConnection, cAdvancedSecurity> InspectionDrawingDatas_view {
+		get { return (cInspectionDrawingDatas_view<cConnection, cAdvancedSecurity>)ew_PageData["InspectionDrawingDatas_view"]; }
+		set { ew_PageData["InspectionDrawingDatas_view"] = value; }
+	}
+
+	// CurrentPage
+	public static cInspectionDrawingDatas_view<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cInspectionDrawingDatas_view<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cInspectionDrawingDatas_view<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (InspectionDrawingDatas_view == null) {
+		InspectionDrawingDatas_view = new cInspectionDrawingDatas_view<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	InspectionDrawingDatas_view.Page_Init();
+
+	// Page main
+	InspectionDrawingDatas_view.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	InspectionDrawingDatas_view.Page_Render();
+}
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+<script type="text/javascript">
+
+// Page object
+var InspectionDrawingDatas_view = new ew_Page("InspectionDrawingDatas_view");
+InspectionDrawingDatas_view.PageID = "view"; // Page ID
+var EW_PAGE_ID = InspectionDrawingDatas_view.PageID; // For backward compatibility
+
+// Form object
+var fInspectionDrawingDatasview = new ew_Form("fInspectionDrawingDatasview");
+
+// Form_CustomValidate event
+fInspectionDrawingDatasview.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fInspectionDrawingDatasview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+// Form object for search
+
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(InspectionDrawingDatas.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+	@{ 
+		InspectionDrawingDatas_view.ExportOptions.Render("body");
+		foreach (var kvp in InspectionDrawingDatas_view.OtherOptions) {
+			kvp.Value.Render("body");
+		}
+	}
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+}
+@{
+	InspectionDrawingDatas_view.ShowPageHeader();
+}
+@{
+	InspectionDrawingDatas_view.ShowMessage();
+}
+<form name="fInspectionDrawingDatasview" id="fInspectionDrawingDatasview" class="form-inline ewForm ewViewForm" method="post">
+@if (InspectionDrawingDatas_view.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@InspectionDrawingDatas_view.Token">
+}
+<input type="hidden" name="t" value="InspectionDrawingDatas">
+<table  class="table table-bordered table-striped ewViewTable">
+@if (InspectionDrawingDatas.Id.Visible) { @* InspectionDrawingDatas.Id.Visible (begin) *@
+	<tr id="r_Id">
+		<td><span id="elh_InspectionDrawingDatas_Id">@Html.Raw(InspectionDrawingDatas.Id.FldCaption)</span></td>
+		<td @Html.Raw(InspectionDrawingDatas.Id.CellAttributes)>
+<span id="el_InspectionDrawingDatas_Id" class="form-group">
+<span @(Html.Raw(InspectionDrawingDatas.Id.ViewAttributes))>
+@Html.Raw(InspectionDrawingDatas.Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* InspectionDrawingDatas.Id.Visible (end) *@
+@if (InspectionDrawingDatas.Data.Visible) { @* InspectionDrawingDatas.Data.Visible (begin) *@
+	<tr id="r_Data">
+		<td><span id="elh_InspectionDrawingDatas_Data">@Html.Raw(InspectionDrawingDatas.Data.FldCaption)</span></td>
+		<td @Html.Raw(InspectionDrawingDatas.Data.CellAttributes)>
+<span id="el_InspectionDrawingDatas_Data" class="form-group">
+<span>
+@Html.Raw(ew_GetFileViewTag(InspectionDrawingDatas.Data, Convert.ToString(InspectionDrawingDatas.Data.ViewValue)))
+</span>
+</span>
+</td>
+	</tr>
+} @* InspectionDrawingDatas.Data.Visible (end) *@
+</table>
+@if (InspectionDrawingDatas_view.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	InspectionDrawingDatas_view.Recordset.Close();
+	InspectionDrawingDatas_view.Recordset.Dispose();
+}
+</form>
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+<script type="text/javascript">
+fInspectionDrawingDatasview.Init();
+</script>
+}
+@{
+	InspectionDrawingDatas_view.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	InspectionDrawingDatas_view.Page_Terminate();
+}

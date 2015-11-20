@@ -1,0 +1,226 @@
+@functions {
+
+	//
+	// Page class for ChecklistTemplates
+	//
+	public class cChecklistTemplates_delete<C, S> : cChecklistTemplates_delete_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// ChecklistTemplates_delete	
+	public static cChecklistTemplates_delete<cConnection, cAdvancedSecurity> ChecklistTemplates_delete {
+		get { return (cChecklistTemplates_delete<cConnection, cAdvancedSecurity>)ew_PageData["ChecklistTemplates_delete"]; }
+		set { ew_PageData["ChecklistTemplates_delete"] = value; }
+	}
+
+	// CurrentPage
+	public static cChecklistTemplates_delete<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cChecklistTemplates_delete<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cChecklistTemplates_delete<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create detail grid object (Checklists_grid)
+	if (Checklists_grid == null) {
+		Checklists_grid = new cChecklists_grid<cConnection, cAdvancedSecurity>();
+	}
+
+	// Create detail grid object (ChecklistItemTemplates_grid)
+	if (ChecklistItemTemplates_grid == null) {
+		ChecklistItemTemplates_grid = new cChecklistItemTemplates_grid<cConnection, cAdvancedSecurity>();
+	}
+
+	// Create page object
+	if (ChecklistTemplates_delete == null) {
+		ChecklistTemplates_delete = new cChecklistTemplates_delete<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	ChecklistTemplates_delete.Page_Init();
+
+	// Page main
+	ChecklistTemplates_delete.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	ChecklistTemplates_delete.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var ChecklistTemplates_delete = new ew_Page("ChecklistTemplates_delete");
+ChecklistTemplates_delete.PageID = "delete"; // Page ID
+var EW_PAGE_ID = ChecklistTemplates_delete.PageID; // For backward compatibility
+
+// Form object
+var fChecklistTemplatesdelete = new ew_Form("fChecklistTemplatesdelete");
+
+// Form_CustomValidate event
+fChecklistTemplatesdelete.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fChecklistTemplatesdelete.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+// Form object for search
+
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+@{
+
+	// Load records for display
+	ChecklistTemplates_delete.Recordset = ChecklistTemplates_delete.LoadRecordset();
+	if (ChecklistTemplates_delete.TotalRecs <= 0) { // No record found, exit
+		if (ChecklistTemplates_delete.Recordset != null) {
+			ChecklistTemplates_delete.Recordset.Close();
+			ChecklistTemplates_delete.Recordset.Dispose();
+		}
+		ChecklistTemplates_delete.Page_Terminate("ChecklistTemplateslist.cshtml"); // Return to list
+	}
+}
+<div class="ewToolbar">
+@if (ew_Empty(ChecklistTemplates.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(ChecklistTemplates.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	ChecklistTemplates_delete.ShowPageHeader();
+}
+@{
+	ChecklistTemplates_delete.ShowMessage();
+}
+<form name="fChecklistTemplatesdelete" id="fChecklistTemplatesdelete" class="form-inline ewForm ewDeleteForm" action="@ew_CurrentPage()" method="post">
+<br>
+@if (ChecklistTemplates_delete.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@ChecklistTemplates_delete.Token">
+}
+<input type="hidden" name="t" value="ChecklistTemplates">
+<input type="hidden" name="a_delete" id="a_delete" value="D">
+@foreach (object key in ChecklistTemplates_delete.RecKeys) {
+	var keyvalue = Information.IsArray(key) ? String.Join(EW_COMPOSITE_KEY_SEPARATOR, (string[])key) : Convert.ToString(key);
+<input type="hidden" name="key_m" value="@keyvalue">
+}
+<div class="ewGrid">
+<div class="@((ew_IsResponsiveLayout()) ? "table-responsive" : "ewGridMiddlePanel")">
+<table class="table ewTable">
+@ChecklistTemplates.TableCustomInnerHtml
+	<thead>
+	<tr class="ewTableHeader">
+@if (ChecklistTemplates.Id.Visible) { // Id (begin)
+		<th><span id="elh_ChecklistTemplates_Id" class="ChecklistTemplates_Id">@Html.Raw(ChecklistTemplates.Id.FldCaption)</span></th>
+} @* Id.Visible (end) *@
+@if (ChecklistTemplates.zName.Visible) { // Name (begin)
+		<th><span id="elh_ChecklistTemplates_zName" class="ChecklistTemplates_zName">@Html.Raw(ChecklistTemplates.zName.FldCaption)</span></th>
+} @* zName.Visible (end) *@
+	</tr>
+	</thead>
+	<tbody>
+@{
+ChecklistTemplates_delete.RecCnt = 0;
+}
+@while (ChecklistTemplates_delete.Recordset.Read()) {
+	ChecklistTemplates_delete.RecCnt++;
+	ChecklistTemplates_delete.RowCnt++;
+
+	// Set row properties
+	ChecklistTemplates.ResetAttrs();
+	ChecklistTemplates.RowType = EW_ROWTYPE_VIEW; // View
+
+	// Get the field contents
+	ChecklistTemplates_delete.LoadRowValues(ChecklistTemplates_delete.Recordset);
+
+	// Render row
+	ChecklistTemplates_delete.RenderRow();
+	<tr @(Html.Raw(ChecklistTemplates.RowAttributes))>
+@if (ChecklistTemplates.Id.Visible) { // Id (begin)
+		<td @(Html.Raw(ChecklistTemplates.Id.CellAttributes))>
+<span id="el@(ChecklistTemplates_delete.RowCnt)_ChecklistTemplates_Id" class="form-group ChecklistTemplates_Id">
+<span @(Html.Raw(ChecklistTemplates.Id.ViewAttributes))>
+@Html.Raw(ChecklistTemplates.Id.ListViewValue)</span>
+</span>
+</td>
+} @* Id.Visible (end) *@
+@if (ChecklistTemplates.zName.Visible) { // Name (begin)
+		<td @(Html.Raw(ChecklistTemplates.zName.CellAttributes))>
+<span id="el@(ChecklistTemplates_delete.RowCnt)_ChecklistTemplates_zName" class="form-group ChecklistTemplates_zName">
+<span @(Html.Raw(ChecklistTemplates.zName.ViewAttributes))>
+@Html.Raw(ChecklistTemplates.zName.ListViewValue)</span>
+</span>
+</td>
+} @* zName.Visible (end) *@
+	</tr>
+}
+@{
+	ChecklistTemplates_delete.Recordset.Close();
+	ChecklistTemplates_delete.Recordset.Dispose();
+}
+</tbody>
+</table>
+</div>
+</div>
+<div class="btn-group ewButtonGroup">
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("DeleteBtn"))</button>
+</div>
+</form>
+<script type="text/javascript">
+fChecklistTemplatesdelete.Init();
+</script>
+@{
+	ChecklistTemplates_delete.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	ChecklistTemplates_delete.Page_Terminate();
+}

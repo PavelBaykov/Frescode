@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<configuration date="2015/11/20" author="e.World Technology Ltd.">
+<project id="{6EA87CB0-ED50-4AE1-9743-D14163EABB5A}" file="C:\Users\Pavel.Baykov\Desktop\FR\Frescode\ASP .net MAKER\Admin_new.agx" name="Admin_new" product="ASPNETMaker" version="12.0" datetime="2015/11/20 07:11:17" languagefolder="aspxlang" userlevel="">
+<table id="ChecklistItems" name="ChecklistItems" caption="Checklist Items" userlevel="" priv="1"/>
+<table id="ChecklistItemTemplates" name="ChecklistItemTemplates" caption="Checklist Item Templates" userlevel="" priv="1"/>
+<table id="Checklists" name="Checklists" caption="Checklists" userlevel="" priv="1"/>
+<table id="ChecklistTemplates" name="ChecklistTemplates" caption="Checklist Templates" userlevel="" priv="1"/>
+<table id="Customers" name="Customers" caption="Customers" userlevel="" priv="1"/>
+<table id="DefectionSpots" name="DefectionSpots" caption="Defection Spots" userlevel="" priv="1"/>
+<table id="InspectionDrawingDatas" name="InspectionDrawingDatas" caption="Inspection Drawing Datas" userlevel="" priv="1"/>
+<table id="InspectionDrawings" name="InspectionDrawings" caption="Inspection Drawings" userlevel="" priv="1"/>
+<table id="PictureDatas" name="PictureDatas" caption="Picture Datas" userlevel="" priv="1"/>
+<table id="Pictures" name="Pictures" caption="Pictures" userlevel="" priv="1"/>
+<table id="Projects" name="Projects" caption="Projects" userlevel="" priv="1"/>
+<table id="UserProjects" name="UserProjects" caption="User Projects" userlevel="" priv="1"/>
+<table id="AspNetRoles" name="AspNetRoles" caption="Asp Net Roles" userlevel="" priv="1"/>
+<table id="AspNetUserClaims" name="AspNetUserClaims" caption="Asp Net User Claims" userlevel="" priv="1"/>
+<table id="AspNetUserLogins" name="AspNetUserLogins" caption="Asp Net User Logins" userlevel="" priv="1"/>
+<table id="AspNetUserRoles" name="AspNetUserRoles" caption="Asp Net User Roles" userlevel="" priv="1"/>
+<table id="AspNetUsers" name="AspNetUsers" caption="Asp Net Users" userlevel="" priv="1"/>
+</project></configuration>
