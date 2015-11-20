@@ -1,0 +1,180 @@
+@{
+	if (Language == null) {
+		Language = new cLanguage();
+	}
+
+	// Responsive layout
+	if (ew_IsResponsiveLayout()) {
+		gsHeaderRowClass = "hidden-xs ewHeaderRow";
+		gsMenuColumnClass = "hidden-xs ewMenuColumn";
+		gsSiteTitleClass = "hidden-xs ewSiteTitle";
+	} else {
+		gsHeaderRowClass = "ewHeaderRow";
+		gsMenuColumnClass = "ewMenuColumn";
+		gsSiteTitleClass = "ewSiteTitle";
+	}
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>@Language.ProjectPhrase("BodyTitle")</title>
+	<base href="@ew_CurrentPath(false)">
+@{
+	<link rel="stylesheet" type="text/css" href="@(EW_RELATIVE_PATH)bootstrap3/css/@ew_CssFile("bootstrap.css")">
+	<!-- Optional theme -->
+	<link rel="stylesheet" type="text/css" href="@(EW_RELATIVE_PATH)bootstrap3/css/@ew_CssFile("bootstrap-theme.css")">
+}
+@{
+	<link rel="stylesheet" type="text/css" href="@(EW_RELATIVE_PATH)aspxcss/jquery.fileupload-ui.css">
+	<link rel="stylesheet" type="text/css" href="@(EW_RELATIVE_PATH)colorbox/colorbox.css">
+}
+@{
+	if (ew_IsResponsiveLayout()) {
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	}
+	<link rel="stylesheet" type="text/css" href="@(EW_RELATIVE_PATH)@ew_CssFile(EW_PROJECT_STYLESHEET_FILENAME)">
+	if (gsCustomExport == "pdf" && ew_NotEmpty(EW_PDF_STYLESHEET_FILENAME)) { 
+		<link rel="stylesheet" type="text/css" href="@(EW_RELATIVE_PATH)@EW_PDF_STYLESHEET_FILENAME">
+	}	
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)@ew_jQueryFile("jquery-%v.min.js")"></script>
+}
+@{
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)bootstrap3/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)aspxjs/typeahead.bundle.min.js"></script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)jqueryfileupload/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)jqueryfileupload/load-image.min.js"></script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)jqueryfileupload/jqueryfileupload.min.js"></script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)colorbox/jquery.colorbox-min.js"></script>
+	<script type="text/javascript">
+	var EW_LANGUAGE_ID = "@gsLanguage";
+	var EW_DATE_SEPARATOR = "/" || "/"; // Default date separator
+	var EW_DECIMAL_POINT = "@EW_DECIMAL_POINT";
+	var EW_THOUSANDS_SEP = "@EW_THOUSANDS_SEP";
+
+	// Ajax settings
+	var EW_LOOKUP_FILE_NAME = "ewlookup12.cshtml"; // Lookup file name
+	var EW_AUTO_SUGGEST_MAX_ENTRIES = @EW_AUTO_SUGGEST_MAX_ENTRIES; // Auto-Suggest max entries
+
+	// Common JavaScript messages
+	var EW_DISABLE_BUTTON_ON_SUBMIT = true;
+	var EW_IMAGE_FOLDER = "aspximages/"; // Image folder
+	var EW_UPLOAD_URL = "@EW_UPLOAD_URL"; // Upload url
+	var EW_UPLOAD_THUMBNAIL_WIDTH = @EW_UPLOAD_THUMBNAIL_WIDTH; // Upload thumbnail width
+	var EW_UPLOAD_THUMBNAIL_HEIGHT = @EW_UPLOAD_THUMBNAIL_HEIGHT; // Upload thumbnail height
+	var EW_MULTIPLE_UPLOAD_SEPARATOR = "@EW_MULTIPLE_UPLOAD_SEPARATOR"; // Upload multiple separator
+	var EW_USE_JAVASCRIPT_MESSAGE = false;
+	var EW_IS_MOBILE = @((ew_IsMobile()) ? "true" : "false");
+	var EW_PROJECT_STYLESHEET_FILENAME = "@EW_PROJECT_STYLESHEET_FILENAME"; // Project style sheet
+	var EW_PDF_STYLESHEET_FILENAME = "@EW_PDF_STYLESHEET_FILENAME"; // Pdf style sheet
+	var EW_TOKEN = "@gsToken";
+	var EW_CSS_FLIP = @((EW_CSS_FLIP) ? "true" : "false");
+	var EW_USE_COLORBOX = @((EW_USE_COLORBOX) ? "true" : "false");
+	</script>
+}
+@{
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)aspxjs/jsrender.min.js"></script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)aspxjs/ewx12.js"></script>
+}
+@{	
+	<script type="text/javascript">
+	@(Html.Raw(Language.ToJSON()))
+	</script>
+	<script type="text/javascript" src="@(EW_RELATIVE_PATH)aspxjs/userfn12.js"></script>
+	<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+	</script>
+}
+<meta name="generator" content="ASP.NET Maker v12.0.4" />
+</head>
+<body>
+@if (true) {
+	if (!gbSkipHeaderFooter) {
+		<div class="ewLayout">
+			<!-- header (begin) --><!-- *** Note: Only licensed users are allowed to change the logo *** -->
+			<div id="ewHeaderRow" class="@gsHeaderRowClass"><img src="@(EW_RELATIVE_PATH)aspximages/aspnetmkrlogo1.png" alt=""></div>
+			@if (ew_IsResponsiveLayout()) { 
+				<nav id="ewMobileMenu" role="navigation" class="navbar navbar-default visible-xs hidden-print">
+					<div class="container-fluid"><!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button data-target="#ewMenu" data-toggle="collapse" class="navbar-toggle" type="button">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="@(ew_NotEmpty(EW_MENUBAR_BRAND_HYPERLINK) ? EW_MENUBAR_BRAND_HYPERLINK : "#")">@(ew_NotEmpty(EW_MENUBAR_BRAND) ? EW_MENUBAR_BRAND : Language.ProjectPhrase("BodyTitle"))</a>
+						</div>
+						<div id="ewMenu" class="collapse navbar-collapse" style="height: auto;"><!-- Begin Main Menu -->
+							@{
+								RootMenu = new cMenu("MobileMenu");
+								RootMenu.MenuBarClassName = "";
+								RootMenu.MenuClassName = "nav navbar-nav";
+								RootMenu.SubMenuClassName = "dropdown-menu";
+								RootMenu.SubMenuDropdownImage = "";
+								RootMenu.SubMenuDropdownIconClassName = "icon-arrow-down";
+								RootMenu.MenuDividerClassName = "divider";
+								RootMenu.MenuItemClassName = "dropdown";
+								RootMenu.SubMenuItemClassName = "dropdown";
+								RootMenu.MenuActiveItemClassName = "active";
+								RootMenu.SubMenuActiveItemClassName = "active";
+								RootMenu.MenuRootGroupTitleAsSubMenu = true;
+								RootMenu.MenuLinkDropdownClass = "ewDropdown";
+								RootMenu.MenuLinkClassName = "icon-arrow-right";
+							}
+							@RenderPage("ewmobilemenu.cshtml")
+						</div><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+				</nav>	
+			}
+		<!-- header (end) -->
+		<!-- content (begin) -->
+		<div id="ewContentTable" class="ewContentTable">
+			<div id="ewContentRow">
+				<div id="ewMenuColumn" class="@gsMenuColumnClass">
+					<!-- left column (begin) -->
+					<div class="ewMenu">
+					@RenderPage("ewmenu.cshtml")
+					</div>
+					<!-- left column (end) -->
+				</div>
+				<div id="ewContentColumn" class="ewContentColumn">
+				<!-- right column (begin) -->
+					<h4 class="@gsSiteTitleClass">@Html.Raw(Language.ProjectPhrase("BodyTitle"))</h4>
+					@RenderBody()
+				<!-- right column (end) -->
+		    	</div>	
+			</div>
+		</div>
+		<!-- content (end) -->
+		<!-- footer (begin) --><!-- *** Note: Only licensed users are allowed to remove or change the following copyright statement. *** -->
+		<div id="ewFooterRow" class="ewFooterRow">	
+			<div class="ewFooterText">@Html.Raw(Language.ProjectPhrase("FooterText"))</div>
+			<!-- Place other links, for example, disclaimer, here -->		
+		</div>
+		<!-- footer (end) -->
+	</div>
+	} else { // gbSkipHeaderFooter
+		@RenderBody()
+	}
+} else {
+	@RenderBody()
+}
+@if (true) {
+<!-- search dialog -->
+<div id="ewSearchDialog" class="modal"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h4 class="modal-title"></h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-primary ewButton">@Html.Raw(Language.Phrase("Search"))</button><button type="button" class="btn btn-default ewButton" data-dismiss="modal" aria-hidden="true">@Html.Raw(Language.Phrase("CancelBtn"))</button></div></div></div></div>
+<!-- message box -->
+<div id="ewMsgBox" class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-primary ewButton" data-dismiss="modal" aria-hidden="true">@Html.Raw(Language.Phrase("MessageOK"))</button></div></div></div></div>
+<!-- tooltip -->
+<div id="ewTooltip"></div>
+}
+@if (true) {
+<script type="text/javascript">
+
+// Write your global startup script here
+// document.write("page loaded");
+
+</script>
+}
+</body>
+</html>

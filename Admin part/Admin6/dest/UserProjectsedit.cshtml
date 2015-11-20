@@ -1,0 +1,219 @@
+@functions {
+
+	//
+	// Page class for UserProjects
+	//
+	public class cUserProjects_edit<C, S> : cUserProjects_edit_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// UserProjects_edit	
+	public static cUserProjects_edit<cConnection, cAdvancedSecurity> UserProjects_edit {
+		get { return (cUserProjects_edit<cConnection, cAdvancedSecurity>)ew_PageData["UserProjects_edit"]; }
+		set { ew_PageData["UserProjects_edit"] = value; }
+	}
+
+	// CurrentPage
+	public static cUserProjects_edit<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cUserProjects_edit<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cUserProjects_edit<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (UserProjects_edit == null) {
+		UserProjects_edit = new cUserProjects_edit<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	UserProjects_edit.Page_Init();
+
+	// Page main
+	UserProjects_edit.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	UserProjects_edit.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var UserProjects_edit = new ew_Page("UserProjects_edit");
+UserProjects_edit.PageID = "edit"; // Page ID
+var EW_PAGE_ID = UserProjects_edit.PageID; // For backward compatibility
+
+// Form object
+var fUserProjectsedit = new ew_Form("fUserProjectsedit");
+
+// Validate form
+fUserProjectsedit.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+		elm = this.GetElements("x" + infix + "_User_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(UserProjects.User_Id.ReqErrMsg.Replace("%s", UserProjects.User_Id.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Project_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(UserProjects.Project_Id.ReqErrMsg.Replace("%s", UserProjects.Project_Id.FldCaption))))");
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fUserProjectsedit.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fUserProjectsedit.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fUserProjectsedit.Lists["x_User_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fUserProjectsedit.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(UserProjects.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(UserProjects.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	UserProjects_edit.ShowPageHeader();
+}
+@{
+	UserProjects_edit.ShowMessage();
+}
+<form name="fUserProjectsedit" id="fUserProjectsedit" class="form-horizontal ewForm ewEditForm" action="@ew_CurrentPage()" method="post">
+@if (UserProjects_edit.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@UserProjects_edit.Token">
+} 
+<input type="hidden" name="t" value="UserProjects">
+<input type="hidden" name="a_edit" id="a_edit" value="U">
+<div>
+@if (UserProjects.User_Id.Visible) { // User_Id.Visible (begin)
+	<div id="r_User_Id" class="form-group">
+		<label id="elh_UserProjects_User_Id" for="x_User_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(UserProjects.User_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(UserProjects.User_Id.CellAttributes))>
+<span id="el_UserProjects_User_Id">
+<span @(Html.Raw(UserProjects.User_Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(UserProjects.User_Id.EditValue)</p></span>
+</span>
+<input type="hidden" data-field="x_User_Id" name="x_User_Id" id="x_User_Id" value="@(UserProjects.User_Id.CurrentValue)">
+@Html.Raw(UserProjects.User_Id.CustomMsg)</div></div>
+	</div>
+} @* User_Id.Visible (end) *@ 
+@if (UserProjects.Project_Id.Visible) { // Project_Id.Visible (begin)
+	<div id="r_Project_Id" class="form-group">
+		<label id="elh_UserProjects_Project_Id" for="x_Project_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(UserProjects.Project_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(UserProjects.Project_Id.CellAttributes))>
+<span id="el_UserProjects_Project_Id">
+<span @(Html.Raw(UserProjects.Project_Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(UserProjects.Project_Id.EditValue)</p></span>
+</span>
+<input type="hidden" data-field="x_Project_Id" name="x_Project_Id" id="x_Project_Id" value="@(UserProjects.Project_Id.CurrentValue)">
+@Html.Raw(UserProjects.Project_Id.CustomMsg)</div></div>
+	</div>
+} @* Project_Id.Visible (end) *@ 
+</div>
+@if (UserProjects_edit.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	UserProjects_edit.Recordset.Close();
+	UserProjects_edit.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+@{
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("SaveBtn"))</button>
+}
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fUserProjectsedit.Init();
+</script>
+@{
+	UserProjects_edit.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	UserProjects_edit.Page_Terminate();
+}

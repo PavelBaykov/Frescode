@@ -1,0 +1,55 @@
+@functions {
+
+	//
+	// Page class (blobview)
+	//
+	public class cInspectionDrawingDatas_Data_blobview<C, S> : cInspectionDrawingDatas_Data_blobview_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		//
+		// Server events
+		//
+
+	}
+
+	// InspectionDrawingDatas_Data_blobview
+	public static cInspectionDrawingDatas_Data_blobview<cConnection, cAdvancedSecurity> InspectionDrawingDatas_Data_blobview {
+		get { return (cInspectionDrawingDatas_Data_blobview<cConnection, cAdvancedSecurity>)ew_PageData["InspectionDrawingDatas_Data_blobview"]; }
+		set { ew_PageData["InspectionDrawingDatas_Data_blobview"] = value; }
+	}
+
+	// CurrentPage
+	public static cInspectionDrawingDatas_Data_blobview<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cInspectionDrawingDatas_Data_blobview<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cInspectionDrawingDatas_Data_blobview<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (InspectionDrawingDatas_Data_blobview == null) {
+		InspectionDrawingDatas_Data_blobview = new cInspectionDrawingDatas_Data_blobview<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	InspectionDrawingDatas_Data_blobview.Page_Init();
+
+	// Page main
+	InspectionDrawingDatas_Data_blobview.Page_Main();
+}
+@{
+	InspectionDrawingDatas_Data_blobview.Page_Terminate();
+}

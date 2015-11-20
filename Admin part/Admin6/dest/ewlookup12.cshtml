@@ -1,0 +1,23 @@
+@functions {
+
+	// lookup
+	public static clookup<cConnection> lookup;
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (lookup == null) {
+		lookup = new clookup<cConnection>();
+	}
+
+	// Page main
+	lookup.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+}

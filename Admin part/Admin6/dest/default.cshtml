@@ -1,0 +1,58 @@
+@functions {
+
+	//
+	// Page class (default)
+	//
+	public class c_default<C, S> : c_default_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		//
+		// Server events
+		//
+
+	}
+
+	// _default
+	public static c_default<cConnection, cAdvancedSecurity> _default {
+		get { return (c_default<cConnection, cAdvancedSecurity>)ew_PageData["_default"]; }
+		set { ew_PageData["_default"] = value; }
+	}
+
+	// CurrentPage
+	public static c_default<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (c_default<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static c_default<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (_default == null) {
+		_default = new c_default<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	_default.Page_Init();
+
+	// Page main
+	_default.Page_Main();
+}
+@{
+	_default.ShowMessage();
+}
+@{
+	_default.Page_Terminate();
+}

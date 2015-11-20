@@ -1,0 +1,260 @@
+@functions {
+
+	//
+	// Page class for Projects
+	//
+	public class cProjects_view<C, S> : cProjects_view_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// Projects_view	
+	public static cProjects_view<cConnection, cAdvancedSecurity> Projects_view {
+		get { return (cProjects_view<cConnection, cAdvancedSecurity>)ew_PageData["Projects_view"]; }
+		set { ew_PageData["Projects_view"] = value; }
+	}
+
+	// CurrentPage
+	public static cProjects_view<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cProjects_view<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cProjects_view<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (Projects_view == null) {
+		Projects_view = new cProjects_view<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	Projects_view.Page_Init();
+
+	// Page main
+	Projects_view.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	Projects_view.Page_Render();
+}
+@if (ew_Empty(Projects.Export)) {
+<script type="text/javascript">
+
+// Page object
+var Projects_view = new ew_Page("Projects_view");
+Projects_view.PageID = "view"; // Page ID
+var EW_PAGE_ID = Projects_view.PageID; // For backward compatibility
+
+// Form object
+var fProjectsview = new ew_Form("fProjectsview");
+
+// Form_CustomValidate event
+fProjectsview.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fProjectsview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fProjectsview.Lists["x_ChangedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectsview.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectsview.Lists["x_Owner_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectsview.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(Projects.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(Projects.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+	@{ 
+		Projects_view.ExportOptions.Render("body");
+		foreach (var kvp in Projects_view.OtherOptions) {
+			kvp.Value.Render("body");
+		}
+	}
+@if (ew_Empty(Projects.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+}
+@{
+	Projects_view.ShowPageHeader();
+}
+@{
+	Projects_view.ShowMessage();
+}
+<form name="fProjectsview" id="fProjectsview" class="form-inline ewForm ewViewForm" method="post">
+@if (Projects_view.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@Projects_view.Token">
+}
+<input type="hidden" name="t" value="Projects">
+<table  class="table table-bordered table-striped ewViewTable">
+@if (Projects.Id.Visible) { @* Projects.Id.Visible (begin) *@
+	<tr id="r_Id">
+		<td><span id="elh_Projects_Id">@Html.Raw(Projects.Id.FldCaption)</span></td>
+		<td @Html.Raw(Projects.Id.CellAttributes)>
+<span id="el_Projects_Id" class="form-group">
+<span @(Html.Raw(Projects.Id.ViewAttributes))>
+@Html.Raw(Projects.Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.Id.Visible (end) *@
+@if (Projects.zName.Visible) { @* Projects.zName.Visible (begin) *@
+	<tr id="r_zName">
+		<td><span id="elh_Projects_zName">@Html.Raw(Projects.zName.FldCaption)</span></td>
+		<td @Html.Raw(Projects.zName.CellAttributes)>
+<span id="el_Projects_zName" class="form-group">
+<span @(Html.Raw(Projects.zName.ViewAttributes))>
+@Html.Raw(Projects.zName.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.zName.Visible (end) *@
+@if (Projects.DateCreated.Visible) { @* Projects.DateCreated.Visible (begin) *@
+	<tr id="r_DateCreated">
+		<td><span id="elh_Projects_DateCreated">@Html.Raw(Projects.DateCreated.FldCaption)</span></td>
+		<td @Html.Raw(Projects.DateCreated.CellAttributes)>
+<span id="el_Projects_DateCreated" class="form-group">
+<span @(Html.Raw(Projects.DateCreated.ViewAttributes))>
+@Html.Raw(Projects.DateCreated.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.DateCreated.Visible (end) *@
+@if (Projects.DateOfLastChange.Visible) { @* Projects.DateOfLastChange.Visible (begin) *@
+	<tr id="r_DateOfLastChange">
+		<td><span id="elh_Projects_DateOfLastChange">@Html.Raw(Projects.DateOfLastChange.FldCaption)</span></td>
+		<td @Html.Raw(Projects.DateOfLastChange.CellAttributes)>
+<span id="el_Projects_DateOfLastChange" class="form-group">
+<span @(Html.Raw(Projects.DateOfLastChange.ViewAttributes))>
+@Html.Raw(Projects.DateOfLastChange.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.DateOfLastChange.Visible (end) *@
+@if (Projects.Status.Visible) { @* Projects.Status.Visible (begin) *@
+	<tr id="r_Status">
+		<td><span id="elh_Projects_Status">@Html.Raw(Projects.Status.FldCaption)</span></td>
+		<td @Html.Raw(Projects.Status.CellAttributes)>
+<span id="el_Projects_Status" class="form-group">
+<span @(Html.Raw(Projects.Status.ViewAttributes))>
+@Html.Raw(Projects.Status.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.Status.Visible (end) *@
+@if (Projects.ChangedBy_Id.Visible) { @* Projects.ChangedBy_Id.Visible (begin) *@
+	<tr id="r_ChangedBy_Id">
+		<td><span id="elh_Projects_ChangedBy_Id">@Html.Raw(Projects.ChangedBy_Id.FldCaption)</span></td>
+		<td @Html.Raw(Projects.ChangedBy_Id.CellAttributes)>
+<span id="el_Projects_ChangedBy_Id" class="form-group">
+<span @(Html.Raw(Projects.ChangedBy_Id.ViewAttributes))>
+@Html.Raw(Projects.ChangedBy_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.ChangedBy_Id.Visible (end) *@
+@if (Projects.CreatedBy_Id.Visible) { @* Projects.CreatedBy_Id.Visible (begin) *@
+	<tr id="r_CreatedBy_Id">
+		<td><span id="elh_Projects_CreatedBy_Id">@Html.Raw(Projects.CreatedBy_Id.FldCaption)</span></td>
+		<td @Html.Raw(Projects.CreatedBy_Id.CellAttributes)>
+<span id="el_Projects_CreatedBy_Id" class="form-group">
+<span @(Html.Raw(Projects.CreatedBy_Id.ViewAttributes))>
+@Html.Raw(Projects.CreatedBy_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.CreatedBy_Id.Visible (end) *@
+@if (Projects.Owner_Id.Visible) { @* Projects.Owner_Id.Visible (begin) *@
+	<tr id="r_Owner_Id">
+		<td><span id="elh_Projects_Owner_Id">@Html.Raw(Projects.Owner_Id.FldCaption)</span></td>
+		<td @Html.Raw(Projects.Owner_Id.CellAttributes)>
+<span id="el_Projects_Owner_Id" class="form-group">
+<span @(Html.Raw(Projects.Owner_Id.ViewAttributes))>
+@Html.Raw(Projects.Owner_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.Owner_Id.Visible (end) *@
+@if (Projects.Customer_Id.Visible) { @* Projects.Customer_Id.Visible (begin) *@
+	<tr id="r_Customer_Id">
+		<td><span id="elh_Projects_Customer_Id">@Html.Raw(Projects.Customer_Id.FldCaption)</span></td>
+		<td @Html.Raw(Projects.Customer_Id.CellAttributes)>
+<span id="el_Projects_Customer_Id" class="form-group">
+<span @(Html.Raw(Projects.Customer_Id.ViewAttributes))>
+@Html.Raw(Projects.Customer_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Projects.Customer_Id.Visible (end) *@
+</table>
+@if (Projects_view.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	Projects_view.Recordset.Close();
+	Projects_view.Recordset.Dispose();
+}
+</form>
+@if (ew_Empty(Projects.Export)) {
+<script type="text/javascript">
+fProjectsview.Init();
+</script>
+}
+@{
+	Projects_view.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(Projects.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	Projects_view.Page_Terminate();
+}
