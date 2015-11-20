@@ -133,12 +133,11 @@ namespace Frescode.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ProjectsList", "Project");
         }
 
        
@@ -189,7 +188,7 @@ namespace Frescode.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ProjectsList", "Project");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
