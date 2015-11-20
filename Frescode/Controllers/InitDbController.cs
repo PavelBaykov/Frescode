@@ -23,8 +23,6 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> InitDb()
         {
-            //DROP DB BEFORE USE!!!
-
             var user1 = new User
             {
                 FirstName = "Pavel",
@@ -238,9 +236,11 @@ namespace Frescode.Controllers
             checklistItemTemplate2.Descendants.Add(checklistItem2);
             checklist1.Items.Add(checklistItem1);
             checklist1.Items.Add(checklistItem2);
+            Context.ChecklistItems.Add(checklistItem1);
+            Context.ChecklistItems.Add(checklistItem2);
 
-            checklist2.ChecklistInit();
-            checklist3.ChecklistInit();
+            checklist2.ChecklistInit(Context);
+            checklist3.ChecklistInit(Context);
 
             var defectSpot1 = new DefectionSpot
             {

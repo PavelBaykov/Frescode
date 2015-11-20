@@ -1,0 +1,429 @@
+@functions {
+
+	//
+	// Page class for InspectionDrawings
+	//
+	public class cInspectionDrawings_list<C, S> : cInspectionDrawings_list_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// InspectionDrawings_list	
+	public static cInspectionDrawings_list<cConnection, cAdvancedSecurity> InspectionDrawings_list {
+		get { return (cInspectionDrawings_list<cConnection, cAdvancedSecurity>)ew_PageData["InspectionDrawings_list"]; }
+		set { ew_PageData["InspectionDrawings_list"] = value; }
+	}
+
+	// CurrentPage
+	public static cInspectionDrawings_list<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cInspectionDrawings_list<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cInspectionDrawings_list<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (InspectionDrawings_list == null) {
+		InspectionDrawings_list = new cInspectionDrawings_list<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	InspectionDrawings_list.Page_Init();
+
+	// Page main
+	InspectionDrawings_list.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	InspectionDrawings_list.Page_Render();
+}
+@if (ew_Empty(InspectionDrawings.Export)) {
+<script type="text/javascript">
+
+// Page object
+var InspectionDrawings_list = new ew_Page("InspectionDrawings_list");
+InspectionDrawings_list.PageID = "list"; // Page ID
+var EW_PAGE_ID = InspectionDrawings_list.PageID; // For backward compatibility
+
+// Form object
+var fInspectionDrawingslist = new ew_Form("fInspectionDrawingslist");
+fInspectionDrawingslist.FormKeyCountName = '@InspectionDrawings_list.FormKeyCountName';
+
+// Form_CustomValidate event
+fInspectionDrawingslist.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fInspectionDrawingslist.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fInspectionDrawingslist.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fInspectionDrawingslist.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(InspectionDrawings.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(InspectionDrawings.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (InspectionDrawings_list.TotalRecs > 0 && InspectionDrawings_list.ExportOptions.Visible) { 
+	InspectionDrawings_list.ExportOptions.Render("body");
+}
+@if (ew_Empty(InspectionDrawings.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+<div class="clearfix"></div>
+</div>
+}
+@{
+		if (InspectionDrawings_list.Recordset == null) { // ASPX
+			InspectionDrawings_list.Recordset = InspectionDrawings_list.LoadRecordset();
+		}
+		InspectionDrawings_list.StartRec = 1;
+		if (InspectionDrawings_list.DisplayRecs <= 0 || (ew_NotEmpty(InspectionDrawings.Export) && InspectionDrawings.ExportAll)) { // Display all records
+			InspectionDrawings_list.DisplayRecs = InspectionDrawings_list.TotalRecs;
+		}
+		if (!(ew_NotEmpty(InspectionDrawings.Export) && InspectionDrawings.ExportAll)) {
+			InspectionDrawings_list.SetUpStartRec(); // Set up start record position
+		}
+
+		// Set no record found message
+		if (InspectionDrawings.CurrentAction == "" && InspectionDrawings_list.TotalRecs == 0) {
+			if (InspectionDrawings_list.SearchWhere == "0=101") {
+				InspectionDrawings_list.WarningMessage = Language.Phrase("EnterSearchCriteria");
+			} else {
+				InspectionDrawings_list.WarningMessage = Language.Phrase("NoRecord");
+			}
+		}
+	InspectionDrawings_list.RenderOtherOptions();
+}
+@{
+	InspectionDrawings_list.ShowPageHeader();
+}
+@{
+	InspectionDrawings_list.ShowMessage();
+}
+@if (InspectionDrawings_list.TotalRecs > 0 || InspectionDrawings.CurrentAction != "") { 
+<div class="ewGrid">
+<form name="fInspectionDrawingslist" id="fInspectionDrawingslist" class="form-inline ewForm ewListForm" action="@ew_CurrentPage()" method="post">
+@if (InspectionDrawings_list.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@InspectionDrawings_list.Token">
+}
+<input type="hidden" name="t" value="InspectionDrawings">
+<div id="gmp_InspectionDrawings" class="@((ew_IsResponsiveLayout()) ? "table-responsive ewGridMiddlePanel" : "ewGridMiddlePanel")">
+@if (InspectionDrawings_list.TotalRecs > 0) { // Begin If TotalRecs > 0
+<table id="tbl_InspectionDrawingslist" class="table ewTable">
+@InspectionDrawings.TableCustomInnerHtml
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+@{
+
+	// Render list options
+	InspectionDrawings_list.RenderListOptions();
+
+	// Render list options (header, left)
+	InspectionDrawings_list.ListOptions.Render("header", "left");
+}
+@if (InspectionDrawings.Id.Visible) { // Id.Visible (begin)
+	if (InspectionDrawings.SortUrl(InspectionDrawings.Id) == "") {
+		<th data-name="Id"><div id="elh_InspectionDrawings_Id" class="InspectionDrawings_Id"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Id"><div class="ewPointer" onclick="ew_Sort(event,'@InspectionDrawings.SortUrl(InspectionDrawings.Id)',1);"><div id="elh_InspectionDrawings_Id" class="InspectionDrawings_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.Id.FldCaption)</span><span class="ewTableHeaderSort">@if (InspectionDrawings.Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (InspectionDrawings.Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Id.Visible (end) *@		
+@if (InspectionDrawings.Size.Visible) { // Size.Visible (begin)
+	if (InspectionDrawings.SortUrl(InspectionDrawings.Size) == "") {
+		<th data-name="Size"><div id="elh_InspectionDrawings_Size" class="InspectionDrawings_Size"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.Size.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Size"><div class="ewPointer" onclick="ew_Sort(event,'@InspectionDrawings.SortUrl(InspectionDrawings.Size)',1);"><div id="elh_InspectionDrawings_Size" class="InspectionDrawings_Size">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.Size.FldCaption)</span><span class="ewTableHeaderSort">@if (InspectionDrawings.Size.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (InspectionDrawings.Size.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Size.Visible (end) *@		
+@if (InspectionDrawings.DateCreated.Visible) { // DateCreated.Visible (begin)
+	if (InspectionDrawings.SortUrl(InspectionDrawings.DateCreated) == "") {
+		<th data-name="DateCreated"><div id="elh_InspectionDrawings_DateCreated" class="InspectionDrawings_DateCreated"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.DateCreated.FldCaption)</div></div></th>
+	} else {
+		<th data-name="DateCreated"><div class="ewPointer" onclick="ew_Sort(event,'@InspectionDrawings.SortUrl(InspectionDrawings.DateCreated)',1);"><div id="elh_InspectionDrawings_DateCreated" class="InspectionDrawings_DateCreated">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (InspectionDrawings.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (InspectionDrawings.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* DateCreated.Visible (end) *@		
+@if (InspectionDrawings.InspectionDrawingDataId.Visible) { // InspectionDrawingDataId.Visible (begin)
+	if (InspectionDrawings.SortUrl(InspectionDrawings.InspectionDrawingDataId) == "") {
+		<th data-name="InspectionDrawingDataId"><div id="elh_InspectionDrawings_InspectionDrawingDataId" class="InspectionDrawings_InspectionDrawingDataId"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.InspectionDrawingDataId.FldCaption)</div></div></th>
+	} else {
+		<th data-name="InspectionDrawingDataId"><div class="ewPointer" onclick="ew_Sort(event,'@InspectionDrawings.SortUrl(InspectionDrawings.InspectionDrawingDataId)',1);"><div id="elh_InspectionDrawings_InspectionDrawingDataId" class="InspectionDrawings_InspectionDrawingDataId">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.InspectionDrawingDataId.FldCaption)</span><span class="ewTableHeaderSort">@if (InspectionDrawings.InspectionDrawingDataId.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (InspectionDrawings.InspectionDrawingDataId.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* InspectionDrawingDataId.Visible (end) *@		
+@if (InspectionDrawings.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+	if (InspectionDrawings.SortUrl(InspectionDrawings.CreatedBy_Id) == "") {
+		<th data-name="CreatedBy_Id"><div id="elh_InspectionDrawings_CreatedBy_Id" class="InspectionDrawings_CreatedBy_Id"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.CreatedBy_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="CreatedBy_Id"><div class="ewPointer" onclick="ew_Sort(event,'@InspectionDrawings.SortUrl(InspectionDrawings.CreatedBy_Id)',1);"><div id="elh_InspectionDrawings_CreatedBy_Id" class="InspectionDrawings_CreatedBy_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.CreatedBy_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (InspectionDrawings.CreatedBy_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (InspectionDrawings.CreatedBy_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* CreatedBy_Id.Visible (end) *@		
+@{
+
+	// Render list options (header, right)
+	InspectionDrawings_list.ListOptions.Render("header", "right");
+}
+	</tr>
+</thead>
+<tbody>
+@{ // Begin Code
+if (InspectionDrawings.ExportAll && ew_NotEmpty(InspectionDrawings.Export)) {
+	InspectionDrawings_list.StopRec = InspectionDrawings_list.TotalRecs;
+} else {
+
+	// Set the last record to display
+	if (InspectionDrawings_list.TotalRecs > InspectionDrawings_list.StartRec + InspectionDrawings_list.DisplayRecs - 1) {
+		InspectionDrawings_list.StopRec = InspectionDrawings_list.StartRec + InspectionDrawings_list.DisplayRecs - 1;
+	} else {
+		InspectionDrawings_list.StopRec = InspectionDrawings_list.TotalRecs;
+	}
+}
+if (InspectionDrawings_list.Recordset != null && InspectionDrawings_list.Recordset.HasRows) {
+
+	// Move to first record
+	for (var i = 1; i <= InspectionDrawings_list.StartRec - 1; i++) {
+		if (InspectionDrawings_list.Recordset.Read()) {
+			InspectionDrawings_list.RecCnt++;
+		}
+	}		
+} else if (!InspectionDrawings.AllowAddDeleteRow && InspectionDrawings_list.StopRec == 0) {
+	InspectionDrawings_list.StopRec = InspectionDrawings.GridAddRowCount;
+}
+
+// Initialize aggregate
+InspectionDrawings.RowType = EW_ROWTYPE_AGGREGATEINIT;
+InspectionDrawings.ResetAttrs();
+InspectionDrawings_list.RenderRow();
+
+// Output data rows
+bool Eof = false; // ASPX
+while (InspectionDrawings_list.RecCnt < InspectionDrawings_list.StopRec) { // Begin While
+	if (InspectionDrawings.CurrentAction != "gridadd" && !Eof) { // ASPX
+		Eof = !InspectionDrawings_list.Recordset.Read();
+	}
+	InspectionDrawings_list.RecCnt++;
+	if (InspectionDrawings_list.RecCnt >= InspectionDrawings_list.StartRec) {
+		InspectionDrawings_list.RowCnt++;
+
+		// Set up key count
+		InspectionDrawings_list.KeyCount = ew_ConvertToInt(InspectionDrawings_list.RowIndex);
+
+		// Init row class and style
+		InspectionDrawings.ResetAttrs();
+		InspectionDrawings.CssClass = "";
+		if (InspectionDrawings.CurrentAction == "gridadd") {
+		} else {
+			InspectionDrawings_list.LoadRowValues(InspectionDrawings_list.Recordset); // Load row values
+		}
+		InspectionDrawings.RowType = EW_ROWTYPE_VIEW; // Render view
+
+		// Set up row id / data-rowindex
+		InspectionDrawings.RowAttrs.Add("data-rowindex", InspectionDrawings_list.RowCnt);
+		InspectionDrawings.RowAttrs.Add("id", "r" + Convert.ToString(InspectionDrawings_list.RowCnt) + "_InspectionDrawings");
+		InspectionDrawings.RowAttrs.Add("data-rowtype", InspectionDrawings.RowType);
+
+		// Render row
+		InspectionDrawings_list.RenderRow();
+
+		// Render list options
+		InspectionDrawings_list.RenderListOptions();
+	<tr @(Html.Raw(InspectionDrawings.RowAttributes))>
+	@{
+
+		// Render list options (body, left)
+		InspectionDrawings_list.ListOptions.Render("body", "left", InspectionDrawings_list.RowCnt);
+	}
+	@if (InspectionDrawings.Id.Visible) { // Id.Visible (begin)
+		<td data-name="Id"@(Html.Raw(InspectionDrawings.Id.CellAttributes))>
+<span @(Html.Raw(InspectionDrawings.Id.ViewAttributes))>
+@Html.Raw(InspectionDrawings.Id.ListViewValue)</span>
+<a id="@(InspectionDrawings_list.PageObjName + "_row_" + Convert.ToString(InspectionDrawings_list.RowCnt))"></a></td>
+	} @* Id.Visible (end) *@
+	@if (InspectionDrawings.Size.Visible) { // Size.Visible (begin)
+		<td data-name="Size"@(Html.Raw(InspectionDrawings.Size.CellAttributes))>
+<span @(Html.Raw(InspectionDrawings.Size.ViewAttributes))>
+@Html.Raw(InspectionDrawings.Size.ListViewValue)</span>
+</td>
+	} @* Size.Visible (end) *@
+	@if (InspectionDrawings.DateCreated.Visible) { // DateCreated.Visible (begin)
+		<td data-name="DateCreated"@(Html.Raw(InspectionDrawings.DateCreated.CellAttributes))>
+<span @(Html.Raw(InspectionDrawings.DateCreated.ViewAttributes))>
+@Html.Raw(InspectionDrawings.DateCreated.ListViewValue)</span>
+</td>
+	} @* DateCreated.Visible (end) *@
+	@if (InspectionDrawings.InspectionDrawingDataId.Visible) { // InspectionDrawingDataId.Visible (begin)
+		<td data-name="InspectionDrawingDataId"@(Html.Raw(InspectionDrawings.InspectionDrawingDataId.CellAttributes))>
+<span @(Html.Raw(InspectionDrawings.InspectionDrawingDataId.ViewAttributes))>
+@Html.Raw(InspectionDrawings.InspectionDrawingDataId.ListViewValue)</span>
+</td>
+	} @* InspectionDrawingDataId.Visible (end) *@
+	@if (InspectionDrawings.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+		<td data-name="CreatedBy_Id"@(Html.Raw(InspectionDrawings.CreatedBy_Id.CellAttributes))>
+<span @(Html.Raw(InspectionDrawings.CreatedBy_Id.ViewAttributes))>
+@Html.Raw(InspectionDrawings.CreatedBy_Id.ListViewValue)</span>
+</td>
+	} @* CreatedBy_Id.Visible (end) *@
+	@{
+
+		// Render list options (body, right)
+		InspectionDrawings_list.ListOptions.Render("body", "right", InspectionDrawings_list.RowCnt);
+	}
+	</tr>
+	} @* End if *@
+} @* End While *@
+} @* End Code *@
+</tbody>
+</table>
+} @* End If TotalRecs > 0 *@
+@if (ew_Empty(InspectionDrawings.CurrentAction)) {
+<input type="hidden" name="a_list" id="a_list" value="">
+}
+</div>
+</form>
+@if (InspectionDrawings_list.Recordset != null) { // Close recordset
+	InspectionDrawings_list.Recordset.Close();
+	InspectionDrawings_list.Recordset.Dispose();
+}
+		@if (ew_Empty(InspectionDrawings.Export)) {
+		<div class="ewGridLowerPanel">
+		@if (InspectionDrawings.CurrentAction != "gridadd" && InspectionDrawings.CurrentAction != "gridedit") {
+			<form name="ewPagerForm" class="ewForm form-horizontal ewPagerForm" action="@ew_CurrentPage()">
+@if (InspectionDrawings_list.Pager == null) {
+	InspectionDrawings_list.Pager = new cPrevNextPager(InspectionDrawings_list.StartRec, InspectionDrawings_list.DisplayRecs, InspectionDrawings_list.TotalRecs); 
+}
+@if (InspectionDrawings_list.Pager.RecordCount > 0) {
+<div class="ewPager">
+<span>@Html.Raw(Language.Phrase("Page"))&nbsp;</span>
+<div class="ewPrevNext"><div class="input-group">
+<div class="input-group-btn">
+<!--first page button-->
+	@if (InspectionDrawings_list.Pager.FirstButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerFirst")))" href="@(InspectionDrawings_list.PageUrl)start=@InspectionDrawings_list.Pager.FirstButton.Start"><span class="icon-first ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerFirst")))"><span class="icon-first ewIcon"></span></a>
+	}
+<!--previous page button-->
+	@if (InspectionDrawings_list.Pager.PrevButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerPrevious")))" href="@(InspectionDrawings_list.PageUrl)start=@InspectionDrawings_list.Pager.PrevButton.Start"><span class="icon-prev ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerPrevious")))"><span class="icon-prev ewIcon"></span></a>
+	}
+</div>
+<!--current page number-->
+	<input class="form-control input-sm" type="text" name="@EW_TABLE_PAGE_NO" value="@InspectionDrawings_list.Pager.CurrentPage">
+<div class="input-group-btn">		
+<!--next page button-->
+	@if (InspectionDrawings_list.Pager.NextButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerNext")))" href="@(InspectionDrawings_list.PageUrl)start=@InspectionDrawings_list.Pager.NextButton.Start"><span class="icon-next ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerNext")))"><span class="icon-next ewIcon"></span></a>
+	}
+<!--last page button-->
+	@if (InspectionDrawings_list.Pager.LastButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerLast")))" href="@(InspectionDrawings_list.PageUrl)start=@InspectionDrawings_list.Pager.LastButton.Start"><span class="icon-last ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerLast")))"><span class="icon-last ewIcon"></span></a>
+	}
+</div>
+</div>
+</div>
+<span>&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@InspectionDrawings_list.Pager.PageCount</span>
+</div>
+	<div class="ewPager ewRec">
+		<span>@Html.Raw(Language.Phrase("Record"))&nbsp;@(InspectionDrawings_list.Pager.FromIndex)&nbsp;@Html.Raw(Language.Phrase("To"))&nbsp;@(InspectionDrawings_list.Pager.ToIndex)&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@(InspectionDrawings_list.Pager.RecordCount)</span>
+	</div>
+}
+			</form>
+		}
+		<div class="ewListOtherOptions">
+		@foreach (var kvp in InspectionDrawings_list.OtherOptions) {
+			kvp.Value.Render("body", "bottom");
+		}
+		</div>
+		<div class="clearfix"></div>
+		</div>
+		}
+</div>
+}
+@if (InspectionDrawings_list.TotalRecs <= 0 && InspectionDrawings.CurrentAction == "") { // Show other options
+<div class="ewListOtherOptions">
+	@foreach (var kvp in InspectionDrawings_list.OtherOptions) {
+		kvp.Value.ButtonClass = "";
+		kvp.Value.Render("body", "");
+	}
+</div>
+<div class="clearfix"></div>
+} 
+@if (ew_Empty(InspectionDrawings.Export)) {
+<script type="text/javascript">
+fInspectionDrawingslist.Init();
+</script>
+}
+@{
+	InspectionDrawings_list.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(InspectionDrawings.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	InspectionDrawings_list.Page_Terminate();
+}

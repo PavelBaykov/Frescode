@@ -1,0 +1,313 @@
+@functions {
+
+	//
+	// Page class for AspNetUsers
+	//
+	public class cAspNetUsers_add<C, S> : cAspNetUsers_add_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["Id"] =Guid.NewGuid().ToString();
+			rsnew["EmailConfirmed"]=false;
+			rsnew["PhoneNumberConfirmed"]=false;
+			rsnew["TwoFactorEnabled"]=false;
+			rsnew["LockoutEnabled"]=false;
+			rsnew["AccessFailedCount"]=0;
+
+		/*
+			byte[] salt;
+			byte[] buffer2;
+			string password = Convert.ToString(rsnew["PasswordHash"]);
+			using (System.Security.Cryptography.Rfc2898DeriveBytes bytes = new System.Security.Cryptography.Rfc2898DeriveBytes(password, 0x10, 0x3e8))
+			{
+				salt = bytes.Salt;
+				buffer2 = bytes.GetBytes(0x20);
+			}
+			byte[] dst = new byte[0x31];
+			Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
+			Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
+			rsnew["PasswordHash"]=Convert.ToBase64String(dst);*/
+			Microsoft.AspNet.Identity.PasswordHasher hasher = new Microsoft.AspNet.Identity.PasswordHasher();
+			rsnew["PasswordHash"]=hasher.HashPassword(Convert.ToString(rsnew["PasswordHash"]));
+			rsnew["SecurityStamp"] =Guid.NewGuid().ToString();
+			return true;
+		}
+	}
+
+	// AspNetUsers_add	
+	public static cAspNetUsers_add<cConnection, cAdvancedSecurity> AspNetUsers_add {
+		get { return (cAspNetUsers_add<cConnection, cAdvancedSecurity>)ew_PageData["AspNetUsers_add"]; }
+		set { ew_PageData["AspNetUsers_add"] = value; }
+	}
+
+	// CurrentPage
+	public static cAspNetUsers_add<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cAspNetUsers_add<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cAspNetUsers_add<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (AspNetUsers_add == null) {
+		AspNetUsers_add = new cAspNetUsers_add<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	AspNetUsers_add.Page_Init();
+
+	// Page main
+	AspNetUsers_add.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	AspNetUsers_add.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var AspNetUsers_add = new ew_Page("AspNetUsers_add");
+AspNetUsers_add.PageID = "add"; // Page ID
+var EW_PAGE_ID = AspNetUsers_add.PageID; // For backward compatibility
+
+// Form object
+var fAspNetUsersadd = new ew_Form("fAspNetUsersadd");
+
+// Validate form
+fAspNetUsersadd.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+		elm = this.GetElements("x" + infix + "_UserRole");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.UserRole.ReqErrMsg.Replace("%s", AspNetUsers.UserRole.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_UserRole");
+		if (elm && !ew_CheckInteger(elm.value))
+			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(AspNetUsers.UserRole.FldErrMsg)))");
+		elm = this.GetElements("x" + infix + "_DateCreated");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.DateCreated.ReqErrMsg.Replace("%s", AspNetUsers.DateCreated.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_UserName");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.UserName.ReqErrMsg.Replace("%s", AspNetUsers.UserName.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Customer_Id");
+		if (elm && !ew_CheckInteger(elm.value))
+			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(AspNetUsers.Customer_Id.FldErrMsg)))");
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fAspNetUsersadd.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fAspNetUsersadd.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+// Form object for search
+
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(AspNetUsers.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(AspNetUsers.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	AspNetUsers_add.ShowPageHeader();
+}
+@{
+	AspNetUsers_add.ShowMessage();
+}
+<form name="fAspNetUsersadd" id="fAspNetUsersadd" class="form-horizontal ewForm ewAddForm" action="@ew_CurrentPage()" method="post">
+<br>
+@if (AspNetUsers_add.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@AspNetUsers_add.Token">
+}
+<input type="hidden" name="t" value="AspNetUsers">
+<input type="hidden" name="a_add" id="a_add" value="A">
+<div>
+@if (AspNetUsers.FirstName.Visible) { // FirstName.Visible (begin)
+	<div id="r_FirstName" class="form-group">
+		<label id="elh_AspNetUsers_FirstName" for="x_FirstName" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.FirstName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.FirstName.CellAttributes))>
+<span id="el_AspNetUsers_FirstName">
+<textarea data-field="x_FirstName" name="x_FirstName" id="x_FirstName" cols="35" rows="4" placeholder="@AspNetUsers.FirstName.PlaceHolder" @(Html.Raw(AspNetUsers.FirstName.EditAttributes))>@AspNetUsers.FirstName.EditValue</textarea>
+</span>
+@Html.Raw(AspNetUsers.FirstName.CustomMsg)</div></div>
+	</div>
+}  @* FirstName.Visible (end) *@
+@if (AspNetUsers.LastName.Visible) { // LastName.Visible (begin)
+	<div id="r_LastName" class="form-group">
+		<label id="elh_AspNetUsers_LastName" for="x_LastName" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.LastName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.LastName.CellAttributes))>
+<span id="el_AspNetUsers_LastName">
+<textarea data-field="x_LastName" name="x_LastName" id="x_LastName" cols="35" rows="4" placeholder="@AspNetUsers.LastName.PlaceHolder" @(Html.Raw(AspNetUsers.LastName.EditAttributes))>@AspNetUsers.LastName.EditValue</textarea>
+</span>
+@Html.Raw(AspNetUsers.LastName.CustomMsg)</div></div>
+	</div>
+}  @* LastName.Visible (end) *@
+@if (AspNetUsers.UserRole.Visible) { // UserRole.Visible (begin)
+	<div id="r_UserRole" class="form-group">
+		<label id="elh_AspNetUsers_UserRole" for="x_UserRole" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.UserRole.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.UserRole.CellAttributes))>
+<span id="el_AspNetUsers_UserRole">
+<input type="text" data-field="x_UserRole" name="x_UserRole" id="x_UserRole" size="30" placeholder="@AspNetUsers.UserRole.PlaceHolder" value="@AspNetUsers.UserRole.EditValue" @(Html.Raw(AspNetUsers.UserRole.EditAttributes))>
+</span>
+@Html.Raw(AspNetUsers.UserRole.CustomMsg)</div></div>
+	</div>
+}  @* UserRole.Visible (end) *@
+@if (AspNetUsers.DateCreated.Visible) { // DateCreated.Visible (begin)
+	<div id="r_DateCreated" class="form-group">
+		<label id="elh_AspNetUsers_DateCreated" for="x_DateCreated" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.DateCreated.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.DateCreated.CellAttributes))>
+<span id="el_AspNetUsers_DateCreated">
+<input type="text" data-field="x_DateCreated" name="x_DateCreated" id="x_DateCreated" placeholder="@AspNetUsers.DateCreated.PlaceHolder" value="@AspNetUsers.DateCreated.EditValue" @(Html.Raw(AspNetUsers.DateCreated.EditAttributes))>
+</span>
+@Html.Raw(AspNetUsers.DateCreated.CustomMsg)</div></div>
+	</div>
+}  @* DateCreated.Visible (end) *@
+@if (AspNetUsers.zEmail.Visible) { // zEmail.Visible (begin)
+	<div id="r_zEmail" class="form-group">
+		<label id="elh_AspNetUsers_zEmail" for="x_zEmail" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.zEmail.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.zEmail.CellAttributes))>
+<span id="el_AspNetUsers_zEmail">
+<input type="text" data-field="x_zEmail" name="x_zEmail" id="x_zEmail" size="30" maxlength="256" placeholder="@AspNetUsers.zEmail.PlaceHolder" value="@AspNetUsers.zEmail.EditValue" @(Html.Raw(AspNetUsers.zEmail.EditAttributes))>
+</span>
+@Html.Raw(AspNetUsers.zEmail.CustomMsg)</div></div>
+	</div>
+}  @* zEmail.Visible (end) *@
+@if (AspNetUsers.PasswordHash.Visible) { // PasswordHash.Visible (begin)
+	<div id="r_PasswordHash" class="form-group">
+		<label id="elh_AspNetUsers_PasswordHash" for="x_PasswordHash" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.PasswordHash.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.PasswordHash.CellAttributes))>
+<span id="el_AspNetUsers_PasswordHash">
+<textarea data-field="x_PasswordHash" name="x_PasswordHash" id="x_PasswordHash" cols="35" rows="4" placeholder="@AspNetUsers.PasswordHash.PlaceHolder" @(Html.Raw(AspNetUsers.PasswordHash.EditAttributes))>@AspNetUsers.PasswordHash.EditValue</textarea>
+</span>
+@Html.Raw(AspNetUsers.PasswordHash.CustomMsg)</div></div>
+	</div>
+}  @* PasswordHash.Visible (end) *@
+@if (AspNetUsers.UserName.Visible) { // UserName.Visible (begin)
+	<div id="r_UserName" class="form-group">
+		<label id="elh_AspNetUsers_UserName" for="x_UserName" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.UserName.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.UserName.CellAttributes))>
+<span id="el_AspNetUsers_UserName">
+<input type="text" data-field="x_UserName" name="x_UserName" id="x_UserName" size="30" maxlength="256" placeholder="@AspNetUsers.UserName.PlaceHolder" value="@AspNetUsers.UserName.EditValue" @(Html.Raw(AspNetUsers.UserName.EditAttributes))>
+</span>
+@Html.Raw(AspNetUsers.UserName.CustomMsg)</div></div>
+	</div>
+}  @* UserName.Visible (end) *@
+@if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+	<div id="r_Customer_Id" class="form-group">
+		<label id="elh_AspNetUsers_Customer_Id" for="x_Customer_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
+<span id="el_AspNetUsers_Customer_Id">
+<input type="text" data-field="x_Customer_Id" name="x_Customer_Id" id="x_Customer_Id" size="30" placeholder="@AspNetUsers.Customer_Id.PlaceHolder" value="@AspNetUsers.Customer_Id.EditValue" @(Html.Raw(AspNetUsers.Customer_Id.EditAttributes))>
+</span>
+@Html.Raw(AspNetUsers.Customer_Id.CustomMsg)</div></div>
+	</div>
+}  @* Customer_Id.Visible (end) *@
+</div>
+@if (AspNetUsers_add.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	AspNetUsers_add.Recordset.Close();
+	AspNetUsers_add.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("AddBtn"))</button>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fAspNetUsersadd.Init();
+</script>
+@{
+	AspNetUsers_add.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	AspNetUsers_add.Page_Terminate();
+}

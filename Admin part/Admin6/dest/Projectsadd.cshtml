@@ -1,0 +1,433 @@
+@functions {
+
+	//
+	// Page class for Projects
+	//
+	public class cProjects_add<C, S> : cProjects_add_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// Projects_add	
+	public static cProjects_add<cConnection, cAdvancedSecurity> Projects_add {
+		get { return (cProjects_add<cConnection, cAdvancedSecurity>)ew_PageData["Projects_add"]; }
+		set { ew_PageData["Projects_add"] = value; }
+	}
+
+	// CurrentPage
+	public static cProjects_add<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cProjects_add<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cProjects_add<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (Projects_add == null) {
+		Projects_add = new cProjects_add<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	Projects_add.Page_Init();
+
+	// Page main
+	Projects_add.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	Projects_add.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var Projects_add = new ew_Page("Projects_add");
+Projects_add.PageID = "add"; // Page ID
+var EW_PAGE_ID = Projects_add.PageID; // For backward compatibility
+
+// Form object
+var fProjectsadd = new ew_Form("fProjectsadd");
+
+// Validate form
+fProjectsadd.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+		elm = this.GetElements("x" + infix + "_DateCreated");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Projects.DateCreated.ReqErrMsg.Replace("%s", Projects.DateCreated.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_DateOfLastChange");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Projects.DateOfLastChange.ReqErrMsg.Replace("%s", Projects.DateOfLastChange.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Status");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Projects.Status.ReqErrMsg.Replace("%s", Projects.Status.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Status");
+		if (elm && !ew_CheckInteger(elm.value))
+			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(Projects.Status.FldErrMsg)))");
+		elm = this.GetElements("x" + infix + "_Owner_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Projects.Owner_Id.ReqErrMsg.Replace("%s", Projects.Owner_Id.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Customer_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Projects.Customer_Id.ReqErrMsg.Replace("%s", Projects.Customer_Id.FldCaption))))");
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fProjectsadd.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fProjectsadd.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fProjectsadd.Lists["x_ChangedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectsadd.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectsadd.Lists["x_Owner_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectsadd.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(Projects.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(Projects.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	Projects_add.ShowPageHeader();
+}
+@{
+	Projects_add.ShowMessage();
+}
+<form name="fProjectsadd" id="fProjectsadd" class="form-horizontal ewForm ewAddForm" action="@ew_CurrentPage()" method="post">
+<br>
+@if (Projects_add.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@Projects_add.Token">
+}
+<input type="hidden" name="t" value="Projects">
+<input type="hidden" name="a_add" id="a_add" value="A">
+<div>
+@if (Projects.zName.Visible) { // zName.Visible (begin)
+	<div id="r_zName" class="form-group">
+		<label id="elh_Projects_zName" for="x_zName" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.zName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.zName.CellAttributes))>
+<span id="el_Projects_zName">
+<textarea data-field="x_zName" name="x_zName" id="x_zName" cols="35" rows="4" placeholder="@Projects.zName.PlaceHolder" @(Html.Raw(Projects.zName.EditAttributes))>@Projects.zName.EditValue</textarea>
+</span>
+@Html.Raw(Projects.zName.CustomMsg)</div></div>
+	</div>
+}  @* zName.Visible (end) *@
+@if (Projects.DateCreated.Visible) { // DateCreated.Visible (begin)
+	<div id="r_DateCreated" class="form-group">
+		<label id="elh_Projects_DateCreated" for="x_DateCreated" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.DateCreated.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.DateCreated.CellAttributes))>
+<span id="el_Projects_DateCreated">
+<input type="text" data-field="x_DateCreated" name="x_DateCreated" id="x_DateCreated" placeholder="@Projects.DateCreated.PlaceHolder" value="@Projects.DateCreated.EditValue" @(Html.Raw(Projects.DateCreated.EditAttributes))>
+</span>
+@Html.Raw(Projects.DateCreated.CustomMsg)</div></div>
+	</div>
+}  @* DateCreated.Visible (end) *@
+@if (Projects.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
+	<div id="r_DateOfLastChange" class="form-group">
+		<label id="elh_Projects_DateOfLastChange" for="x_DateOfLastChange" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.DateOfLastChange.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.DateOfLastChange.CellAttributes))>
+<span id="el_Projects_DateOfLastChange">
+<input type="text" data-field="x_DateOfLastChange" name="x_DateOfLastChange" id="x_DateOfLastChange" placeholder="@Projects.DateOfLastChange.PlaceHolder" value="@Projects.DateOfLastChange.EditValue" @(Html.Raw(Projects.DateOfLastChange.EditAttributes))>
+</span>
+@Html.Raw(Projects.DateOfLastChange.CustomMsg)</div></div>
+	</div>
+}  @* DateOfLastChange.Visible (end) *@
+@if (Projects.Status.Visible) { // Status.Visible (begin)
+	<div id="r_Status" class="form-group">
+		<label id="elh_Projects_Status" for="x_Status" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.Status.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.Status.CellAttributes))>
+<span id="el_Projects_Status">
+<input type="text" data-field="x_Status" name="x_Status" id="x_Status" size="30" placeholder="@Projects.Status.PlaceHolder" value="@Projects.Status.EditValue" @(Html.Raw(Projects.Status.EditAttributes))>
+</span>
+@Html.Raw(Projects.Status.CustomMsg)</div></div>
+	</div>
+}  @* Status.Visible (end) *@
+@if (Projects.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
+	<div id="r_ChangedBy_Id" class="form-group">
+		<label id="elh_Projects_ChangedBy_Id" for="x_ChangedBy_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.ChangedBy_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.ChangedBy_Id.CellAttributes))>
+<span id="el_Projects_ChangedBy_Id">
+<select data-field="x_ChangedBy_Id" id="x_ChangedBy_Id" name="x_ChangedBy_Id" @(Html.Raw(Projects.ChangedBy_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Projects.ChangedBy_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Projects.ChangedBy_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Projects.ChangedBy_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+@if (ew_NotEmpty(odwrk[2])) {
+	@ew_ValueSeparator(1,Projects.ChangedBy_Id)@odwrk[2]
+}
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [FirstName] AS [DispFld], [LastName] AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[AspNetUsers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Projects_add.GetCustomValue("FldSelectFilter", "ChangedBy_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Projects.Lookup_Selecting(Projects.ChangedBy_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_ChangedBy_Id" id="s_x_ChangedBy_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=202">
+</span>
+@Html.Raw(Projects.ChangedBy_Id.CustomMsg)</div></div>
+	</div>
+}  @* ChangedBy_Id.Visible (end) *@
+@if (Projects.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+	<div id="r_CreatedBy_Id" class="form-group">
+		<label id="elh_Projects_CreatedBy_Id" for="x_CreatedBy_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.CreatedBy_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.CreatedBy_Id.CellAttributes))>
+<span id="el_Projects_CreatedBy_Id">
+<select data-field="x_CreatedBy_Id" id="x_CreatedBy_Id" name="x_CreatedBy_Id" @(Html.Raw(Projects.CreatedBy_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Projects.CreatedBy_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Projects.CreatedBy_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Projects.CreatedBy_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+@if (ew_NotEmpty(odwrk[2])) {
+	@ew_ValueSeparator(1,Projects.CreatedBy_Id)@odwrk[2]
+}
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [FirstName] AS [DispFld], [LastName] AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[AspNetUsers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Projects_add.GetCustomValue("FldSelectFilter", "CreatedBy_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Projects.Lookup_Selecting(Projects.CreatedBy_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_CreatedBy_Id" id="s_x_CreatedBy_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=202">
+</span>
+@Html.Raw(Projects.CreatedBy_Id.CustomMsg)</div></div>
+	</div>
+}  @* CreatedBy_Id.Visible (end) *@
+@if (Projects.Owner_Id.Visible) { // Owner_Id.Visible (begin)
+	<div id="r_Owner_Id" class="form-group">
+		<label id="elh_Projects_Owner_Id" for="x_Owner_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.Owner_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.Owner_Id.CellAttributes))>
+<span id="el_Projects_Owner_Id">
+<select data-field="x_Owner_Id" id="x_Owner_Id" name="x_Owner_Id" @(Html.Raw(Projects.Owner_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Projects.Owner_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Projects.Owner_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Projects.Owner_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+@if (ew_NotEmpty(odwrk[2])) {
+	@ew_ValueSeparator(1,Projects.Owner_Id)@odwrk[2]
+}
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [FirstName] AS [DispFld], [LastName] AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[AspNetUsers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Projects_add.GetCustomValue("FldSelectFilter", "Owner_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Projects.Lookup_Selecting(Projects.Owner_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_Owner_Id" id="s_x_Owner_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=202">
+</span>
+@Html.Raw(Projects.Owner_Id.CustomMsg)</div></div>
+	</div>
+}  @* Owner_Id.Visible (end) *@
+@if (Projects.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+	<div id="r_Customer_Id" class="form-group">
+		<label id="elh_Projects_Customer_Id" for="x_Customer_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Projects.Customer_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Projects.Customer_Id.CellAttributes))>
+<span id="el_Projects_Customer_Id">
+<select data-field="x_Customer_Id" id="x_Customer_Id" name="x_Customer_Id" @(Html.Raw(Projects.Customer_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Projects.Customer_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Projects.Customer_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Projects.Customer_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [Id] AS [DispFld], '' AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[Customers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Projects_add.GetCustomValue("FldSelectFilter", "Customer_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Projects.Lookup_Selecting(Projects.Customer_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_Customer_Id" id="s_x_Customer_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=3">
+</span>
+@Html.Raw(Projects.Customer_Id.CustomMsg)</div></div>
+	</div>
+}  @* Customer_Id.Visible (end) *@
+</div>
+@if (Projects_add.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	Projects_add.Recordset.Close();
+	Projects_add.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("AddBtn"))</button>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fProjectsadd.Init();
+</script>
+@{
+	Projects_add.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	Projects_add.Page_Terminate();
+}

@@ -1,0 +1,224 @@
+@functions {
+
+	//
+	// Page class for InspectionDrawingDatas
+	//
+	public class cInspectionDrawingDatas_edit<C, S> : cInspectionDrawingDatas_edit_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// InspectionDrawingDatas_edit	
+	public static cInspectionDrawingDatas_edit<cConnection, cAdvancedSecurity> InspectionDrawingDatas_edit {
+		get { return (cInspectionDrawingDatas_edit<cConnection, cAdvancedSecurity>)ew_PageData["InspectionDrawingDatas_edit"]; }
+		set { ew_PageData["InspectionDrawingDatas_edit"] = value; }
+	}
+
+	// CurrentPage
+	public static cInspectionDrawingDatas_edit<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cInspectionDrawingDatas_edit<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cInspectionDrawingDatas_edit<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (InspectionDrawingDatas_edit == null) {
+		InspectionDrawingDatas_edit = new cInspectionDrawingDatas_edit<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	InspectionDrawingDatas_edit.Page_Init();
+
+	// Page main
+	InspectionDrawingDatas_edit.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	InspectionDrawingDatas_edit.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var InspectionDrawingDatas_edit = new ew_Page("InspectionDrawingDatas_edit");
+InspectionDrawingDatas_edit.PageID = "edit"; // Page ID
+var EW_PAGE_ID = InspectionDrawingDatas_edit.PageID; // For backward compatibility
+
+// Form object
+var fInspectionDrawingDatasedit = new ew_Form("fInspectionDrawingDatasedit");
+
+// Validate form
+fInspectionDrawingDatasedit.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fInspectionDrawingDatasedit.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fInspectionDrawingDatasedit.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+// Form object for search
+
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(InspectionDrawingDatas.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	InspectionDrawingDatas_edit.ShowPageHeader();
+}
+@{
+	InspectionDrawingDatas_edit.ShowMessage();
+}
+<form name="fInspectionDrawingDatasedit" id="fInspectionDrawingDatasedit" class="form-horizontal ewForm ewEditForm" action="@ew_CurrentPage()" method="post">
+@if (InspectionDrawingDatas_edit.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@InspectionDrawingDatas_edit.Token">
+} 
+<input type="hidden" name="t" value="InspectionDrawingDatas">
+<input type="hidden" name="a_edit" id="a_edit" value="U">
+<div>
+@if (InspectionDrawingDatas.Id.Visible) { // Id.Visible (begin)
+	<div id="r_Id" class="form-group">
+		<label id="elh_InspectionDrawingDatas_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawingDatas.Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawingDatas.Id.CellAttributes))>
+<span id="el_InspectionDrawingDatas_Id">
+<span @(Html.Raw(InspectionDrawingDatas.Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(InspectionDrawingDatas.Id.EditValue)</p></span>
+</span>
+<input type="hidden" data-field="x_Id" name="x_Id" id="x_Id" value="@(InspectionDrawingDatas.Id.CurrentValue)">
+@Html.Raw(InspectionDrawingDatas.Id.CustomMsg)</div></div>
+	</div>
+} @* Id.Visible (end) *@ 
+@if (InspectionDrawingDatas.Data.Visible) { // Data.Visible (begin)
+	<div id="r_Data" class="form-group">
+		<label id="elh_InspectionDrawingDatas_Data" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawingDatas.Data.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawingDatas.Data.CellAttributes))>
+<span id="el_InspectionDrawingDatas_Data">
+<div id="fd_x_Data">
+<span title="@Html.Raw(ew_NotEmpty(InspectionDrawingDatas.Data.FldTitle) ? InspectionDrawingDatas.Data.FldTitle : Language.Phrase("ChooseFile"))" class="btn btn-default btn-sm fileinput-button ewTooltip @Html.Raw((InspectionDrawingDatas.Data.ReadOnly || InspectionDrawingDatas.Data.Disabled) ? " hide" : "")">
+	<span>@Html.Raw(Language.Phrase("ChooseFileBtn"))</span>
+	<input type="file" title=" " data-field="x_Data" name="x_Data" id="x_Data" @Html.Raw(InspectionDrawingDatas.Data.EditAttributes)>
+</span>
+<input type="hidden" name="fn_x_Data" id= "fn_x_Data" value="@InspectionDrawingDatas.Data.Upload.FileName">
+@if (ew_Post("fa_x_Data") == "0") {
+<input type="hidden" name="fa_x_Data" id= "fa_x_Data" value="0">
+} else {
+<input type="hidden" name="fa_x_Data" id= "fa_x_Data" value="1">
+}
+<input type="hidden" name="fs_x_Data" id= "fs_x_Data" value="2147483647">
+<input type="hidden" name="fx_x_Data" id= "fx_x_Data" value="@InspectionDrawingDatas.Data.UploadAllowedFileExt">
+<input type="hidden" name="fm_x_Data" id= "fm_x_Data" value="@InspectionDrawingDatas.Data.UploadMaxFileSize">
+</div>
+<table id="ft_x_Data" class="table table-condensed pull-left ewUploadTable"><tbody class="files"></tbody></table>
+</span>
+@Html.Raw(InspectionDrawingDatas.Data.CustomMsg)</div></div>
+	</div>
+} @* Data.Visible (end) *@ 
+</div>
+@if (InspectionDrawingDatas_edit.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	InspectionDrawingDatas_edit.Recordset.Close();
+	InspectionDrawingDatas_edit.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+@{
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("SaveBtn"))</button>
+}
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fInspectionDrawingDatasedit.Init();
+</script>
+@{
+	InspectionDrawingDatas_edit.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	InspectionDrawingDatas_edit.Page_Terminate();
+}

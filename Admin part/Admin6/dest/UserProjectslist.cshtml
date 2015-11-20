@@ -1,0 +1,384 @@
+@functions {
+
+	//
+	// Page class for UserProjects
+	//
+	public class cUserProjects_list<C, S> : cUserProjects_list_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// UserProjects_list	
+	public static cUserProjects_list<cConnection, cAdvancedSecurity> UserProjects_list {
+		get { return (cUserProjects_list<cConnection, cAdvancedSecurity>)ew_PageData["UserProjects_list"]; }
+		set { ew_PageData["UserProjects_list"] = value; }
+	}
+
+	// CurrentPage
+	public static cUserProjects_list<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cUserProjects_list<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cUserProjects_list<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (UserProjects_list == null) {
+		UserProjects_list = new cUserProjects_list<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	UserProjects_list.Page_Init();
+
+	// Page main
+	UserProjects_list.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	UserProjects_list.Page_Render();
+}
+@if (ew_Empty(UserProjects.Export)) {
+<script type="text/javascript">
+
+// Page object
+var UserProjects_list = new ew_Page("UserProjects_list");
+UserProjects_list.PageID = "list"; // Page ID
+var EW_PAGE_ID = UserProjects_list.PageID; // For backward compatibility
+
+// Form object
+var fUserProjectslist = new ew_Form("fUserProjectslist");
+fUserProjectslist.FormKeyCountName = '@UserProjects_list.FormKeyCountName';
+
+// Form_CustomValidate event
+fUserProjectslist.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fUserProjectslist.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fUserProjectslist.Lists["x_User_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fUserProjectslist.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(UserProjects.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(UserProjects.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (UserProjects_list.TotalRecs > 0 && UserProjects_list.ExportOptions.Visible) { 
+	UserProjects_list.ExportOptions.Render("body");
+}
+@if (ew_Empty(UserProjects.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+<div class="clearfix"></div>
+</div>
+}
+@{
+		if (UserProjects_list.Recordset == null) { // ASPX
+			UserProjects_list.Recordset = UserProjects_list.LoadRecordset();
+		}
+		UserProjects_list.StartRec = 1;
+		if (UserProjects_list.DisplayRecs <= 0 || (ew_NotEmpty(UserProjects.Export) && UserProjects.ExportAll)) { // Display all records
+			UserProjects_list.DisplayRecs = UserProjects_list.TotalRecs;
+		}
+		if (!(ew_NotEmpty(UserProjects.Export) && UserProjects.ExportAll)) {
+			UserProjects_list.SetUpStartRec(); // Set up start record position
+		}
+
+		// Set no record found message
+		if (UserProjects.CurrentAction == "" && UserProjects_list.TotalRecs == 0) {
+			if (UserProjects_list.SearchWhere == "0=101") {
+				UserProjects_list.WarningMessage = Language.Phrase("EnterSearchCriteria");
+			} else {
+				UserProjects_list.WarningMessage = Language.Phrase("NoRecord");
+			}
+		}
+	UserProjects_list.RenderOtherOptions();
+}
+@{
+	UserProjects_list.ShowPageHeader();
+}
+@{
+	UserProjects_list.ShowMessage();
+}
+@if (UserProjects_list.TotalRecs > 0 || UserProjects.CurrentAction != "") { 
+<div class="ewGrid">
+<form name="fUserProjectslist" id="fUserProjectslist" class="form-inline ewForm ewListForm" action="@ew_CurrentPage()" method="post">
+@if (UserProjects_list.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@UserProjects_list.Token">
+}
+<input type="hidden" name="t" value="UserProjects">
+<div id="gmp_UserProjects" class="@((ew_IsResponsiveLayout()) ? "table-responsive ewGridMiddlePanel" : "ewGridMiddlePanel")">
+@if (UserProjects_list.TotalRecs > 0) { // Begin If TotalRecs > 0
+<table id="tbl_UserProjectslist" class="table ewTable">
+@UserProjects.TableCustomInnerHtml
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+@{
+
+	// Render list options
+	UserProjects_list.RenderListOptions();
+
+	// Render list options (header, left)
+	UserProjects_list.ListOptions.Render("header", "left");
+}
+@if (UserProjects.User_Id.Visible) { // User_Id.Visible (begin)
+	if (UserProjects.SortUrl(UserProjects.User_Id) == "") {
+		<th data-name="User_Id"><div id="elh_UserProjects_User_Id" class="UserProjects_User_Id"><div class="ewTableHeaderCaption">@Html.Raw(UserProjects.User_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="User_Id"><div class="ewPointer" onclick="ew_Sort(event,'@UserProjects.SortUrl(UserProjects.User_Id)',1);"><div id="elh_UserProjects_User_Id" class="UserProjects_User_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(UserProjects.User_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (UserProjects.User_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (UserProjects.User_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* User_Id.Visible (end) *@		
+@if (UserProjects.Project_Id.Visible) { // Project_Id.Visible (begin)
+	if (UserProjects.SortUrl(UserProjects.Project_Id) == "") {
+		<th data-name="Project_Id"><div id="elh_UserProjects_Project_Id" class="UserProjects_Project_Id"><div class="ewTableHeaderCaption">@Html.Raw(UserProjects.Project_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Project_Id"><div class="ewPointer" onclick="ew_Sort(event,'@UserProjects.SortUrl(UserProjects.Project_Id)',1);"><div id="elh_UserProjects_Project_Id" class="UserProjects_Project_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(UserProjects.Project_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (UserProjects.Project_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (UserProjects.Project_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Project_Id.Visible (end) *@		
+@{
+
+	// Render list options (header, right)
+	UserProjects_list.ListOptions.Render("header", "right");
+}
+	</tr>
+</thead>
+<tbody>
+@{ // Begin Code
+if (UserProjects.ExportAll && ew_NotEmpty(UserProjects.Export)) {
+	UserProjects_list.StopRec = UserProjects_list.TotalRecs;
+} else {
+
+	// Set the last record to display
+	if (UserProjects_list.TotalRecs > UserProjects_list.StartRec + UserProjects_list.DisplayRecs - 1) {
+		UserProjects_list.StopRec = UserProjects_list.StartRec + UserProjects_list.DisplayRecs - 1;
+	} else {
+		UserProjects_list.StopRec = UserProjects_list.TotalRecs;
+	}
+}
+if (UserProjects_list.Recordset != null && UserProjects_list.Recordset.HasRows) {
+
+	// Move to first record
+	for (var i = 1; i <= UserProjects_list.StartRec - 1; i++) {
+		if (UserProjects_list.Recordset.Read()) {
+			UserProjects_list.RecCnt++;
+		}
+	}		
+} else if (!UserProjects.AllowAddDeleteRow && UserProjects_list.StopRec == 0) {
+	UserProjects_list.StopRec = UserProjects.GridAddRowCount;
+}
+
+// Initialize aggregate
+UserProjects.RowType = EW_ROWTYPE_AGGREGATEINIT;
+UserProjects.ResetAttrs();
+UserProjects_list.RenderRow();
+
+// Output data rows
+bool Eof = false; // ASPX
+while (UserProjects_list.RecCnt < UserProjects_list.StopRec) { // Begin While
+	if (UserProjects.CurrentAction != "gridadd" && !Eof) { // ASPX
+		Eof = !UserProjects_list.Recordset.Read();
+	}
+	UserProjects_list.RecCnt++;
+	if (UserProjects_list.RecCnt >= UserProjects_list.StartRec) {
+		UserProjects_list.RowCnt++;
+
+		// Set up key count
+		UserProjects_list.KeyCount = ew_ConvertToInt(UserProjects_list.RowIndex);
+
+		// Init row class and style
+		UserProjects.ResetAttrs();
+		UserProjects.CssClass = "";
+		if (UserProjects.CurrentAction == "gridadd") {
+		} else {
+			UserProjects_list.LoadRowValues(UserProjects_list.Recordset); // Load row values
+		}
+		UserProjects.RowType = EW_ROWTYPE_VIEW; // Render view
+
+		// Set up row id / data-rowindex
+		UserProjects.RowAttrs.Add("data-rowindex", UserProjects_list.RowCnt);
+		UserProjects.RowAttrs.Add("id", "r" + Convert.ToString(UserProjects_list.RowCnt) + "_UserProjects");
+		UserProjects.RowAttrs.Add("data-rowtype", UserProjects.RowType);
+
+		// Render row
+		UserProjects_list.RenderRow();
+
+		// Render list options
+		UserProjects_list.RenderListOptions();
+	<tr @(Html.Raw(UserProjects.RowAttributes))>
+	@{
+
+		// Render list options (body, left)
+		UserProjects_list.ListOptions.Render("body", "left", UserProjects_list.RowCnt);
+	}
+	@if (UserProjects.User_Id.Visible) { // User_Id.Visible (begin)
+		<td data-name="User_Id"@(Html.Raw(UserProjects.User_Id.CellAttributes))>
+<span @(Html.Raw(UserProjects.User_Id.ViewAttributes))>
+@Html.Raw(UserProjects.User_Id.ListViewValue)</span>
+<a id="@(UserProjects_list.PageObjName + "_row_" + Convert.ToString(UserProjects_list.RowCnt))"></a></td>
+	} @* User_Id.Visible (end) *@
+	@if (UserProjects.Project_Id.Visible) { // Project_Id.Visible (begin)
+		<td data-name="Project_Id"@(Html.Raw(UserProjects.Project_Id.CellAttributes))>
+<span @(Html.Raw(UserProjects.Project_Id.ViewAttributes))>
+@Html.Raw(UserProjects.Project_Id.ListViewValue)</span>
+</td>
+	} @* Project_Id.Visible (end) *@
+	@{
+
+		// Render list options (body, right)
+		UserProjects_list.ListOptions.Render("body", "right", UserProjects_list.RowCnt);
+	}
+	</tr>
+	} @* End if *@
+} @* End While *@
+} @* End Code *@
+</tbody>
+</table>
+} @* End If TotalRecs > 0 *@
+@if (ew_Empty(UserProjects.CurrentAction)) {
+<input type="hidden" name="a_list" id="a_list" value="">
+}
+</div>
+</form>
+@if (UserProjects_list.Recordset != null) { // Close recordset
+	UserProjects_list.Recordset.Close();
+	UserProjects_list.Recordset.Dispose();
+}
+		@if (ew_Empty(UserProjects.Export)) {
+		<div class="ewGridLowerPanel">
+		@if (UserProjects.CurrentAction != "gridadd" && UserProjects.CurrentAction != "gridedit") {
+			<form name="ewPagerForm" class="ewForm form-horizontal ewPagerForm" action="@ew_CurrentPage()">
+@if (UserProjects_list.Pager == null) {
+	UserProjects_list.Pager = new cPrevNextPager(UserProjects_list.StartRec, UserProjects_list.DisplayRecs, UserProjects_list.TotalRecs); 
+}
+@if (UserProjects_list.Pager.RecordCount > 0) {
+<div class="ewPager">
+<span>@Html.Raw(Language.Phrase("Page"))&nbsp;</span>
+<div class="ewPrevNext"><div class="input-group">
+<div class="input-group-btn">
+<!--first page button-->
+	@if (UserProjects_list.Pager.FirstButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerFirst")))" href="@(UserProjects_list.PageUrl)start=@UserProjects_list.Pager.FirstButton.Start"><span class="icon-first ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerFirst")))"><span class="icon-first ewIcon"></span></a>
+	}
+<!--previous page button-->
+	@if (UserProjects_list.Pager.PrevButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerPrevious")))" href="@(UserProjects_list.PageUrl)start=@UserProjects_list.Pager.PrevButton.Start"><span class="icon-prev ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerPrevious")))"><span class="icon-prev ewIcon"></span></a>
+	}
+</div>
+<!--current page number-->
+	<input class="form-control input-sm" type="text" name="@EW_TABLE_PAGE_NO" value="@UserProjects_list.Pager.CurrentPage">
+<div class="input-group-btn">		
+<!--next page button-->
+	@if (UserProjects_list.Pager.NextButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerNext")))" href="@(UserProjects_list.PageUrl)start=@UserProjects_list.Pager.NextButton.Start"><span class="icon-next ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerNext")))"><span class="icon-next ewIcon"></span></a>
+	}
+<!--last page button-->
+	@if (UserProjects_list.Pager.LastButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerLast")))" href="@(UserProjects_list.PageUrl)start=@UserProjects_list.Pager.LastButton.Start"><span class="icon-last ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerLast")))"><span class="icon-last ewIcon"></span></a>
+	}
+</div>
+</div>
+</div>
+<span>&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@UserProjects_list.Pager.PageCount</span>
+</div>
+	<div class="ewPager ewRec">
+		<span>@Html.Raw(Language.Phrase("Record"))&nbsp;@(UserProjects_list.Pager.FromIndex)&nbsp;@Html.Raw(Language.Phrase("To"))&nbsp;@(UserProjects_list.Pager.ToIndex)&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@(UserProjects_list.Pager.RecordCount)</span>
+	</div>
+}
+			</form>
+		}
+		<div class="ewListOtherOptions">
+		@foreach (var kvp in UserProjects_list.OtherOptions) {
+			kvp.Value.Render("body", "bottom");
+		}
+		</div>
+		<div class="clearfix"></div>
+		</div>
+		}
+</div>
+}
+@if (UserProjects_list.TotalRecs <= 0 && UserProjects.CurrentAction == "") { // Show other options
+<div class="ewListOtherOptions">
+	@foreach (var kvp in UserProjects_list.OtherOptions) {
+		kvp.Value.ButtonClass = "";
+		kvp.Value.Render("body", "");
+	}
+</div>
+<div class="clearfix"></div>
+} 
+@if (ew_Empty(UserProjects.Export)) {
+<script type="text/javascript">
+fUserProjectslist.Init();
+</script>
+}
+@{
+	UserProjects_list.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(UserProjects.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	UserProjects_list.Page_Terminate();
+}

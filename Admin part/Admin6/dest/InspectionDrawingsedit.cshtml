@@ -1,0 +1,329 @@
+@functions {
+
+	//
+	// Page class for InspectionDrawings
+	//
+	public class cInspectionDrawings_edit<C, S> : cInspectionDrawings_edit_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// InspectionDrawings_edit	
+	public static cInspectionDrawings_edit<cConnection, cAdvancedSecurity> InspectionDrawings_edit {
+		get { return (cInspectionDrawings_edit<cConnection, cAdvancedSecurity>)ew_PageData["InspectionDrawings_edit"]; }
+		set { ew_PageData["InspectionDrawings_edit"] = value; }
+	}
+
+	// CurrentPage
+	public static cInspectionDrawings_edit<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cInspectionDrawings_edit<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cInspectionDrawings_edit<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (InspectionDrawings_edit == null) {
+		InspectionDrawings_edit = new cInspectionDrawings_edit<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	InspectionDrawings_edit.Page_Init();
+
+	// Page main
+	InspectionDrawings_edit.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	InspectionDrawings_edit.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var InspectionDrawings_edit = new ew_Page("InspectionDrawings_edit");
+InspectionDrawings_edit.PageID = "edit"; // Page ID
+var EW_PAGE_ID = InspectionDrawings_edit.PageID; // For backward compatibility
+
+// Form object
+var fInspectionDrawingsedit = new ew_Form("fInspectionDrawingsedit");
+
+// Validate form
+fInspectionDrawingsedit.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+		elm = this.GetElements("x" + infix + "_Size");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(InspectionDrawings.Size.ReqErrMsg.Replace("%s", InspectionDrawings.Size.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Size");
+		if (elm && !ew_CheckInteger(elm.value))
+			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(InspectionDrawings.Size.FldErrMsg)))");
+		elm = this.GetElements("x" + infix + "_DateCreated");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(InspectionDrawings.DateCreated.ReqErrMsg.Replace("%s", InspectionDrawings.DateCreated.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_InspectionDrawingDataId");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(InspectionDrawings.InspectionDrawingDataId.ReqErrMsg.Replace("%s", InspectionDrawings.InspectionDrawingDataId.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_InspectionDrawingDataId");
+		if (elm && !ew_CheckInteger(elm.value))
+			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(InspectionDrawings.InspectionDrawingDataId.FldErrMsg)))");
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fInspectionDrawingsedit.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fInspectionDrawingsedit.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fInspectionDrawingsedit.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fInspectionDrawingsedit.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(InspectionDrawings.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(InspectionDrawings.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	InspectionDrawings_edit.ShowPageHeader();
+}
+@{
+	InspectionDrawings_edit.ShowMessage();
+}
+<form name="fInspectionDrawingsedit" id="fInspectionDrawingsedit" class="form-horizontal ewForm ewEditForm" action="@ew_CurrentPage()" method="post">
+@if (InspectionDrawings_edit.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@InspectionDrawings_edit.Token">
+} 
+<input type="hidden" name="t" value="InspectionDrawings">
+<input type="hidden" name="a_edit" id="a_edit" value="U">
+<div>
+@if (InspectionDrawings.Id.Visible) { // Id.Visible (begin)
+	<div id="r_Id" class="form-group">
+		<label id="elh_InspectionDrawings_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.Id.CellAttributes))>
+<span id="el_InspectionDrawings_Id">
+<span @(Html.Raw(InspectionDrawings.Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(InspectionDrawings.Id.EditValue)</p></span>
+</span>
+<input type="hidden" data-field="x_Id" name="x_Id" id="x_Id" value="@(InspectionDrawings.Id.CurrentValue)">
+@Html.Raw(InspectionDrawings.Id.CustomMsg)</div></div>
+	</div>
+} @* Id.Visible (end) *@ 
+@if (InspectionDrawings.zName.Visible) { // zName.Visible (begin)
+	<div id="r_zName" class="form-group">
+		<label id="elh_InspectionDrawings_zName" for="x_zName" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.zName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.zName.CellAttributes))>
+<span id="el_InspectionDrawings_zName">
+<textarea data-field="x_zName" name="x_zName" id="x_zName" cols="35" rows="4" placeholder="@InspectionDrawings.zName.PlaceHolder" @(Html.Raw(InspectionDrawings.zName.EditAttributes))>@InspectionDrawings.zName.EditValue</textarea>
+</span>
+@Html.Raw(InspectionDrawings.zName.CustomMsg)</div></div>
+	</div>
+} @* zName.Visible (end) *@ 
+@if (InspectionDrawings.Size.Visible) { // Size.Visible (begin)
+	<div id="r_Size" class="form-group">
+		<label id="elh_InspectionDrawings_Size" for="x_Size" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.Size.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.Size.CellAttributes))>
+<span id="el_InspectionDrawings_Size">
+<input type="text" data-field="x_Size" name="x_Size" id="x_Size" size="30" placeholder="@InspectionDrawings.Size.PlaceHolder" value="@InspectionDrawings.Size.EditValue" @(Html.Raw(InspectionDrawings.Size.EditAttributes))>
+</span>
+@Html.Raw(InspectionDrawings.Size.CustomMsg)</div></div>
+	</div>
+} @* Size.Visible (end) *@ 
+@if (InspectionDrawings.DateCreated.Visible) { // DateCreated.Visible (begin)
+	<div id="r_DateCreated" class="form-group">
+		<label id="elh_InspectionDrawings_DateCreated" for="x_DateCreated" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.DateCreated.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.DateCreated.CellAttributes))>
+<span id="el_InspectionDrawings_DateCreated">
+<input type="text" data-field="x_DateCreated" name="x_DateCreated" id="x_DateCreated" placeholder="@InspectionDrawings.DateCreated.PlaceHolder" value="@InspectionDrawings.DateCreated.EditValue" @(Html.Raw(InspectionDrawings.DateCreated.EditAttributes))>
+</span>
+@Html.Raw(InspectionDrawings.DateCreated.CustomMsg)</div></div>
+	</div>
+} @* DateCreated.Visible (end) *@ 
+@if (InspectionDrawings.InspectionDrawingDataId.Visible) { // InspectionDrawingDataId.Visible (begin)
+	<div id="r_InspectionDrawingDataId" class="form-group">
+		<label id="elh_InspectionDrawings_InspectionDrawingDataId" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.InspectionDrawingDataId.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.InspectionDrawingDataId.CellAttributes))>
+<span id="el_InspectionDrawings_InspectionDrawingDataId">
+<span>@{
+	wrkonchange = " " + (InspectionDrawings.InspectionDrawingDataId.EditAttrs.ContainsKey("onchange") ? InspectionDrawings.InspectionDrawingDataId.EditAttrs["onchange"] : "");
+	if (ew_NotEmpty(wrkonchange)) { wrkonchange = " onchange=\"" + ew_JsEncode2(wrkonchange) + "\""; }
+	InspectionDrawings.InspectionDrawingDataId.EditAttrs["onchange"] = "";
+}</span>
+<span id="as_x_InspectionDrawingDataId" style="white-space: nowrap; z-index: 8950">
+	<input type="text" name="sv_x_InspectionDrawingDataId" id="sv_x_InspectionDrawingDataId" value="@InspectionDrawings.InspectionDrawingDataId.EditValue" size="30" placeholder="@InspectionDrawings.InspectionDrawingDataId.PlaceHolder" @(Html.Raw(InspectionDrawings.InspectionDrawingDataId.EditAttributes))>
+</span>
+<input type="hidden" data-field="x_InspectionDrawingDataId" name="x_InspectionDrawingDataId" id="x_InspectionDrawingDataId" value="@Html.Raw(InspectionDrawings.InspectionDrawingDataId.CurrentValue)" @(Html.Raw(wrkonchange))>
+<span>@{
+sSqlWrk = "SELECT  TOP " + EW_AUTO_SUGGEST_MAX_ENTRIES + " [Id], [Id] AS [DispFld] FROM [dbo].[InspectionDrawingDatas]";
+sWhereWrk = "CAST([Id] AS NVARCHAR) LIKE '{query_value}%'";
+sLookupTblFilter = Convert.ToString(InspectionDrawings_edit.GetCustomValue("FldSelectFilter", "InspectionDrawingDataId"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+InspectionDrawings.Lookup_Selecting(InspectionDrawings.InspectionDrawingDataId, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="q_x_InspectionDrawingDataId" id="q_x_InspectionDrawingDataId" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))">
+<script type="text/javascript">
+fInspectionDrawingsedit.CreateAutoSuggest("x_InspectionDrawingDataId", false);
+</script>
+</span>
+@Html.Raw(InspectionDrawings.InspectionDrawingDataId.CustomMsg)</div></div>
+	</div>
+} @* InspectionDrawingDataId.Visible (end) *@ 
+@if (InspectionDrawings.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+	<div id="r_CreatedBy_Id" class="form-group">
+		<label id="elh_InspectionDrawings_CreatedBy_Id" for="x_CreatedBy_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.CreatedBy_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.CreatedBy_Id.CellAttributes))>
+<span id="el_InspectionDrawings_CreatedBy_Id">
+<select data-field="x_CreatedBy_Id" id="x_CreatedBy_Id" name="x_CreatedBy_Id" @(Html.Raw(InspectionDrawings.CreatedBy_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(InspectionDrawings.CreatedBy_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)InspectionDrawings.CreatedBy_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], InspectionDrawings.CreatedBy_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+@if (ew_NotEmpty(odwrk[2])) {
+	@ew_ValueSeparator(1,InspectionDrawings.CreatedBy_Id)@odwrk[2]
+}
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [FirstName] AS [DispFld], [LastName] AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[AspNetUsers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(InspectionDrawings_edit.GetCustomValue("FldSelectFilter", "CreatedBy_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+InspectionDrawings.Lookup_Selecting(InspectionDrawings.CreatedBy_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_CreatedBy_Id" id="s_x_CreatedBy_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=202">
+</span>
+@Html.Raw(InspectionDrawings.CreatedBy_Id.CustomMsg)</div></div>
+	</div>
+} @* CreatedBy_Id.Visible (end) *@ 
+</div>
+@if (InspectionDrawings_edit.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	InspectionDrawings_edit.Recordset.Close();
+	InspectionDrawings_edit.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+@{
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("SaveBtn"))</button>
+}
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fInspectionDrawingsedit.Init();
+</script>
+@{
+	InspectionDrawings_edit.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	InspectionDrawings_edit.Page_Terminate();
+}

@@ -1,0 +1,27 @@
+@{
+	if (Language == null) {
+		ew_End();
+	}
+}
+<!-- Begin Main Menu -->
+@{
+
+	// Generate all menu items
+	RootMenu = new cMenu(EW_MENUBAR_ID);	
+}
+@{
+
+	// Generate all menu items
+	RootMenu.IsRoot = true;
+	RootMenu.AddMenuItem(3, "mi_Projects", Language.MenuPhrase("3", "MenuText"), "Projectslist.cshtml", -1, "", true, false);
+	RootMenu.AddMenuItem(4, "mi_UserProjects", Language.MenuPhrase("4", "MenuText"), "UserProjectslist.cshtml", -1, "", true, false);
+	RootMenu.AddMenuItem(5, "mi_ChecklistTemplates", Language.MenuPhrase("5", "MenuText"), "ChecklistTemplateslist.cshtml", -1, "", true, false);
+	RootMenu.AddMenuItem(6, "mi_ChecklistItemTemplates", Language.MenuPhrase("6", "MenuText"), "ChecklistItemTemplateslist.cshtml?cmd=resetall", -1, "", true, false);
+	RootMenu.AddMenuItem(7, "mi_InspectionDrawings", Language.MenuPhrase("7", "MenuText"), "InspectionDrawingslist.cshtml", -1, "", true, false);
+	RootMenu.AddMenuItem(8, "mi_Checklists", Language.MenuPhrase("8", "MenuText"), "Checklistslist.cshtml?cmd=resetall", -1, "", true, false);
+	RootMenu.AddMenuItem(9, "mi_ChecklistItems", Language.MenuPhrase("9", "MenuText"), "ChecklistItemslist.cshtml", -1, "", true, false);
+	RootMenu.AddMenuItem(11, "mi_InspectionDrawingDatas", Language.MenuPhrase("11", "MenuText"), "InspectionDrawingDataslist.cshtml", -1, "", true, false);
+	RootMenu.AddMenuItem(15, "mi_AspNetUsers", Language.MenuPhrase("15", "MenuText"), "AspNetUserslist.cshtml", -1, "", true, false);
+	RootMenu.Render();
+}
+<!-- End Main Menu -->

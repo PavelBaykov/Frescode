@@ -1,0 +1,218 @@
+@functions {
+
+	//
+	// Page class for UserProjects
+	//
+	public class cUserProjects_delete<C, S> : cUserProjects_delete_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// UserProjects_delete	
+	public static cUserProjects_delete<cConnection, cAdvancedSecurity> UserProjects_delete {
+		get { return (cUserProjects_delete<cConnection, cAdvancedSecurity>)ew_PageData["UserProjects_delete"]; }
+		set { ew_PageData["UserProjects_delete"] = value; }
+	}
+
+	// CurrentPage
+	public static cUserProjects_delete<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cUserProjects_delete<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cUserProjects_delete<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (UserProjects_delete == null) {
+		UserProjects_delete = new cUserProjects_delete<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	UserProjects_delete.Page_Init();
+
+	// Page main
+	UserProjects_delete.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	UserProjects_delete.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var UserProjects_delete = new ew_Page("UserProjects_delete");
+UserProjects_delete.PageID = "delete"; // Page ID
+var EW_PAGE_ID = UserProjects_delete.PageID; // For backward compatibility
+
+// Form object
+var fUserProjectsdelete = new ew_Form("fUserProjectsdelete");
+
+// Form_CustomValidate event
+fUserProjectsdelete.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fUserProjectsdelete.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fUserProjectsdelete.Lists["x_User_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fUserProjectsdelete.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+@{
+
+	// Load records for display
+	UserProjects_delete.Recordset = UserProjects_delete.LoadRecordset();
+	if (UserProjects_delete.TotalRecs <= 0) { // No record found, exit
+		if (UserProjects_delete.Recordset != null) {
+			UserProjects_delete.Recordset.Close();
+			UserProjects_delete.Recordset.Dispose();
+		}
+		UserProjects_delete.Page_Terminate("UserProjectslist.cshtml"); // Return to list
+	}
+}
+<div class="ewToolbar">
+@if (ew_Empty(UserProjects.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(UserProjects.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	UserProjects_delete.ShowPageHeader();
+}
+@{
+	UserProjects_delete.ShowMessage();
+}
+<form name="fUserProjectsdelete" id="fUserProjectsdelete" class="form-inline ewForm ewDeleteForm" action="@ew_CurrentPage()" method="post">
+<br>
+@if (UserProjects_delete.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@UserProjects_delete.Token">
+}
+<input type="hidden" name="t" value="UserProjects">
+<input type="hidden" name="a_delete" id="a_delete" value="D">
+@foreach (object key in UserProjects_delete.RecKeys) {
+	var keyvalue = Information.IsArray(key) ? String.Join(EW_COMPOSITE_KEY_SEPARATOR, (string[])key) : Convert.ToString(key);
+<input type="hidden" name="key_m" value="@keyvalue">
+}
+<div class="ewGrid">
+<div class="@((ew_IsResponsiveLayout()) ? "table-responsive" : "ewGridMiddlePanel")">
+<table class="table ewTable">
+@UserProjects.TableCustomInnerHtml
+	<thead>
+	<tr class="ewTableHeader">
+@if (UserProjects.User_Id.Visible) { // User_Id (begin)
+		<th><span id="elh_UserProjects_User_Id" class="UserProjects_User_Id">@Html.Raw(UserProjects.User_Id.FldCaption)</span></th>
+} @* User_Id.Visible (end) *@
+@if (UserProjects.Project_Id.Visible) { // Project_Id (begin)
+		<th><span id="elh_UserProjects_Project_Id" class="UserProjects_Project_Id">@Html.Raw(UserProjects.Project_Id.FldCaption)</span></th>
+} @* Project_Id.Visible (end) *@
+	</tr>
+	</thead>
+	<tbody>
+@{
+UserProjects_delete.RecCnt = 0;
+}
+@while (UserProjects_delete.Recordset.Read()) {
+	UserProjects_delete.RecCnt++;
+	UserProjects_delete.RowCnt++;
+
+	// Set row properties
+	UserProjects.ResetAttrs();
+	UserProjects.RowType = EW_ROWTYPE_VIEW; // View
+
+	// Get the field contents
+	UserProjects_delete.LoadRowValues(UserProjects_delete.Recordset);
+
+	// Render row
+	UserProjects_delete.RenderRow();
+	<tr @(Html.Raw(UserProjects.RowAttributes))>
+@if (UserProjects.User_Id.Visible) { // User_Id (begin)
+		<td @(Html.Raw(UserProjects.User_Id.CellAttributes))>
+<span id="el@(UserProjects_delete.RowCnt)_UserProjects_User_Id" class="form-group UserProjects_User_Id">
+<span @(Html.Raw(UserProjects.User_Id.ViewAttributes))>
+@Html.Raw(UserProjects.User_Id.ListViewValue)</span>
+</span>
+</td>
+} @* User_Id.Visible (end) *@
+@if (UserProjects.Project_Id.Visible) { // Project_Id (begin)
+		<td @(Html.Raw(UserProjects.Project_Id.CellAttributes))>
+<span id="el@(UserProjects_delete.RowCnt)_UserProjects_Project_Id" class="form-group UserProjects_Project_Id">
+<span @(Html.Raw(UserProjects.Project_Id.ViewAttributes))>
+@Html.Raw(UserProjects.Project_Id.ListViewValue)</span>
+</span>
+</td>
+} @* Project_Id.Visible (end) *@
+	</tr>
+}
+@{
+	UserProjects_delete.Recordset.Close();
+	UserProjects_delete.Recordset.Dispose();
+}
+</tbody>
+</table>
+</div>
+</div>
+<div class="btn-group ewButtonGroup">
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("DeleteBtn"))</button>
+</div>
+</form>
+<script type="text/javascript">
+fUserProjectsdelete.Init();
+</script>
+@{
+	UserProjects_delete.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	UserProjects_delete.Page_Terminate();
+}
