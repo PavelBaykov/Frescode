@@ -55,7 +55,7 @@ namespace Frescode.Controllers
                 {
                     Id = project.Id,
                     Name = project.Name,
-                    ChangedBy = $"{project.ChangedBy.FirstName} {project.ChangedBy.LastName}",
+                    ChangedBy = $"{project.ChangedBy?.FirstName} {project.ChangedBy?.LastName}",
                     DateOfLastChange = project.DateOfLastChange.ToString("MM/dd/yy H:mm:ss"),
                     Status = status
                 };
