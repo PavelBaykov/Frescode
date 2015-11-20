@@ -613,7 +613,7 @@
 <phrase id="fldtagvalue2" value="0"/>
 <phrase id="fldtagcaption2" value="No"/>
 </field>
-<field id="passwordhash"><phrase id="fldcaption" value="Password Hash"/>
+<field id="passwordhash"><phrase id="fldcaption" value="Password"/>
 </field>
 <field id="securitystamp"><phrase id="fldcaption" value="Security Stamp"/>
 </field>

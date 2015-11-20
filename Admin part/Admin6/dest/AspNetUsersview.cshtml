@@ -30,6 +30,7 @@
 			rsnew["TwoFactorEnabled"]=false;
 			rsnew["LockoutEnabled"]=false;
 			rsnew["AccessFailedCount"]=0;
+			rsnew["UserName"]=rsnew["Email"];
 
 		/*
 			byte[] salt;
@@ -117,8 +118,9 @@ fAspNetUsersview.Form_CustomValidate =
 fAspNetUsersview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
 
 // Dynamic selection lists
-// Form object for search
+fAspNetUsersview.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 
+// Form object for search
 </script>
 <script type="text/javascript">
 

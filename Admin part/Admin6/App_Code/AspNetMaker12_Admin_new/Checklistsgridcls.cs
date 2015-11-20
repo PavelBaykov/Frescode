@@ -68,7 +68,7 @@ public partial class AspNetMaker12_Admin_new : AspNetMaker12_Admin_new_base {
 					 "(Status, DateOfLastChange,ChangedBy_Id,Checklist_Id,ItemTemplate_Id) "+
 					 "SELECT 	0 as Status,"+
 					 "CURRENT_TIMESTAMP as DateOfLastChange,"+
-					 rsnew["ChangedBy_Id"] + " as ChangedBy_Id,"+
+					 "'"+Convert.ToString(rsnew["ChangedBy_Id"])+"'" + " as ChangedBy_Id,"+
 					 rsnew["Id"] +" as Checklist_Id,"+
 					 "chit.Id as ItemTemplate_Id "+
 					 "FROM 	ChecklistItemTemplates chit "+
