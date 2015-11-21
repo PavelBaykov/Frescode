@@ -226,17 +226,6 @@ fAspNetUsersview.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoF
 </td>
 	</tr>
 } @* AspNetUsers.PasswordHash.Visible (end) *@
-@if (AspNetUsers.UserName.Visible) { @* AspNetUsers.UserName.Visible (begin) *@
-	<tr id="r_UserName">
-		<td><span id="elh_AspNetUsers_UserName">@Html.Raw(AspNetUsers.UserName.FldCaption)</span></td>
-		<td @Html.Raw(AspNetUsers.UserName.CellAttributes)>
-<span id="el_AspNetUsers_UserName" class="form-group">
-<span @(Html.Raw(AspNetUsers.UserName.ViewAttributes))>
-@Html.Raw(AspNetUsers.UserName.ViewValue)</span>
-</span>
-</td>
-	</tr>
-} @* AspNetUsers.UserName.Visible (end) *@
 @if (AspNetUsers.Customer_Id.Visible) { @* AspNetUsers.Customer_Id.Visible (begin) *@
 	<tr id="r_Customer_Id">
 		<td><span id="elh_AspNetUsers_Customer_Id">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</span></td>
