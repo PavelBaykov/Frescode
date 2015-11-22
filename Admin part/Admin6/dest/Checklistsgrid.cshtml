@@ -55,12 +55,6 @@ fChecklistsgrid.Validate = function() {
 		var checkrow = (gridinsert) ? !this.EmptyRow(infix) : true;
 		if (checkrow) {
 			addcnt++;
-		elm = this.GetElements("x" + infix + "_DateCreated");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.DateCreated.ReqErrMsg.Replace("%s", Checklists.DateCreated.FldCaption))))");
-		elm = this.GetElements("x" + infix + "_DateOfLastChange");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.DateOfLastChange.ReqErrMsg.Replace("%s", Checklists.DateOfLastChange.FldCaption))))");
 		elm = this.GetElements("x" + infix + "_ChecklistTemplate_Id");
 		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
 			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.ChecklistTemplate_Id.ReqErrMsg.Replace("%s", Checklists.ChecklistTemplate_Id.FldCaption))))");
@@ -82,8 +76,6 @@ fChecklistsgrid.Validate = function() {
 // Check empty row
 fChecklistsgrid.EmptyRow = function(infix) {
 	var fobj = this.Form;
-	if (ew_ValueChanged(fobj, infix, "DateCreated", false)) return false;
-	if (ew_ValueChanged(fobj, infix, "DateOfLastChange", false)) return false;
 	if (ew_ValueChanged(fobj, infix, "ChangedBy_Id", false)) return false;
 	if (ew_ValueChanged(fobj, infix, "ChecklistTemplate_Id", false)) return false;
 	if (ew_ValueChanged(fobj, infix, "CreatedBy_Id", false)) return false;
@@ -175,24 +167,6 @@ fChecklistsgrid.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFil
         </div></div></th>	
 	}
 } @* Id.Visible (end) *@		
-@if (Checklists.DateCreated.Visible) { // DateCreated.Visible (begin)
-	if (Checklists.SortUrl(Checklists.DateCreated) == "") {
-		<th data-name="DateCreated"><div id="elh_Checklists_DateCreated" class="Checklists_DateCreated"><div class="ewTableHeaderCaption">@Html.Raw(Checklists.DateCreated.FldCaption)</div></div></th>
-	} else {
-		<th data-name="DateCreated"><div><div id="elh_Checklists_DateCreated" class="Checklists_DateCreated">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Checklists.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (Checklists.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Checklists.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* DateCreated.Visible (end) *@		
-@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
-	if (Checklists.SortUrl(Checklists.DateOfLastChange) == "") {
-		<th data-name="DateOfLastChange"><div id="elh_Checklists_DateOfLastChange" class="Checklists_DateOfLastChange"><div class="ewTableHeaderCaption">@Html.Raw(Checklists.DateOfLastChange.FldCaption)</div></div></th>
-	} else {
-		<th data-name="DateOfLastChange"><div><div id="elh_Checklists_DateOfLastChange" class="Checklists_DateOfLastChange">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Checklists.DateOfLastChange.FldCaption)</span><span class="ewTableHeaderSort">@if (Checklists.DateOfLastChange.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Checklists.DateOfLastChange.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* DateOfLastChange.Visible (end) *@		
 @if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
 	if (Checklists.SortUrl(Checklists.ChangedBy_Id) == "") {
 		<th data-name="ChangedBy_Id"><div id="elh_Checklists_ChangedBy_Id" class="Checklists_ChangedBy_Id"><div class="ewTableHeaderCaption">@Html.Raw(Checklists.ChangedBy_Id.FldCaption)</div></div></th>
@@ -382,60 +356,6 @@ while (Checklists_grid.RecCnt < Checklists_grid.StopRec) { // Begin While
 		} @* View (end) *@
 <a id="@(Checklists_grid.PageObjName + "_row_" + Convert.ToString(Checklists_grid.RowCnt))"></a></td>
 	} @* Id.Visible (end) *@
-	@if (Checklists.DateCreated.Visible) { // DateCreated.Visible (begin)
-		<td data-name="DateCreated"@(Html.Raw(Checklists.DateCreated.CellAttributes))>
-		@if (Checklists.RowType == EW_ROWTYPE_ADD) { // Add (begin)
-			<text> @* DateCreated (begin) *@
-<span id="el@(Checklists_grid.RowCnt)_Checklists_DateCreated" class="form-group Checklists_DateCreated">
-<input type="text" data-field="x_DateCreated" name="x@(Checklists_grid.RowIndex)_DateCreated" id="x@(Checklists_grid.RowIndex)_DateCreated" placeholder="@Checklists.DateCreated.PlaceHolder" value="@Checklists.DateCreated.EditValue" @(Html.Raw(Checklists.DateCreated.EditAttributes))>
-</span>
-			<input type="hidden" data-field="x_DateCreated" name="o@(Checklists_grid.RowIndex)_DateCreated" id="o@(Checklists_grid.RowIndex)_DateCreated" value="@(Checklists.DateCreated.OldValue)">
-			</text> @* DateCreated (end) *@
-		} @* Add (end) *@
-		@if (Checklists.RowType == EW_ROWTYPE_EDIT) { // Edit (begin)
-			<text> @* DateCreated (begin) *@
-<span id="el@(Checklists_grid.RowCnt)_Checklists_DateCreated" class="form-group Checklists_DateCreated">
-<input type="text" data-field="x_DateCreated" name="x@(Checklists_grid.RowIndex)_DateCreated" id="x@(Checklists_grid.RowIndex)_DateCreated" placeholder="@Checklists.DateCreated.PlaceHolder" value="@Checklists.DateCreated.EditValue" @(Html.Raw(Checklists.DateCreated.EditAttributes))>
-</span>
-			</text> @* DateCreated (end) *@
-		} @* Edit (end) *@
-		@if (Checklists.RowType == EW_ROWTYPE_VIEW) { // View (begin)
-			<text> @* DateCreated (begin) *@
-<span @(Html.Raw(Checklists.DateCreated.ViewAttributes))>
-@Html.Raw(Checklists.DateCreated.ListViewValue)</span>
-			<input type="hidden" data-field="x_DateCreated" name="x@(Checklists_grid.RowIndex)_DateCreated" id="x@(Checklists_grid.RowIndex)_DateCreated" value="@(Checklists.DateCreated.FormValue)">
-			<input type="hidden" data-field="x_DateCreated" name="o@(Checklists_grid.RowIndex)_DateCreated" id="o@(Checklists_grid.RowIndex)_DateCreated" value="@(Checklists.DateCreated.OldValue)">
-			</text> @* DateCreated (end) *@
-		} @* View (end) *@
-</td>
-	} @* DateCreated.Visible (end) *@
-	@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
-		<td data-name="DateOfLastChange"@(Html.Raw(Checklists.DateOfLastChange.CellAttributes))>
-		@if (Checklists.RowType == EW_ROWTYPE_ADD) { // Add (begin)
-			<text> @* DateOfLastChange (begin) *@
-<span id="el@(Checklists_grid.RowCnt)_Checklists_DateOfLastChange" class="form-group Checklists_DateOfLastChange">
-<input type="text" data-field="x_DateOfLastChange" name="x@(Checklists_grid.RowIndex)_DateOfLastChange" id="x@(Checklists_grid.RowIndex)_DateOfLastChange" placeholder="@Checklists.DateOfLastChange.PlaceHolder" value="@Checklists.DateOfLastChange.EditValue" @(Html.Raw(Checklists.DateOfLastChange.EditAttributes))>
-</span>
-			<input type="hidden" data-field="x_DateOfLastChange" name="o@(Checklists_grid.RowIndex)_DateOfLastChange" id="o@(Checklists_grid.RowIndex)_DateOfLastChange" value="@(Checklists.DateOfLastChange.OldValue)">
-			</text> @* DateOfLastChange (end) *@
-		} @* Add (end) *@
-		@if (Checklists.RowType == EW_ROWTYPE_EDIT) { // Edit (begin)
-			<text> @* DateOfLastChange (begin) *@
-<span id="el@(Checklists_grid.RowCnt)_Checklists_DateOfLastChange" class="form-group Checklists_DateOfLastChange">
-<input type="text" data-field="x_DateOfLastChange" name="x@(Checklists_grid.RowIndex)_DateOfLastChange" id="x@(Checklists_grid.RowIndex)_DateOfLastChange" placeholder="@Checklists.DateOfLastChange.PlaceHolder" value="@Checklists.DateOfLastChange.EditValue" @(Html.Raw(Checklists.DateOfLastChange.EditAttributes))>
-</span>
-			</text> @* DateOfLastChange (end) *@
-		} @* Edit (end) *@
-		@if (Checklists.RowType == EW_ROWTYPE_VIEW) { // View (begin)
-			<text> @* DateOfLastChange (begin) *@
-<span @(Html.Raw(Checklists.DateOfLastChange.ViewAttributes))>
-@Html.Raw(Checklists.DateOfLastChange.ListViewValue)</span>
-			<input type="hidden" data-field="x_DateOfLastChange" name="x@(Checklists_grid.RowIndex)_DateOfLastChange" id="x@(Checklists_grid.RowIndex)_DateOfLastChange" value="@(Checklists.DateOfLastChange.FormValue)">
-			<input type="hidden" data-field="x_DateOfLastChange" name="o@(Checklists_grid.RowIndex)_DateOfLastChange" id="o@(Checklists_grid.RowIndex)_DateOfLastChange" value="@(Checklists.DateOfLastChange.OldValue)">
-			</text> @* DateOfLastChange (end) *@
-		} @* View (end) *@
-</td>
-	} @* DateOfLastChange.Visible (end) *@
 	@if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
 		<td data-name="ChangedBy_Id"@(Html.Raw(Checklists.ChangedBy_Id.CellAttributes))>
 		@if (Checklists.RowType == EW_ROWTYPE_ADD) { // Add (begin)
@@ -928,46 +848,6 @@ while (Checklists_grid.RecCnt < Checklists_grid.StopRec) { // Begin While
 <input type="hidden" data-field="x_Id" name="o@(Checklists_grid.RowIndex)_Id" id="o@(Checklists_grid.RowIndex)_Id" value="@(Checklists.Id.OldValue)">
 </td>
 	} @* Id.Visible (end) *@
-	@if (Checklists.DateCreated.Visible) { // DateCreated.Visible (begin)
-		<td data-name="DateCreated">
-@if (Checklists.CurrentAction != "F") { // DateCreated (begin)
-	<text>
-<span id="el$rowindex$_Checklists_DateCreated" class="form-group Checklists_DateCreated">
-<input type="text" data-field="x_DateCreated" name="x@(Checklists_grid.RowIndex)_DateCreated" id="x@(Checklists_grid.RowIndex)_DateCreated" placeholder="@Checklists.DateCreated.PlaceHolder" value="@Checklists.DateCreated.EditValue" @(Html.Raw(Checklists.DateCreated.EditAttributes))>
-</span>
-	</text>
-} else { // DateCreated (confirm)
-	<text>
-<span id="el$rowindex$_Checklists_DateCreated" class="form-group Checklists_DateCreated">
-<span @(Html.Raw(Checklists.DateCreated.ViewAttributes))>
-<p class="form-control-static">@Html.Raw(Checklists.DateCreated.ViewValue)</p></span>
-</span>
-	<input type="hidden" data-field="x_DateCreated" name="x@(Checklists_grid.RowIndex)_DateCreated" id="x@(Checklists_grid.RowIndex)_DateCreated" value="@(Checklists.DateCreated.FormValue)">
-	</text>
-} @* DateCreated (end) *@
-<input type="hidden" data-field="x_DateCreated" name="o@(Checklists_grid.RowIndex)_DateCreated" id="o@(Checklists_grid.RowIndex)_DateCreated" value="@(Checklists.DateCreated.OldValue)">
-</td>
-	} @* DateCreated.Visible (end) *@
-	@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
-		<td data-name="DateOfLastChange">
-@if (Checklists.CurrentAction != "F") { // DateOfLastChange (begin)
-	<text>
-<span id="el$rowindex$_Checklists_DateOfLastChange" class="form-group Checklists_DateOfLastChange">
-<input type="text" data-field="x_DateOfLastChange" name="x@(Checklists_grid.RowIndex)_DateOfLastChange" id="x@(Checklists_grid.RowIndex)_DateOfLastChange" placeholder="@Checklists.DateOfLastChange.PlaceHolder" value="@Checklists.DateOfLastChange.EditValue" @(Html.Raw(Checklists.DateOfLastChange.EditAttributes))>
-</span>
-	</text>
-} else { // DateOfLastChange (confirm)
-	<text>
-<span id="el$rowindex$_Checklists_DateOfLastChange" class="form-group Checklists_DateOfLastChange">
-<span @(Html.Raw(Checklists.DateOfLastChange.ViewAttributes))>
-<p class="form-control-static">@Html.Raw(Checklists.DateOfLastChange.ViewValue)</p></span>
-</span>
-	<input type="hidden" data-field="x_DateOfLastChange" name="x@(Checklists_grid.RowIndex)_DateOfLastChange" id="x@(Checklists_grid.RowIndex)_DateOfLastChange" value="@(Checklists.DateOfLastChange.FormValue)">
-	</text>
-} @* DateOfLastChange (end) *@
-<input type="hidden" data-field="x_DateOfLastChange" name="o@(Checklists_grid.RowIndex)_DateOfLastChange" id="o@(Checklists_grid.RowIndex)_DateOfLastChange" value="@(Checklists.DateOfLastChange.OldValue)">
-</td>
-	} @* DateOfLastChange.Visible (end) *@
 	@if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
 		<td data-name="ChangedBy_Id">
 @if (Checklists.CurrentAction != "F") { // ChangedBy_Id (begin)

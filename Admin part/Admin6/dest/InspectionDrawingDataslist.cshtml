@@ -17,6 +17,43 @@
 		public string Get_TblEditReturnPage() {
 			return ReturnUrl;		
 		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+				var response = unirest_net.http.Unirest
+			.post("http://localhost/PdfConverter/ConvertPdfToImage?resultWidth=600")
+			.field("file", (byte[])rsnew["Data"])
+
+			//.field("file", File.ReadAllBytes(@"C:\Users\pavelbaykov89\Desktop\GenerateReport.pdf"))
+			.asBinary();
+			var memoryStream = new MemoryStream();
+			response.Raw.CopyTo(memoryStream);
+			memoryStream.Flush();
+			var imageData = memoryStream.ToArray();
+			rsnew["Data"]=imageData;
+			return true;
+		}
+
+		// Row Inserted event
+		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {
+
+			//ew_Write("Row Inserted");
+			//var response = unirest_net.http.Unirest
+			//.post("http://localhost/PdfConverter/ConvertPdfToImage?resultWidth=600")
+			//.field("file", rsnew["Data"])
+			//.field("file", File.ReadAllBytes(@"C:\Users\pavelbaykov89\Desktop\GenerateReport.pdf"))
+			//.asBinary();
+			//var memoryStream = new MemoryStream();
+			//response.Raw.CopyTo(memoryStream);
+			//memoryStream.Flush();
+			//var imageData = memoryStream.ToArray();
+			//rsnew["Data"]=imageData;
+
+		}
 	}
 
 	// InspectionDrawingDatas_list	

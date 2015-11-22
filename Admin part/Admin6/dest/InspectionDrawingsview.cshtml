@@ -17,6 +17,17 @@
 		public string Get_TblEditReturnPage() {
 			return ReturnUrl;		
 		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["Size"]=1024;
+			return true;
+		}
 	}
 
 	// InspectionDrawings_view	
@@ -85,7 +96,7 @@ fInspectionDrawingsview.Form_CustomValidate =
 fInspectionDrawingsview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
 
 // Dynamic selection lists
-fInspectionDrawingsview.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fInspectionDrawingsview.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":null,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 fInspectionDrawingsview.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 
 // Form object for search
@@ -150,17 +161,6 @@ fInspectionDrawingsview.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":tru
 </td>
 	</tr>
 } @* InspectionDrawings.zName.Visible (end) *@
-@if (InspectionDrawings.Size.Visible) { @* InspectionDrawings.Size.Visible (begin) *@
-	<tr id="r_Size">
-		<td><span id="elh_InspectionDrawings_Size">@Html.Raw(InspectionDrawings.Size.FldCaption)</span></td>
-		<td @Html.Raw(InspectionDrawings.Size.CellAttributes)>
-<span id="el_InspectionDrawings_Size" class="form-group">
-<span @(Html.Raw(InspectionDrawings.Size.ViewAttributes))>
-@Html.Raw(InspectionDrawings.Size.ViewValue)</span>
-</span>
-</td>
-	</tr>
-} @* InspectionDrawings.Size.Visible (end) *@
 @if (InspectionDrawings.DateCreated.Visible) { @* InspectionDrawings.DateCreated.Visible (begin) *@
 	<tr id="r_DateCreated">
 		<td><span id="elh_InspectionDrawings_DateCreated">@Html.Raw(InspectionDrawings.DateCreated.FldCaption)</span></td>

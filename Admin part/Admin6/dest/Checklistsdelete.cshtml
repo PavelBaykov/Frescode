@@ -18,6 +18,17 @@
 			return ReturnUrl;		
 		}
 
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			return true;
+		}
+
 		// Row Inserted event
 		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {	
 
@@ -170,12 +181,6 @@ fChecklistsdelete.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoF
 @if (Checklists.Id.Visible) { // Id (begin)
 		<th><span id="elh_Checklists_Id" class="Checklists_Id">@Html.Raw(Checklists.Id.FldCaption)</span></th>
 } @* Id.Visible (end) *@
-@if (Checklists.DateCreated.Visible) { // DateCreated (begin)
-		<th><span id="elh_Checklists_DateCreated" class="Checklists_DateCreated">@Html.Raw(Checklists.DateCreated.FldCaption)</span></th>
-} @* DateCreated.Visible (end) *@
-@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange (begin)
-		<th><span id="elh_Checklists_DateOfLastChange" class="Checklists_DateOfLastChange">@Html.Raw(Checklists.DateOfLastChange.FldCaption)</span></th>
-} @* DateOfLastChange.Visible (end) *@
 @if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id (begin)
 		<th><span id="elh_Checklists_ChangedBy_Id" class="Checklists_ChangedBy_Id">@Html.Raw(Checklists.ChangedBy_Id.FldCaption)</span></th>
 } @* ChangedBy_Id.Visible (end) *@
@@ -216,22 +221,6 @@ Checklists_delete.RecCnt = 0;
 </span>
 </td>
 } @* Id.Visible (end) *@
-@if (Checklists.DateCreated.Visible) { // DateCreated (begin)
-		<td @(Html.Raw(Checklists.DateCreated.CellAttributes))>
-<span id="el@(Checklists_delete.RowCnt)_Checklists_DateCreated" class="form-group Checklists_DateCreated">
-<span @(Html.Raw(Checklists.DateCreated.ViewAttributes))>
-@Html.Raw(Checklists.DateCreated.ListViewValue)</span>
-</span>
-</td>
-} @* DateCreated.Visible (end) *@
-@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange (begin)
-		<td @(Html.Raw(Checklists.DateOfLastChange.CellAttributes))>
-<span id="el@(Checklists_delete.RowCnt)_Checklists_DateOfLastChange" class="form-group Checklists_DateOfLastChange">
-<span @(Html.Raw(Checklists.DateOfLastChange.ViewAttributes))>
-@Html.Raw(Checklists.DateOfLastChange.ListViewValue)</span>
-</span>
-</td>
-} @* DateOfLastChange.Visible (end) *@
 @if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id (begin)
 		<td @(Html.Raw(Checklists.ChangedBy_Id.CellAttributes))>
 <span id="el@(Checklists_delete.RowCnt)_Checklists_ChangedBy_Id" class="form-group Checklists_ChangedBy_Id">

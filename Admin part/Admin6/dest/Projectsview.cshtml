@@ -17,6 +17,17 @@
 		public string Get_TblEditReturnPage() {
 			return ReturnUrl;		
 		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+				rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+			return true;
+		}
 	}
 
 	// Projects_view	

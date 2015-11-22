@@ -17,6 +17,17 @@
 		public string Get_TblEditReturnPage() {
 			return ReturnUrl;		
 		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["Size"]=1024;
+			return true;
+		}
 	}
 
 	// InspectionDrawings_add	
@@ -88,21 +99,9 @@ fInspectionDrawingsadd.Validate = function() {
 	for (var i = startcnt; i <= rowcnt; i++) {
 		var infix = ($k[0]) ? String(i) : "";
 		$fobj.data("rowindex", infix);
-		elm = this.GetElements("x" + infix + "_Size");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(InspectionDrawings.Size.ReqErrMsg.Replace("%s", InspectionDrawings.Size.FldCaption))))");
-		elm = this.GetElements("x" + infix + "_Size");
-		if (elm && !ew_CheckInteger(elm.value))
-			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(InspectionDrawings.Size.FldErrMsg)))");
-		elm = this.GetElements("x" + infix + "_DateCreated");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(InspectionDrawings.DateCreated.ReqErrMsg.Replace("%s", InspectionDrawings.DateCreated.FldCaption))))");
 		elm = this.GetElements("x" + infix + "_InspectionDrawingDataId");
 		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
 			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(InspectionDrawings.InspectionDrawingDataId.ReqErrMsg.Replace("%s", InspectionDrawings.InspectionDrawingDataId.FldCaption))))");
-		elm = this.GetElements("x" + infix + "_InspectionDrawingDataId");
-		if (elm && !ew_CheckInteger(elm.value))
-			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(InspectionDrawings.InspectionDrawingDataId.FldErrMsg)))");
 
 		// Set up row object
 		ew_ElementsToRow(fobj);
@@ -135,7 +134,7 @@ fInspectionDrawingsadd.Form_CustomValidate =
 fInspectionDrawingsadd.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
 
 // Dynamic selection lists
-fInspectionDrawingsadd.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fInspectionDrawingsadd.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":null,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 fInspectionDrawingsadd.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 
 // Form object for search
@@ -181,57 +180,33 @@ fInspectionDrawingsadd.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true
 @Html.Raw(InspectionDrawings.zName.CustomMsg)</div></div>
 	</div>
 }  @* zName.Visible (end) *@
-@if (InspectionDrawings.Size.Visible) { // Size.Visible (begin)
-	<div id="r_Size" class="form-group">
-		<label id="elh_InspectionDrawings_Size" for="x_Size" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.Size.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.Size.CellAttributes))>
-<span id="el_InspectionDrawings_Size">
-<input type="text" data-field="x_Size" name="x_Size" id="x_Size" size="30" placeholder="@InspectionDrawings.Size.PlaceHolder" value="@InspectionDrawings.Size.EditValue" @(Html.Raw(InspectionDrawings.Size.EditAttributes))>
-</span>
-@Html.Raw(InspectionDrawings.Size.CustomMsg)</div></div>
-	</div>
-}  @* Size.Visible (end) *@
-@if (InspectionDrawings.DateCreated.Visible) { // DateCreated.Visible (begin)
-	<div id="r_DateCreated" class="form-group">
-		<label id="elh_InspectionDrawings_DateCreated" for="x_DateCreated" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.DateCreated.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.DateCreated.CellAttributes))>
-<span id="el_InspectionDrawings_DateCreated">
-<input type="text" data-field="x_DateCreated" name="x_DateCreated" id="x_DateCreated" placeholder="@InspectionDrawings.DateCreated.PlaceHolder" value="@InspectionDrawings.DateCreated.EditValue" @(Html.Raw(InspectionDrawings.DateCreated.EditAttributes))>
-</span>
-@Html.Raw(InspectionDrawings.DateCreated.CustomMsg)</div></div>
-	</div>
-}  @* DateCreated.Visible (end) *@
 @if (InspectionDrawings.InspectionDrawingDataId.Visible) { // InspectionDrawingDataId.Visible (begin)
 	<div id="r_InspectionDrawingDataId" class="form-group">
-		<label id="elh_InspectionDrawings_InspectionDrawingDataId" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.InspectionDrawingDataId.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<label id="elh_InspectionDrawings_InspectionDrawingDataId" for="x_InspectionDrawingDataId" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawings.InspectionDrawingDataId.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
 		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawings.InspectionDrawingDataId.CellAttributes))>
 <span id="el_InspectionDrawings_InspectionDrawingDataId">
-<span>@{
-	wrkonchange = " " + (InspectionDrawings.InspectionDrawingDataId.EditAttrs.ContainsKey("onchange") ? InspectionDrawings.InspectionDrawingDataId.EditAttrs["onchange"] : "");
-	if (ew_NotEmpty(wrkonchange)) { wrkonchange = " onchange=\"" + ew_JsEncode2(wrkonchange) + "\""; }
-	InspectionDrawings.InspectionDrawingDataId.EditAttrs["onchange"] = "";
-}</span>
-<span id="as_x_InspectionDrawingDataId" style="white-space: nowrap; z-index: 8950">
-	<input type="text" name="sv_x_InspectionDrawingDataId" id="sv_x_InspectionDrawingDataId" value="@InspectionDrawings.InspectionDrawingDataId.EditValue" size="30" placeholder="@InspectionDrawings.InspectionDrawingDataId.PlaceHolder" @(Html.Raw(InspectionDrawings.InspectionDrawingDataId.EditAttributes))>
-</span>
-<input type="hidden" data-field="x_InspectionDrawingDataId" name="x_InspectionDrawingDataId" id="x_InspectionDrawingDataId" value="@Html.Raw(InspectionDrawings.InspectionDrawingDataId.CurrentValue)" @(Html.Raw(wrkonchange))>
-<span>@{
-sSqlWrk = "SELECT  TOP " + EW_AUTO_SUGGEST_MAX_ENTRIES + " [Id], [Id] AS [DispFld] FROM [dbo].[InspectionDrawingDatas]";
-sWhereWrk = "CAST([Id] AS NVARCHAR) LIKE '{query_value}%'";
-sLookupTblFilter = Convert.ToString(InspectionDrawings_add.GetCustomValue("FldSelectFilter", "InspectionDrawingDataId"));
-if (ew_NotEmpty(sLookupTblFilter)) {
-	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+<select data-field="x_InspectionDrawingDataId" id="x_InspectionDrawingDataId" name="x_InspectionDrawingDataId" @(Html.Raw(InspectionDrawings.InspectionDrawingDataId.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(InspectionDrawings.InspectionDrawingDataId.EditValue)) {
+	alwrk = (List<OrderedDictionary>)InspectionDrawings.InspectionDrawingDataId.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], InspectionDrawings.InspectionDrawingDataId.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
 }
-
-// Call Lookup selecting
-InspectionDrawings.Lookup_Selecting(InspectionDrawings.InspectionDrawingDataId, ref sWhereWrk);
-if (sWhereWrk != "") {
-	sSqlWrk += " WHERE " + sWhereWrk;
-}
-}</span>
-<input type="hidden" name="q_x_InspectionDrawingDataId" id="q_x_InspectionDrawingDataId" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))">
+</select>
 <script type="text/javascript">
-fInspectionDrawingsadd.CreateAutoSuggest("x_InspectionDrawingDataId", false);
+fInspectionDrawingsadd.Lists["x_InspectionDrawingDataId"].Options = @(Html.Raw((ew_IsList(InspectionDrawings.InspectionDrawingDataId.EditValue)) ? ew_ArrayToJson((List<OrderedDictionary>)InspectionDrawings.InspectionDrawingDataId.EditValue, 1) : "[]"));
 </script>
 </span>
 @Html.Raw(InspectionDrawings.InspectionDrawingDataId.CustomMsg)</div></div>

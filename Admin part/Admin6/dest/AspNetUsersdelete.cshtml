@@ -31,6 +31,8 @@
 			rsnew["LockoutEnabled"]=false;
 			rsnew["AccessFailedCount"]=0;
 			rsnew["UserName"]=rsnew["Email"];
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["UserRole"]=1;
 
 		/*
 			byte[] salt;
@@ -182,9 +184,6 @@ fAspNetUsersdelete.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"Aut
 @if (AspNetUsers.UserRole.Visible) { // UserRole (begin)
 		<th><span id="elh_AspNetUsers_UserRole" class="AspNetUsers_UserRole">@Html.Raw(AspNetUsers.UserRole.FldCaption)</span></th>
 } @* UserRole.Visible (end) *@
-@if (AspNetUsers.DateCreated.Visible) { // DateCreated (begin)
-		<th><span id="elh_AspNetUsers_DateCreated" class="AspNetUsers_DateCreated">@Html.Raw(AspNetUsers.DateCreated.FldCaption)</span></th>
-} @* DateCreated.Visible (end) *@
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id (begin)
 		<th><span id="elh_AspNetUsers_Customer_Id" class="AspNetUsers_Customer_Id">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</span></th>
 } @* Customer_Id.Visible (end) *@
@@ -232,14 +231,6 @@ AspNetUsers_delete.RecCnt = 0;
 </span>
 </td>
 } @* UserRole.Visible (end) *@
-@if (AspNetUsers.DateCreated.Visible) { // DateCreated (begin)
-		<td @(Html.Raw(AspNetUsers.DateCreated.CellAttributes))>
-<span id="el@(AspNetUsers_delete.RowCnt)_AspNetUsers_DateCreated" class="form-group AspNetUsers_DateCreated">
-<span @(Html.Raw(AspNetUsers.DateCreated.ViewAttributes))>
-@Html.Raw(AspNetUsers.DateCreated.ListViewValue)</span>
-</span>
-</td>
-} @* DateCreated.Visible (end) *@
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id (begin)
 		<td @(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
 <span id="el@(AspNetUsers_delete.RowCnt)_AspNetUsers_Customer_Id" class="form-group AspNetUsers_Customer_Id">

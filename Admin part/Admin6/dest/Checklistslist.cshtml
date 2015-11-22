@@ -18,6 +18,17 @@
 			return ReturnUrl;		
 		}
 
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			return true;
+		}
+
 		// Row Inserted event
 		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {	
 
@@ -209,24 +220,6 @@ if (ew_NotEmpty(Checklists_list.DbMasterFilter) && Checklists.CurrentMasterTable
         </div></div></th>	
 	}
 } @* Id.Visible (end) *@		
-@if (Checklists.DateCreated.Visible) { // DateCreated.Visible (begin)
-	if (Checklists.SortUrl(Checklists.DateCreated) == "") {
-		<th data-name="DateCreated"><div id="elh_Checklists_DateCreated" class="Checklists_DateCreated"><div class="ewTableHeaderCaption">@Html.Raw(Checklists.DateCreated.FldCaption)</div></div></th>
-	} else {
-		<th data-name="DateCreated"><div class="ewPointer" onclick="ew_Sort(event,'@Checklists.SortUrl(Checklists.DateCreated)',1);"><div id="elh_Checklists_DateCreated" class="Checklists_DateCreated">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Checklists.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (Checklists.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Checklists.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* DateCreated.Visible (end) *@		
-@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
-	if (Checklists.SortUrl(Checklists.DateOfLastChange) == "") {
-		<th data-name="DateOfLastChange"><div id="elh_Checklists_DateOfLastChange" class="Checklists_DateOfLastChange"><div class="ewTableHeaderCaption">@Html.Raw(Checklists.DateOfLastChange.FldCaption)</div></div></th>
-	} else {
-		<th data-name="DateOfLastChange"><div class="ewPointer" onclick="ew_Sort(event,'@Checklists.SortUrl(Checklists.DateOfLastChange)',1);"><div id="elh_Checklists_DateOfLastChange" class="Checklists_DateOfLastChange">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Checklists.DateOfLastChange.FldCaption)</span><span class="ewTableHeaderSort">@if (Checklists.DateOfLastChange.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Checklists.DateOfLastChange.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* DateOfLastChange.Visible (end) *@		
 @if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
 	if (Checklists.SortUrl(Checklists.ChangedBy_Id) == "") {
 		<th data-name="ChangedBy_Id"><div id="elh_Checklists_ChangedBy_Id" class="Checklists_ChangedBy_Id"><div class="ewTableHeaderCaption">@Html.Raw(Checklists.ChangedBy_Id.FldCaption)</div></div></th>
@@ -344,18 +337,6 @@ while (Checklists_list.RecCnt < Checklists_list.StopRec) { // Begin While
 @Html.Raw(Checklists.Id.ListViewValue)</span>
 <a id="@(Checklists_list.PageObjName + "_row_" + Convert.ToString(Checklists_list.RowCnt))"></a></td>
 	} @* Id.Visible (end) *@
-	@if (Checklists.DateCreated.Visible) { // DateCreated.Visible (begin)
-		<td data-name="DateCreated"@(Html.Raw(Checklists.DateCreated.CellAttributes))>
-<span @(Html.Raw(Checklists.DateCreated.ViewAttributes))>
-@Html.Raw(Checklists.DateCreated.ListViewValue)</span>
-</td>
-	} @* DateCreated.Visible (end) *@
-	@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
-		<td data-name="DateOfLastChange"@(Html.Raw(Checklists.DateOfLastChange.CellAttributes))>
-<span @(Html.Raw(Checklists.DateOfLastChange.ViewAttributes))>
-@Html.Raw(Checklists.DateOfLastChange.ListViewValue)</span>
-</td>
-	} @* DateOfLastChange.Visible (end) *@
 	@if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
 		<td data-name="ChangedBy_Id"@(Html.Raw(Checklists.ChangedBy_Id.CellAttributes))>
 <span @(Html.Raw(Checklists.ChangedBy_Id.ViewAttributes))>

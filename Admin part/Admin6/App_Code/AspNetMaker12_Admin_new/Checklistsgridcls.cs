@@ -58,6 +58,17 @@ public partial class AspNetMaker12_Admin_new : AspNetMaker12_Admin_new_base {
 			return ReturnUrl;		
 		}
 
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			return true;
+		}
+
 		// Row Inserted event
 		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {	
 

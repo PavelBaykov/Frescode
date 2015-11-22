@@ -31,6 +31,8 @@
 			rsnew["LockoutEnabled"]=false;
 			rsnew["AccessFailedCount"]=0;
 			rsnew["UserName"]=rsnew["Email"];
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["UserRole"]=1;
 
 		/*
 			byte[] salt;
@@ -121,15 +123,6 @@ fAspNetUsersadd.Validate = function() {
 	for (var i = startcnt; i <= rowcnt; i++) {
 		var infix = ($k[0]) ? String(i) : "";
 		$fobj.data("rowindex", infix);
-		elm = this.GetElements("x" + infix + "_UserRole");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.UserRole.ReqErrMsg.Replace("%s", AspNetUsers.UserRole.FldCaption))))");
-		elm = this.GetElements("x" + infix + "_UserRole");
-		if (elm && !ew_CheckInteger(elm.value))
-			return this.OnError(elm, " @(Html.Raw(ew_JsEncode2(AspNetUsers.UserRole.FldErrMsg)))");
-		elm = this.GetElements("x" + infix + "_DateCreated");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.DateCreated.ReqErrMsg.Replace("%s", AspNetUsers.DateCreated.FldCaption))))");
 
 		// Set up row object
 		ew_ElementsToRow(fobj);
@@ -217,26 +210,6 @@ fAspNetUsersadd.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFi
 @Html.Raw(AspNetUsers.LastName.CustomMsg)</div></div>
 	</div>
 }  @* LastName.Visible (end) *@
-@if (AspNetUsers.UserRole.Visible) { // UserRole.Visible (begin)
-	<div id="r_UserRole" class="form-group">
-		<label id="elh_AspNetUsers_UserRole" for="x_UserRole" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.UserRole.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.UserRole.CellAttributes))>
-<span id="el_AspNetUsers_UserRole">
-<input type="text" data-field="x_UserRole" name="x_UserRole" id="x_UserRole" size="30" placeholder="@AspNetUsers.UserRole.PlaceHolder" value="@AspNetUsers.UserRole.EditValue" @(Html.Raw(AspNetUsers.UserRole.EditAttributes))>
-</span>
-@Html.Raw(AspNetUsers.UserRole.CustomMsg)</div></div>
-	</div>
-}  @* UserRole.Visible (end) *@
-@if (AspNetUsers.DateCreated.Visible) { // DateCreated.Visible (begin)
-	<div id="r_DateCreated" class="form-group">
-		<label id="elh_AspNetUsers_DateCreated" for="x_DateCreated" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.DateCreated.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.DateCreated.CellAttributes))>
-<span id="el_AspNetUsers_DateCreated">
-<input type="text" data-field="x_DateCreated" name="x_DateCreated" id="x_DateCreated" placeholder="@AspNetUsers.DateCreated.PlaceHolder" value="@AspNetUsers.DateCreated.EditValue" @(Html.Raw(AspNetUsers.DateCreated.EditAttributes))>
-</span>
-@Html.Raw(AspNetUsers.DateCreated.CustomMsg)</div></div>
-	</div>
-}  @* DateCreated.Visible (end) *@
 @if (AspNetUsers.zEmail.Visible) { // zEmail.Visible (begin)
 	<div id="r_zEmail" class="form-group">
 		<label id="elh_AspNetUsers_zEmail" for="x_zEmail" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.zEmail.FldCaption)</label>

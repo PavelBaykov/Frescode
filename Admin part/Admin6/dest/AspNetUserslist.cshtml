@@ -31,6 +31,8 @@
 			rsnew["LockoutEnabled"]=false;
 			rsnew["AccessFailedCount"]=0;
 			rsnew["UserName"]=rsnew["Email"];
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["UserRole"]=1;
 
 		/*
 			byte[] salt;
@@ -257,15 +259,6 @@ if (ew_Empty(AspNetUsers.Export) && ew_Empty(AspNetUsers.CurrentAction)) { // Be
         </div></div></th>	
 	}
 } @* UserRole.Visible (end) *@		
-@if (AspNetUsers.DateCreated.Visible) { // DateCreated.Visible (begin)
-	if (AspNetUsers.SortUrl(AspNetUsers.DateCreated) == "") {
-		<th data-name="DateCreated"><div id="elh_AspNetUsers_DateCreated" class="AspNetUsers_DateCreated"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.DateCreated.FldCaption)</div></div></th>
-	} else {
-		<th data-name="DateCreated"><div class="ewPointer" onclick="ew_Sort(event,'@AspNetUsers.SortUrl(AspNetUsers.DateCreated)',1);"><div id="elh_AspNetUsers_DateCreated" class="AspNetUsers_DateCreated">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (AspNetUsers.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (AspNetUsers.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* DateCreated.Visible (end) *@		
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
 	if (AspNetUsers.SortUrl(AspNetUsers.Customer_Id) == "") {
 		<th data-name="Customer_Id"><div id="elh_AspNetUsers_Customer_Id" class="AspNetUsers_Customer_Id"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</div></div></th>
@@ -368,12 +361,6 @@ while (AspNetUsers_list.RecCnt < AspNetUsers_list.StopRec) { // Begin While
 @Html.Raw(AspNetUsers.UserRole.ListViewValue)</span>
 </td>
 	} @* UserRole.Visible (end) *@
-	@if (AspNetUsers.DateCreated.Visible) { // DateCreated.Visible (begin)
-		<td data-name="DateCreated"@(Html.Raw(AspNetUsers.DateCreated.CellAttributes))>
-<span @(Html.Raw(AspNetUsers.DateCreated.ViewAttributes))>
-@Html.Raw(AspNetUsers.DateCreated.ListViewValue)</span>
-</td>
-	} @* DateCreated.Visible (end) *@
 	@if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
 		<td data-name="Customer_Id"@(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
 <span @(Html.Raw(AspNetUsers.Customer_Id.ViewAttributes))>

@@ -17,6 +17,17 @@
 		public string Get_TblEditReturnPage() {
 			return ReturnUrl;		
 		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["Size"]=1024;
+			return true;
+		}
 	}
 
 	// InspectionDrawings_list	
@@ -86,7 +97,7 @@ fInspectionDrawingslist.Form_CustomValidate =
 fInspectionDrawingslist.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
 
 // Dynamic selection lists
-fInspectionDrawingslist.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fInspectionDrawingslist.Lists["x_InspectionDrawingDataId"] = {"LinkField":"x_Id","Ajax":null,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 fInspectionDrawingslist.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
 
 // Form object for search
@@ -172,15 +183,6 @@ fInspectionDrawingslist.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":tru
         </div></div></th>	
 	}
 } @* Id.Visible (end) *@		
-@if (InspectionDrawings.Size.Visible) { // Size.Visible (begin)
-	if (InspectionDrawings.SortUrl(InspectionDrawings.Size) == "") {
-		<th data-name="Size"><div id="elh_InspectionDrawings_Size" class="InspectionDrawings_Size"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.Size.FldCaption)</div></div></th>
-	} else {
-		<th data-name="Size"><div class="ewPointer" onclick="ew_Sort(event,'@InspectionDrawings.SortUrl(InspectionDrawings.Size)',1);"><div id="elh_InspectionDrawings_Size" class="InspectionDrawings_Size">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.Size.FldCaption)</span><span class="ewTableHeaderSort">@if (InspectionDrawings.Size.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (InspectionDrawings.Size.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* Size.Visible (end) *@		
 @if (InspectionDrawings.DateCreated.Visible) { // DateCreated.Visible (begin)
 	if (InspectionDrawings.SortUrl(InspectionDrawings.DateCreated) == "") {
 		<th data-name="DateCreated"><div id="elh_InspectionDrawings_DateCreated" class="InspectionDrawings_DateCreated"><div class="ewTableHeaderCaption">@Html.Raw(InspectionDrawings.DateCreated.FldCaption)</div></div></th>
@@ -289,12 +291,6 @@ while (InspectionDrawings_list.RecCnt < InspectionDrawings_list.StopRec) { // Be
 @Html.Raw(InspectionDrawings.Id.ListViewValue)</span>
 <a id="@(InspectionDrawings_list.PageObjName + "_row_" + Convert.ToString(InspectionDrawings_list.RowCnt))"></a></td>
 	} @* Id.Visible (end) *@
-	@if (InspectionDrawings.Size.Visible) { // Size.Visible (begin)
-		<td data-name="Size"@(Html.Raw(InspectionDrawings.Size.CellAttributes))>
-<span @(Html.Raw(InspectionDrawings.Size.ViewAttributes))>
-@Html.Raw(InspectionDrawings.Size.ListViewValue)</span>
-</td>
-	} @* Size.Visible (end) *@
 	@if (InspectionDrawings.DateCreated.Visible) { // DateCreated.Visible (begin)
 		<td data-name="DateCreated"@(Html.Raw(InspectionDrawings.DateCreated.CellAttributes))>
 <span @(Html.Raw(InspectionDrawings.DateCreated.ViewAttributes))>

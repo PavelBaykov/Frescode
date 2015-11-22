@@ -18,6 +18,17 @@
 			return ReturnUrl;		
 		}
 
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			return true;
+		}
+
 		// Row Inserted event
 		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {	
 
@@ -112,12 +123,6 @@ fChecklistsadd.Validate = function() {
 	for (var i = startcnt; i <= rowcnt; i++) {
 		var infix = ($k[0]) ? String(i) : "";
 		$fobj.data("rowindex", infix);
-		elm = this.GetElements("x" + infix + "_DateCreated");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.DateCreated.ReqErrMsg.Replace("%s", Checklists.DateCreated.FldCaption))))");
-		elm = this.GetElements("x" + infix + "_DateOfLastChange");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.DateOfLastChange.ReqErrMsg.Replace("%s", Checklists.DateOfLastChange.FldCaption))))");
 		elm = this.GetElements("x" + infix + "_ChecklistTemplate_Id");
 		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
 			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.ChecklistTemplate_Id.ReqErrMsg.Replace("%s", Checklists.ChecklistTemplate_Id.FldCaption))))");
@@ -194,26 +199,6 @@ fChecklistsadd.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill
 <input type="hidden" name="t" value="Checklists">
 <input type="hidden" name="a_add" id="a_add" value="A">
 <div>
-@if (Checklists.DateCreated.Visible) { // DateCreated.Visible (begin)
-	<div id="r_DateCreated" class="form-group">
-		<label id="elh_Checklists_DateCreated" for="x_DateCreated" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.DateCreated.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(Checklists.DateCreated.CellAttributes))>
-<span id="el_Checklists_DateCreated">
-<input type="text" data-field="x_DateCreated" name="x_DateCreated" id="x_DateCreated" placeholder="@Checklists.DateCreated.PlaceHolder" value="@Checklists.DateCreated.EditValue" @(Html.Raw(Checklists.DateCreated.EditAttributes))>
-</span>
-@Html.Raw(Checklists.DateCreated.CustomMsg)</div></div>
-	</div>
-}  @* DateCreated.Visible (end) *@
-@if (Checklists.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
-	<div id="r_DateOfLastChange" class="form-group">
-		<label id="elh_Checklists_DateOfLastChange" for="x_DateOfLastChange" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.DateOfLastChange.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(Checklists.DateOfLastChange.CellAttributes))>
-<span id="el_Checklists_DateOfLastChange">
-<input type="text" data-field="x_DateOfLastChange" name="x_DateOfLastChange" id="x_DateOfLastChange" placeholder="@Checklists.DateOfLastChange.PlaceHolder" value="@Checklists.DateOfLastChange.EditValue" @(Html.Raw(Checklists.DateOfLastChange.EditAttributes))>
-</span>
-@Html.Raw(Checklists.DateOfLastChange.CustomMsg)</div></div>
-	</div>
-}  @* DateOfLastChange.Visible (end) *@
 @if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
 	<div id="r_ChangedBy_Id" class="form-group">
 		<label id="elh_Checklists_ChangedBy_Id" for="x_ChangedBy_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.ChangedBy_Id.FldCaption)</label>

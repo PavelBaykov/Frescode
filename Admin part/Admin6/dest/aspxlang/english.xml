@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" standalone="yes"?>
-<ew-language date="2015/11/21" version="12.0.3" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2015/11/22" version="12.0.3" id="en" name="English" desc="English" author="e.World Technology Ltd.">
 	<locale>
 		<phrase id="use_system_locale" value="1"/>
 		<phrase id="decimal_point" value="."/>
@@ -525,6 +525,8 @@
 </field>
 <field id="data"><phrase id="fldcaption" value="Data"/>
 </field>
+<field id="picture_id"><phrase id="fldcaption" value="Picture Id"/>
+</field>
 </table>
 <table id="pictures"><phrase id="tblcaption" value="Pictures"/>
 <field id="id"><phrase id="fldcaption" value="Id"/>
@@ -533,9 +535,9 @@
 </field>
 <field id="datecaptured"><phrase id="fldcaption" value="Date Captured"/>
 </field>
-<field id="pictureid"><phrase id="fldcaption" value="Picture Id"/>
-</field>
 <field id="defectionspot_id"><phrase id="fldcaption" value="Defection Spot Id"/>
+</field>
+<field id="picturedataid"><phrase id="fldcaption" value="Picture Data Id"/>
 </field>
 </table>
 <table id="projects"><phrase id="tblcaption" value="Projects"/>

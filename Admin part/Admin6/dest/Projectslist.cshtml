@@ -17,6 +17,17 @@
 		public string Get_TblEditReturnPage() {
 			return ReturnUrl;		
 		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+				rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+			return true;
+		}
 	}
 
 	// Projects_list	
@@ -176,10 +187,10 @@ fProjectslist.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill
 } @* Id.Visible (end) *@		
 @if (Projects.DateCreated.Visible) { // DateCreated.Visible (begin)
 	if (Projects.SortUrl(Projects.DateCreated) == "") {
-		<th data-name="DateCreated"><div id="elh_Projects_DateCreated" class="Projects_DateCreated"><div class="ewTableHeaderCaption">@Html.Raw(Projects.DateCreated.FldCaption)</div></div></th>
+		<th data-name="DateCreated"><div id="elh_Projects_DateCreated" class="Projects_DateCreated"><div class="ewTableHeaderCaption" style="white-space: nowrap;">@Html.Raw(Projects.DateCreated.FldCaption)</div></div></th>
 	} else {
 		<th data-name="DateCreated"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.DateCreated)',1);"><div id="elh_Projects_DateCreated" class="Projects_DateCreated">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
+			<div class="ewTableHeaderBtn" style="white-space: nowrap;"><span class="ewTableHeaderCaption">@Html.Raw(Projects.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
         </div></div></th>	
 	}
 } @* DateCreated.Visible (end) *@		
