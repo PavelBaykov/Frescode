@@ -185,9 +185,6 @@ fAspNetUsersdelete.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"Aut
 @if (AspNetUsers.DateCreated.Visible) { // DateCreated (begin)
 		<th><span id="elh_AspNetUsers_DateCreated" class="AspNetUsers_DateCreated">@Html.Raw(AspNetUsers.DateCreated.FldCaption)</span></th>
 } @* DateCreated.Visible (end) *@
-@if (AspNetUsers.UserName.Visible) { // UserName (begin)
-		<th><span id="elh_AspNetUsers_UserName" class="AspNetUsers_UserName">@Html.Raw(AspNetUsers.UserName.FldCaption)</span></th>
-} @* UserName.Visible (end) *@
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id (begin)
 		<th><span id="elh_AspNetUsers_Customer_Id" class="AspNetUsers_Customer_Id">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</span></th>
 } @* Customer_Id.Visible (end) *@
@@ -243,14 +240,6 @@ AspNetUsers_delete.RecCnt = 0;
 </span>
 </td>
 } @* DateCreated.Visible (end) *@
-@if (AspNetUsers.UserName.Visible) { // UserName (begin)
-		<td @(Html.Raw(AspNetUsers.UserName.CellAttributes))>
-<span id="el@(AspNetUsers_delete.RowCnt)_AspNetUsers_UserName" class="form-group AspNetUsers_UserName">
-<span @(Html.Raw(AspNetUsers.UserName.ViewAttributes))>
-@Html.Raw(AspNetUsers.UserName.ListViewValue)</span>
-</span>
-</td>
-} @* UserName.Visible (end) *@
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id (begin)
 		<td @(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
 <span id="el@(AspNetUsers_delete.RowCnt)_AspNetUsers_Customer_Id" class="form-group AspNetUsers_Customer_Id">

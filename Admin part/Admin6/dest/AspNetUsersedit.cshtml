@@ -130,9 +130,6 @@ fAspNetUsersedit.Validate = function() {
 		elm = this.GetElements("x" + infix + "_DateCreated");
 		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
 			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.DateCreated.ReqErrMsg.Replace("%s", AspNetUsers.DateCreated.FldCaption))))");
-		elm = this.GetElements("x" + infix + "_UserName");
-		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(AspNetUsers.UserName.ReqErrMsg.Replace("%s", AspNetUsers.UserName.FldCaption))))");
 
 		// Set up row object
 		ew_ElementsToRow(fobj);
@@ -249,16 +246,6 @@ fAspNetUsersedit.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoF
 @Html.Raw(AspNetUsers.zEmail.CustomMsg)</div></div>
 	</div>
 } @* zEmail.Visible (end) *@ 
-@if (AspNetUsers.UserName.Visible) { // UserName.Visible (begin)
-	<div id="r_UserName" class="form-group">
-		<label id="elh_AspNetUsers_UserName" for="x_UserName" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.UserName.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
-		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.UserName.CellAttributes))>
-<span id="el_AspNetUsers_UserName">
-<input type="text" data-field="x_UserName" name="x_UserName" id="x_UserName" size="30" maxlength="256" placeholder="@AspNetUsers.UserName.PlaceHolder" value="@AspNetUsers.UserName.EditValue" @(Html.Raw(AspNetUsers.UserName.EditAttributes))>
-</span>
-@Html.Raw(AspNetUsers.UserName.CustomMsg)</div></div>
-	</div>
-} @* UserName.Visible (end) *@ 
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
 	<div id="r_Customer_Id" class="form-group">
 		<label id="elh_AspNetUsers_Customer_Id" for="x_Customer_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</label>

@@ -266,15 +266,6 @@ if (ew_Empty(AspNetUsers.Export) && ew_Empty(AspNetUsers.CurrentAction)) { // Be
         </div></div></th>	
 	}
 } @* DateCreated.Visible (end) *@		
-@if (AspNetUsers.UserName.Visible) { // UserName.Visible (begin)
-	if (AspNetUsers.SortUrl(AspNetUsers.UserName) == "") {
-		<th data-name="UserName"><div id="elh_AspNetUsers_UserName" class="AspNetUsers_UserName"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.UserName.FldCaption)</div></div></th>
-	} else {
-		<th data-name="UserName"><div class="ewPointer" onclick="ew_Sort(event,'@AspNetUsers.SortUrl(AspNetUsers.UserName)',1);"><div id="elh_AspNetUsers_UserName" class="AspNetUsers_UserName">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.UserName.FldCaption)@Html.Raw(Language.Phrase("SrchLegend"))</span><span class="ewTableHeaderSort">@if (AspNetUsers.UserName.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (AspNetUsers.UserName.Sort == "DESC") {<span class="caret"></span>}</span></div>
-        </div></div></th>	
-	}
-} @* UserName.Visible (end) *@		
 @if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
 	if (AspNetUsers.SortUrl(AspNetUsers.Customer_Id) == "") {
 		<th data-name="Customer_Id"><div id="elh_AspNetUsers_Customer_Id" class="AspNetUsers_Customer_Id"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</div></div></th>
@@ -383,12 +374,6 @@ while (AspNetUsers_list.RecCnt < AspNetUsers_list.StopRec) { // Begin While
 @Html.Raw(AspNetUsers.DateCreated.ListViewValue)</span>
 </td>
 	} @* DateCreated.Visible (end) *@
-	@if (AspNetUsers.UserName.Visible) { // UserName.Visible (begin)
-		<td data-name="UserName"@(Html.Raw(AspNetUsers.UserName.CellAttributes))>
-<span @(Html.Raw(AspNetUsers.UserName.ViewAttributes))>
-@Html.Raw(AspNetUsers.UserName.ListViewValue)</span>
-</td>
-	} @* UserName.Visible (end) *@
 	@if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
 		<td data-name="Customer_Id"@(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
 <span @(Html.Raw(AspNetUsers.Customer_Id.ViewAttributes))>
