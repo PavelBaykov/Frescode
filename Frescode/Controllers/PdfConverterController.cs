@@ -9,7 +9,7 @@ using unirest_net.http;
 
 namespace Frescode.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class PdfConverterController : Controller
     {
         [HttpPost]
