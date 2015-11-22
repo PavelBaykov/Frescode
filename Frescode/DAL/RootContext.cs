@@ -118,13 +118,13 @@ namespace Frescode.DAL
                .WithRequired(picture => picture.DefectionSpot);
 
             modelBuilder.Entity<Picture>()
-               .HasRequired(picture => picture.DefectionSpot)
-               .WithMany(spot => spot.AttachedPictures);
+                .HasRequired(picture => picture.DefectionSpot)
+                .WithMany(spot => spot.AttachedPictures);
 
             modelBuilder.Entity<Picture>()
                 .HasRequired(picture => picture.PictureData)
-                .WithMany()
-                .HasForeignKey(p => p.PictureId);
+                .WithRequiredPrincipal()
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<InspectionDrawing>()
                 .HasRequired(inspectionDrawing => inspectionDrawing.InspectionDrawingData)

@@ -56,7 +56,7 @@ namespace Frescode.Controllers
                 new
                 {
                     files =
-                        defectSpot.AttachedPictures.Select(x => new FilesStatus(x.Name, x.PictureId)).ToArray()
+                        defectSpot.AttachedPictures.Select(x => new FilesStatus(x.Name, x.Id)).ToArray()
                 }, JsonRequestBehavior.AllowGet);
         }
 
@@ -89,7 +89,7 @@ namespace Frescode.Controllers
                 addedPictures.Add(picture);
             }
             Context.SaveChanges();
-            statuses.AddRange(addedPictures.Select(picture => new FilesStatus(picture.Name, picture.PictureId)));
+            statuses.AddRange(addedPictures.Select(picture => new FilesStatus(picture.Name, picture.Id)));
         }
 
         private void UploadPartialFile(int defectSpotId, string fileName, HttpRequestBase request, List<FilesStatus> statuses)
@@ -115,7 +115,7 @@ namespace Frescode.Controllers
             defectSpot.AttachedPictures.Add(picture);
             Context.SaveChanges();
 
-            statuses.Add(new FilesStatus(file.FileName, picture.PictureId));
+            statuses.Add(new FilesStatus(file.FileName, picture.Id));
         }
 
     }

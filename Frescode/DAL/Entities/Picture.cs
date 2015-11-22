@@ -9,12 +9,13 @@ namespace Frescode.DAL.Entities
         public DateTime DateCaptured { get; set; }
         public DefectionSpot DefectionSpot { get; set; }
         public PictureData PictureData { get; set; }
-        public int PictureId { get; set; }
+        public int PictureDataId { get; set; }
     }
 
     public class PictureData
     {
         public int Id { get; set; }
         public byte[] Data { get; set; }
+        public Picture Picture { get; set; }
     }
 }

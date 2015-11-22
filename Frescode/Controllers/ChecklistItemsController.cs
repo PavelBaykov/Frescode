@@ -82,7 +82,7 @@ namespace Frescode.Controllers
             {
                 var pictureViewModel = new PictureViewModel
                 {
-                    Path = $"/Picture/GetPicture?pictureId={picture.PictureId}",
+                    Path = $"/Picture/GetPicture?pictureId={picture.PictureDataId}",
                     Timestamp = picture.DateCaptured.ToShortDateString()
                 };
 
@@ -210,7 +210,7 @@ namespace Frescode.Controllers
                 defectSpotViewModel.AttachedPictures =
                     defectSpot
                         .AttachedPictures
-                        .Select(x => $"/Picture/GetPicture?pictureId={x.PictureId}")
+                        .Select(x => $"/Picture/GetPicture?pictureId={x.Id}")
                         .ToList();
                 viewModel.DefectSpotsList.Add(defectSpotViewModel);
             }
