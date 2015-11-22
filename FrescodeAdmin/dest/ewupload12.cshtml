@@ -1,0 +1,20 @@
+@functions {
+
+	// upload
+	public static cewupload<cConnection> ewupload;
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (ewupload == null) {
+		ewupload = new cewupload<cConnection>();
+	}
+
+	// Page main
+	ewupload.Page_Main();
+}

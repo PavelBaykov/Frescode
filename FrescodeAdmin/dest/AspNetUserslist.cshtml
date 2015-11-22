@@ -1,0 +1,484 @@
+@functions {
+
+	//
+	// Page class for AspNetUsers
+	//
+	public class cAspNetUsers_list<C, S> : cAspNetUsers_list_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["Id"] =Guid.NewGuid().ToString();
+			rsnew["EmailConfirmed"]=false;
+			rsnew["PhoneNumberConfirmed"]=false;
+			rsnew["TwoFactorEnabled"]=false;
+			rsnew["LockoutEnabled"]=false;
+			rsnew["AccessFailedCount"]=0;
+			rsnew["UserName"]=rsnew["Email"];
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["UserRole"]=1;
+
+		/*
+			byte[] salt;
+			byte[] buffer2;
+			string password = Convert.ToString(rsnew["PasswordHash"]);
+			using (System.Security.Cryptography.Rfc2898DeriveBytes bytes = new System.Security.Cryptography.Rfc2898DeriveBytes(password, 0x10, 0x3e8))
+			{
+				salt = bytes.Salt;
+				buffer2 = bytes.GetBytes(0x20);
+			}
+			byte[] dst = new byte[0x31];
+			Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
+			Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
+			rsnew["PasswordHash"]=Convert.ToBase64String(dst);*/
+			Microsoft.AspNet.Identity.PasswordHasher hasher = new Microsoft.AspNet.Identity.PasswordHasher();
+			rsnew["PasswordHash"]=hasher.HashPassword(Convert.ToString(rsnew["PasswordHash"]));
+			rsnew["SecurityStamp"] =Guid.NewGuid().ToString();
+			return true;
+		}
+	}
+
+	// AspNetUsers_list	
+	public static cAspNetUsers_list<cConnection, cAdvancedSecurity> AspNetUsers_list {
+		get { return (cAspNetUsers_list<cConnection, cAdvancedSecurity>)ew_PageData["AspNetUsers_list"]; }
+		set { ew_PageData["AspNetUsers_list"] = value; }
+	}
+
+	// CurrentPage
+	public static cAspNetUsers_list<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cAspNetUsers_list<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cAspNetUsers_list<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (AspNetUsers_list == null) {
+		AspNetUsers_list = new cAspNetUsers_list<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	AspNetUsers_list.Page_Init();
+
+	// Page main
+	AspNetUsers_list.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	AspNetUsers_list.Page_Render();
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+<script type="text/javascript">
+
+// Page object
+var AspNetUsers_list = new ew_Page("AspNetUsers_list");
+AspNetUsers_list.PageID = "list"; // Page ID
+var EW_PAGE_ID = AspNetUsers_list.PageID; // For backward compatibility
+
+// Form object
+var fAspNetUserslist = new ew_Form("fAspNetUserslist");
+fAspNetUserslist.FormKeyCountName = '@AspNetUsers_list.FormKeyCountName';
+
+// Form_CustomValidate event
+fAspNetUserslist.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fAspNetUserslist.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fAspNetUserslist.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+var fAspNetUserslistsrch = new ew_Form("fAspNetUserslistsrch");
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(AspNetUsers.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (AspNetUsers_list.TotalRecs > 0 && AspNetUsers_list.ExportOptions.Visible) { 
+	AspNetUsers_list.ExportOptions.Render("body");
+}
+@if (AspNetUsers_list.SearchOptions.Visible) { 
+	AspNetUsers_list.SearchOptions.Render("body");
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+<div class="clearfix"></div>
+</div>
+}
+@{
+		if (AspNetUsers_list.Recordset == null) { // ASPX
+			AspNetUsers_list.Recordset = AspNetUsers_list.LoadRecordset();
+		}
+		AspNetUsers_list.StartRec = 1;
+		if (AspNetUsers_list.DisplayRecs <= 0 || (ew_NotEmpty(AspNetUsers.Export) && AspNetUsers.ExportAll)) { // Display all records
+			AspNetUsers_list.DisplayRecs = AspNetUsers_list.TotalRecs;
+		}
+		if (!(ew_NotEmpty(AspNetUsers.Export) && AspNetUsers.ExportAll)) {
+			AspNetUsers_list.SetUpStartRec(); // Set up start record position
+		}
+
+		// Set no record found message
+		if (AspNetUsers.CurrentAction == "" && AspNetUsers_list.TotalRecs == 0) {
+			if (AspNetUsers_list.SearchWhere == "0=101") {
+				AspNetUsers_list.WarningMessage = Language.Phrase("EnterSearchCriteria");
+			} else {
+				AspNetUsers_list.WarningMessage = Language.Phrase("NoRecord");
+			}
+		}
+	AspNetUsers_list.RenderOtherOptions();
+}
+@{
+if (ew_Empty(AspNetUsers.Export) && ew_Empty(AspNetUsers.CurrentAction)) { // Begin search form
+<form name="fAspNetUserslistsrch" id="fAspNetUserslistsrch" class="form-inline ewForm" action="@ew_CurrentPage()">
+@{
+	var SearchPanelClass = (ew_NotEmpty(AspNetUsers_list.SearchWhere)) ? " in" : " in";
+}
+<div id="fAspNetUserslistsrch_SearchPanel" class="ewSearchPanel collapse @SearchPanelClass">
+<input type="hidden" name="cmd" value="search">
+<input type="hidden" name="t" value="AspNetUsers">
+<div class="ewBasicSearch">
+<div id="xsr_1" class="ewRow">
+	<div class="ewQuickSearch input-group">
+	<input type="text" name="@EW_TABLE_BASIC_SEARCH" id="@EW_TABLE_BASIC_SEARCH" class="form-control" value="@AspNetUsers_list.BasicSearch.Keyword" placeholder="@Language.Phrase("Search")">
+	<input type="hidden" name="@EW_TABLE_BASIC_SEARCH_TYPE" id="@EW_TABLE_BASIC_SEARCH_TYPE" value="@AspNetUsers_list.BasicSearch.Type">
+	<div class="input-group-btn">
+		<button type="button" data-toggle="dropdown" class="btn btn-default"><span id="searchtype">@Html.Raw(AspNetUsers_list.BasicSearch.TypeNameShort())</span><span class="caret"></span></button>
+		<ul class="dropdown-menu pull-right" role="menu">
+			<li @((AspNetUsers_list.BasicSearch.Type == "") ? " class=\"active\"" : "")><a href="javascript:void(0);" onclick="ew_SetSearchType(this)">@Html.Raw(Language.Phrase("QuickSearchAuto"))</a></li>
+			<li @((AspNetUsers_list.BasicSearch.Type == "=") ? " class=\"active\"" : "")><a href="javascript:void(0);" onclick="ew_SetSearchType(this,'=')">@Html.Raw(Language.Phrase("QuickSearchExact"))</a></li>
+			<li @((AspNetUsers_list.BasicSearch.Type == "AND") ? " class=\"active\"" : "")><a href="javascript:void(0);" onclick="ew_SetSearchType(this,'AND')">@Html.Raw(Language.Phrase("QuickSearchAll"))</a></li>
+			<li @((AspNetUsers_list.BasicSearch.Type == "OR") ? " class=\"active\"" : "")><a href="javascript:void(0);" onclick="ew_SetSearchType(this,'OR')">@Html.Raw(Language.Phrase("QuickSearchAny"))</a></li>
+		</ul>
+	<button class="btn btn-primary ewButton" name="btnsubmit" id="btnsubmit" type="submit">@Html.Raw(Language.Phrase("QuickSearchBtn"))</button>
+	</div>
+	</div>
+</div>
+</div>
+</div>
+</form>
+} @* End search form *@
+}
+@{
+	AspNetUsers_list.ShowPageHeader();
+}
+@{
+	AspNetUsers_list.ShowMessage();
+}
+@if (AspNetUsers_list.TotalRecs > 0 || AspNetUsers.CurrentAction != "") { 
+<div class="ewGrid">
+<form name="fAspNetUserslist" id="fAspNetUserslist" class="form-inline ewForm ewListForm" action="@ew_CurrentPage()" method="post">
+@if (AspNetUsers_list.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@AspNetUsers_list.Token">
+}
+<input type="hidden" name="t" value="AspNetUsers">
+<div id="gmp_AspNetUsers" class="@((ew_IsResponsiveLayout()) ? "table-responsive ewGridMiddlePanel" : "ewGridMiddlePanel")">
+@if (AspNetUsers_list.TotalRecs > 0) { // Begin If TotalRecs > 0
+<table id="tbl_AspNetUserslist" class="table ewTable">
+@AspNetUsers.TableCustomInnerHtml
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+@{
+
+	// Render list options
+	AspNetUsers_list.RenderListOptions();
+
+	// Render list options (header, left)
+	AspNetUsers_list.ListOptions.Render("header", "left");
+}
+@if (AspNetUsers.FirstName.Visible) { // FirstName.Visible (begin)
+	if (AspNetUsers.SortUrl(AspNetUsers.FirstName) == "") {
+		<th data-name="FirstName"><div id="elh_AspNetUsers_FirstName" class="AspNetUsers_FirstName"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.FirstName.FldCaption)</div></div></th>
+	} else {
+		<th data-name="FirstName"><div class="ewPointer" onclick="ew_Sort(event,'@AspNetUsers.SortUrl(AspNetUsers.FirstName)',1);"><div id="elh_AspNetUsers_FirstName" class="AspNetUsers_FirstName">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.FirstName.FldCaption)@Html.Raw(Language.Phrase("SrchLegend"))</span><span class="ewTableHeaderSort">@if (AspNetUsers.FirstName.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (AspNetUsers.FirstName.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* FirstName.Visible (end) *@		
+@if (AspNetUsers.LastName.Visible) { // LastName.Visible (begin)
+	if (AspNetUsers.SortUrl(AspNetUsers.LastName) == "") {
+		<th data-name="LastName"><div id="elh_AspNetUsers_LastName" class="AspNetUsers_LastName"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.LastName.FldCaption)</div></div></th>
+	} else {
+		<th data-name="LastName"><div class="ewPointer" onclick="ew_Sort(event,'@AspNetUsers.SortUrl(AspNetUsers.LastName)',1);"><div id="elh_AspNetUsers_LastName" class="AspNetUsers_LastName">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.LastName.FldCaption)@Html.Raw(Language.Phrase("SrchLegend"))</span><span class="ewTableHeaderSort">@if (AspNetUsers.LastName.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (AspNetUsers.LastName.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* LastName.Visible (end) *@		
+@if (AspNetUsers.UserRole.Visible) { // UserRole.Visible (begin)
+	if (AspNetUsers.SortUrl(AspNetUsers.UserRole) == "") {
+		<th data-name="UserRole"><div id="elh_AspNetUsers_UserRole" class="AspNetUsers_UserRole"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.UserRole.FldCaption)</div></div></th>
+	} else {
+		<th data-name="UserRole"><div class="ewPointer" onclick="ew_Sort(event,'@AspNetUsers.SortUrl(AspNetUsers.UserRole)',1);"><div id="elh_AspNetUsers_UserRole" class="AspNetUsers_UserRole">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.UserRole.FldCaption)</span><span class="ewTableHeaderSort">@if (AspNetUsers.UserRole.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (AspNetUsers.UserRole.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* UserRole.Visible (end) *@		
+@if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+	if (AspNetUsers.SortUrl(AspNetUsers.Customer_Id) == "") {
+		<th data-name="Customer_Id"><div id="elh_AspNetUsers_Customer_Id" class="AspNetUsers_Customer_Id"><div class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Customer_Id"><div class="ewPointer" onclick="ew_Sort(event,'@AspNetUsers.SortUrl(AspNetUsers.Customer_Id)',1);"><div id="elh_AspNetUsers_Customer_Id" class="AspNetUsers_Customer_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (AspNetUsers.Customer_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (AspNetUsers.Customer_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Customer_Id.Visible (end) *@		
+@{
+
+	// Render list options (header, right)
+	AspNetUsers_list.ListOptions.Render("header", "right");
+}
+	</tr>
+</thead>
+<tbody>
+@{ // Begin Code
+if (AspNetUsers.ExportAll && ew_NotEmpty(AspNetUsers.Export)) {
+	AspNetUsers_list.StopRec = AspNetUsers_list.TotalRecs;
+} else {
+
+	// Set the last record to display
+	if (AspNetUsers_list.TotalRecs > AspNetUsers_list.StartRec + AspNetUsers_list.DisplayRecs - 1) {
+		AspNetUsers_list.StopRec = AspNetUsers_list.StartRec + AspNetUsers_list.DisplayRecs - 1;
+	} else {
+		AspNetUsers_list.StopRec = AspNetUsers_list.TotalRecs;
+	}
+}
+if (AspNetUsers_list.Recordset != null && AspNetUsers_list.Recordset.HasRows) {
+
+	// Move to first record
+	for (var i = 1; i <= AspNetUsers_list.StartRec - 1; i++) {
+		if (AspNetUsers_list.Recordset.Read()) {
+			AspNetUsers_list.RecCnt++;
+		}
+	}		
+} else if (!AspNetUsers.AllowAddDeleteRow && AspNetUsers_list.StopRec == 0) {
+	AspNetUsers_list.StopRec = AspNetUsers.GridAddRowCount;
+}
+
+// Initialize aggregate
+AspNetUsers.RowType = EW_ROWTYPE_AGGREGATEINIT;
+AspNetUsers.ResetAttrs();
+AspNetUsers_list.RenderRow();
+
+// Output data rows
+bool Eof = false; // ASPX
+while (AspNetUsers_list.RecCnt < AspNetUsers_list.StopRec) { // Begin While
+	if (AspNetUsers.CurrentAction != "gridadd" && !Eof) { // ASPX
+		Eof = !AspNetUsers_list.Recordset.Read();
+	}
+	AspNetUsers_list.RecCnt++;
+	if (AspNetUsers_list.RecCnt >= AspNetUsers_list.StartRec) {
+		AspNetUsers_list.RowCnt++;
+
+		// Set up key count
+		AspNetUsers_list.KeyCount = ew_ConvertToInt(AspNetUsers_list.RowIndex);
+
+		// Init row class and style
+		AspNetUsers.ResetAttrs();
+		AspNetUsers.CssClass = "";
+		if (AspNetUsers.CurrentAction == "gridadd") {
+		} else {
+			AspNetUsers_list.LoadRowValues(AspNetUsers_list.Recordset); // Load row values
+		}
+		AspNetUsers.RowType = EW_ROWTYPE_VIEW; // Render view
+
+		// Set up row id / data-rowindex
+		AspNetUsers.RowAttrs.Add("data-rowindex", AspNetUsers_list.RowCnt);
+		AspNetUsers.RowAttrs.Add("id", "r" + Convert.ToString(AspNetUsers_list.RowCnt) + "_AspNetUsers");
+		AspNetUsers.RowAttrs.Add("data-rowtype", AspNetUsers.RowType);
+
+		// Render row
+		AspNetUsers_list.RenderRow();
+
+		// Render list options
+		AspNetUsers_list.RenderListOptions();
+	<tr @(Html.Raw(AspNetUsers.RowAttributes))>
+	@{
+
+		// Render list options (body, left)
+		AspNetUsers_list.ListOptions.Render("body", "left", AspNetUsers_list.RowCnt);
+	}
+	@if (AspNetUsers.FirstName.Visible) { // FirstName.Visible (begin)
+		<td data-name="FirstName"@(Html.Raw(AspNetUsers.FirstName.CellAttributes))>
+<span @(Html.Raw(AspNetUsers.FirstName.ViewAttributes))>
+@Html.Raw(AspNetUsers.FirstName.ListViewValue)</span>
+<a id="@(AspNetUsers_list.PageObjName + "_row_" + Convert.ToString(AspNetUsers_list.RowCnt))"></a></td>
+	} @* FirstName.Visible (end) *@
+	@if (AspNetUsers.LastName.Visible) { // LastName.Visible (begin)
+		<td data-name="LastName"@(Html.Raw(AspNetUsers.LastName.CellAttributes))>
+<span @(Html.Raw(AspNetUsers.LastName.ViewAttributes))>
+@Html.Raw(AspNetUsers.LastName.ListViewValue)</span>
+</td>
+	} @* LastName.Visible (end) *@
+	@if (AspNetUsers.UserRole.Visible) { // UserRole.Visible (begin)
+		<td data-name="UserRole"@(Html.Raw(AspNetUsers.UserRole.CellAttributes))>
+<span @(Html.Raw(AspNetUsers.UserRole.ViewAttributes))>
+@Html.Raw(AspNetUsers.UserRole.ListViewValue)</span>
+</td>
+	} @* UserRole.Visible (end) *@
+	@if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+		<td data-name="Customer_Id"@(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
+<span @(Html.Raw(AspNetUsers.Customer_Id.ViewAttributes))>
+@Html.Raw(AspNetUsers.Customer_Id.ListViewValue)</span>
+</td>
+	} @* Customer_Id.Visible (end) *@
+	@{
+
+		// Render list options (body, right)
+		AspNetUsers_list.ListOptions.Render("body", "right", AspNetUsers_list.RowCnt);
+	}
+	</tr>
+	} @* End if *@
+} @* End While *@
+} @* End Code *@
+</tbody>
+</table>
+} @* End If TotalRecs > 0 *@
+@if (ew_Empty(AspNetUsers.CurrentAction)) {
+<input type="hidden" name="a_list" id="a_list" value="">
+}
+</div>
+</form>
+@if (AspNetUsers_list.Recordset != null) { // Close recordset
+	AspNetUsers_list.Recordset.Close();
+	AspNetUsers_list.Recordset.Dispose();
+}
+		@if (ew_Empty(AspNetUsers.Export)) {
+		<div class="ewGridLowerPanel">
+		@if (AspNetUsers.CurrentAction != "gridadd" && AspNetUsers.CurrentAction != "gridedit") {
+			<form name="ewPagerForm" class="ewForm form-horizontal ewPagerForm" action="@ew_CurrentPage()">
+@if (AspNetUsers_list.Pager == null) {
+	AspNetUsers_list.Pager = new cPrevNextPager(AspNetUsers_list.StartRec, AspNetUsers_list.DisplayRecs, AspNetUsers_list.TotalRecs); 
+}
+@if (AspNetUsers_list.Pager.RecordCount > 0) {
+<div class="ewPager">
+<span>@Html.Raw(Language.Phrase("Page"))&nbsp;</span>
+<div class="ewPrevNext"><div class="input-group">
+<div class="input-group-btn">
+<!--first page button-->
+	@if (AspNetUsers_list.Pager.FirstButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerFirst")))" href="@(AspNetUsers_list.PageUrl)start=@AspNetUsers_list.Pager.FirstButton.Start"><span class="icon-first ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerFirst")))"><span class="icon-first ewIcon"></span></a>
+	}
+<!--previous page button-->
+	@if (AspNetUsers_list.Pager.PrevButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerPrevious")))" href="@(AspNetUsers_list.PageUrl)start=@AspNetUsers_list.Pager.PrevButton.Start"><span class="icon-prev ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerPrevious")))"><span class="icon-prev ewIcon"></span></a>
+	}
+</div>
+<!--current page number-->
+	<input class="form-control input-sm" type="text" name="@EW_TABLE_PAGE_NO" value="@AspNetUsers_list.Pager.CurrentPage">
+<div class="input-group-btn">		
+<!--next page button-->
+	@if (AspNetUsers_list.Pager.NextButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerNext")))" href="@(AspNetUsers_list.PageUrl)start=@AspNetUsers_list.Pager.NextButton.Start"><span class="icon-next ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerNext")))"><span class="icon-next ewIcon"></span></a>
+	}
+<!--last page button-->
+	@if (AspNetUsers_list.Pager.LastButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerLast")))" href="@(AspNetUsers_list.PageUrl)start=@AspNetUsers_list.Pager.LastButton.Start"><span class="icon-last ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerLast")))"><span class="icon-last ewIcon"></span></a>
+	}
+</div>
+</div>
+</div>
+<span>&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@AspNetUsers_list.Pager.PageCount</span>
+</div>
+	<div class="ewPager ewRec">
+		<span>@Html.Raw(Language.Phrase("Record"))&nbsp;@(AspNetUsers_list.Pager.FromIndex)&nbsp;@Html.Raw(Language.Phrase("To"))&nbsp;@(AspNetUsers_list.Pager.ToIndex)&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@(AspNetUsers_list.Pager.RecordCount)</span>
+	</div>
+}
+			</form>
+		}
+		<div class="ewListOtherOptions">
+		@foreach (var kvp in AspNetUsers_list.OtherOptions) {
+			kvp.Value.Render("body", "bottom");
+		}
+		</div>
+		<div class="clearfix"></div>
+		</div>
+		}
+</div>
+}
+@if (AspNetUsers_list.TotalRecs <= 0 && AspNetUsers.CurrentAction == "") { // Show other options
+<div class="ewListOtherOptions">
+	@foreach (var kvp in AspNetUsers_list.OtherOptions) {
+		kvp.Value.ButtonClass = "";
+		kvp.Value.Render("body", "");
+	}
+</div>
+<div class="clearfix"></div>
+} 
+@if (ew_Empty(AspNetUsers.Export)) {
+<script type="text/javascript">
+fAspNetUserslistsrch.Init();
+fAspNetUserslist.Init();
+</script>
+}
+@{
+	AspNetUsers_list.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	AspNetUsers_list.Page_Terminate();
+}

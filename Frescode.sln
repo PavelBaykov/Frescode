@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frescode", "Frescode\Frescode.csproj", "{12F30D8E-7498-49FB-A333-A2E309E5F3D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrescodeAdmin", "FrescodeAdmin\FrescodeAdmin.csproj", "{2EE34251-75BC-4DF2-BE59-AA4518910623}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{12F30D8E-7498-49FB-A333-A2E309E5F3D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F30D8E-7498-49FB-A333-A2E309E5F3D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F30D8E-7498-49FB-A333-A2E309E5F3D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EE34251-75BC-4DF2-BE59-AA4518910623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE34251-75BC-4DF2-BE59-AA4518910623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE34251-75BC-4DF2-BE59-AA4518910623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE34251-75BC-4DF2-BE59-AA4518910623}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

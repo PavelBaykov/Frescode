@@ -1,0 +1,487 @@
+@functions {
+
+	//
+	// Page class for Projects
+	//
+	public class cProjects_list<C, S> : cProjects_list_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+				rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+			return true;
+		}
+	}
+
+	// Projects_list	
+	public static cProjects_list<cConnection, cAdvancedSecurity> Projects_list {
+		get { return (cProjects_list<cConnection, cAdvancedSecurity>)ew_PageData["Projects_list"]; }
+		set { ew_PageData["Projects_list"] = value; }
+	}
+
+	// CurrentPage
+	public static cProjects_list<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cProjects_list<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cProjects_list<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (Projects_list == null) {
+		Projects_list = new cProjects_list<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	Projects_list.Page_Init();
+
+	// Page main
+	Projects_list.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	Projects_list.Page_Render();
+}
+@if (ew_Empty(Projects.Export)) {
+<script type="text/javascript">
+
+// Page object
+var Projects_list = new ew_Page("Projects_list");
+Projects_list.PageID = "list"; // Page ID
+var EW_PAGE_ID = Projects_list.PageID; // For backward compatibility
+
+// Form object
+var fProjectslist = new ew_Form("fProjectslist");
+fProjectslist.FormKeyCountName = '@Projects_list.FormKeyCountName';
+
+// Form_CustomValidate event
+fProjectslist.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fProjectslist.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fProjectslist.Lists["x_ChangedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectslist.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectslist.Lists["x_Owner_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fProjectslist.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(Projects.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(Projects.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (Projects_list.TotalRecs > 0 && Projects_list.ExportOptions.Visible) { 
+	Projects_list.ExportOptions.Render("body");
+}
+@if (ew_Empty(Projects.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+<div class="clearfix"></div>
+</div>
+}
+@{
+		if (Projects_list.Recordset == null) { // ASPX
+			Projects_list.Recordset = Projects_list.LoadRecordset();
+		}
+		Projects_list.StartRec = 1;
+		if (Projects_list.DisplayRecs <= 0 || (ew_NotEmpty(Projects.Export) && Projects.ExportAll)) { // Display all records
+			Projects_list.DisplayRecs = Projects_list.TotalRecs;
+		}
+		if (!(ew_NotEmpty(Projects.Export) && Projects.ExportAll)) {
+			Projects_list.SetUpStartRec(); // Set up start record position
+		}
+
+		// Set no record found message
+		if (Projects.CurrentAction == "" && Projects_list.TotalRecs == 0) {
+			if (Projects_list.SearchWhere == "0=101") {
+				Projects_list.WarningMessage = Language.Phrase("EnterSearchCriteria");
+			} else {
+				Projects_list.WarningMessage = Language.Phrase("NoRecord");
+			}
+		}
+	Projects_list.RenderOtherOptions();
+}
+@{
+	Projects_list.ShowPageHeader();
+}
+@{
+	Projects_list.ShowMessage();
+}
+@if (Projects_list.TotalRecs > 0 || Projects.CurrentAction != "") { 
+<div class="ewGrid">
+<form name="fProjectslist" id="fProjectslist" class="form-inline ewForm ewListForm" action="@ew_CurrentPage()" method="post">
+@if (Projects_list.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@Projects_list.Token">
+}
+<input type="hidden" name="t" value="Projects">
+<div id="gmp_Projects" class="@((ew_IsResponsiveLayout()) ? "table-responsive ewGridMiddlePanel" : "ewGridMiddlePanel")">
+@if (Projects_list.TotalRecs > 0) { // Begin If TotalRecs > 0
+<table id="tbl_Projectslist" class="table ewTable">
+@Projects.TableCustomInnerHtml
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+@{
+
+	// Render list options
+	Projects_list.RenderListOptions();
+
+	// Render list options (header, left)
+	Projects_list.ListOptions.Render("header", "left");
+}
+@if (Projects.Id.Visible) { // Id.Visible (begin)
+	if (Projects.SortUrl(Projects.Id) == "") {
+		<th data-name="Id"><div id="elh_Projects_Id" class="Projects_Id"><div class="ewTableHeaderCaption">@Html.Raw(Projects.Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Id"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.Id)',1);"><div id="elh_Projects_Id" class="Projects_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.Id.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Id.Visible (end) *@		
+@if (Projects.DateCreated.Visible) { // DateCreated.Visible (begin)
+	if (Projects.SortUrl(Projects.DateCreated) == "") {
+		<th data-name="DateCreated"><div id="elh_Projects_DateCreated" class="Projects_DateCreated"><div class="ewTableHeaderCaption" style="white-space: nowrap;">@Html.Raw(Projects.DateCreated.FldCaption)</div></div></th>
+	} else {
+		<th data-name="DateCreated"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.DateCreated)',1);"><div id="elh_Projects_DateCreated" class="Projects_DateCreated">
+			<div class="ewTableHeaderBtn" style="white-space: nowrap;"><span class="ewTableHeaderCaption">@Html.Raw(Projects.DateCreated.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.DateCreated.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.DateCreated.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* DateCreated.Visible (end) *@		
+@if (Projects.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
+	if (Projects.SortUrl(Projects.DateOfLastChange) == "") {
+		<th data-name="DateOfLastChange"><div id="elh_Projects_DateOfLastChange" class="Projects_DateOfLastChange"><div class="ewTableHeaderCaption">@Html.Raw(Projects.DateOfLastChange.FldCaption)</div></div></th>
+	} else {
+		<th data-name="DateOfLastChange"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.DateOfLastChange)',1);"><div id="elh_Projects_DateOfLastChange" class="Projects_DateOfLastChange">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.DateOfLastChange.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.DateOfLastChange.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.DateOfLastChange.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* DateOfLastChange.Visible (end) *@		
+@if (Projects.Status.Visible) { // Status.Visible (begin)
+	if (Projects.SortUrl(Projects.Status) == "") {
+		<th data-name="Status"><div id="elh_Projects_Status" class="Projects_Status"><div class="ewTableHeaderCaption">@Html.Raw(Projects.Status.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Status"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.Status)',1);"><div id="elh_Projects_Status" class="Projects_Status">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.Status.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.Status.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.Status.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Status.Visible (end) *@		
+@if (Projects.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
+	if (Projects.SortUrl(Projects.ChangedBy_Id) == "") {
+		<th data-name="ChangedBy_Id"><div id="elh_Projects_ChangedBy_Id" class="Projects_ChangedBy_Id"><div class="ewTableHeaderCaption">@Html.Raw(Projects.ChangedBy_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="ChangedBy_Id"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.ChangedBy_Id)',1);"><div id="elh_Projects_ChangedBy_Id" class="Projects_ChangedBy_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.ChangedBy_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.ChangedBy_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.ChangedBy_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* ChangedBy_Id.Visible (end) *@		
+@if (Projects.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+	if (Projects.SortUrl(Projects.CreatedBy_Id) == "") {
+		<th data-name="CreatedBy_Id"><div id="elh_Projects_CreatedBy_Id" class="Projects_CreatedBy_Id"><div class="ewTableHeaderCaption">@Html.Raw(Projects.CreatedBy_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="CreatedBy_Id"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.CreatedBy_Id)',1);"><div id="elh_Projects_CreatedBy_Id" class="Projects_CreatedBy_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.CreatedBy_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.CreatedBy_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.CreatedBy_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* CreatedBy_Id.Visible (end) *@		
+@if (Projects.Owner_Id.Visible) { // Owner_Id.Visible (begin)
+	if (Projects.SortUrl(Projects.Owner_Id) == "") {
+		<th data-name="Owner_Id"><div id="elh_Projects_Owner_Id" class="Projects_Owner_Id"><div class="ewTableHeaderCaption">@Html.Raw(Projects.Owner_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Owner_Id"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.Owner_Id)',1);"><div id="elh_Projects_Owner_Id" class="Projects_Owner_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.Owner_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.Owner_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.Owner_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Owner_Id.Visible (end) *@		
+@if (Projects.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+	if (Projects.SortUrl(Projects.Customer_Id) == "") {
+		<th data-name="Customer_Id"><div id="elh_Projects_Customer_Id" class="Projects_Customer_Id"><div class="ewTableHeaderCaption">@Html.Raw(Projects.Customer_Id.FldCaption)</div></div></th>
+	} else {
+		<th data-name="Customer_Id"><div class="ewPointer" onclick="ew_Sort(event,'@Projects.SortUrl(Projects.Customer_Id)',1);"><div id="elh_Projects_Customer_Id" class="Projects_Customer_Id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption">@Html.Raw(Projects.Customer_Id.FldCaption)</span><span class="ewTableHeaderSort">@if (Projects.Customer_Id.Sort == "ASC") {<span class="caret ewSortUp"></span>} else if (Projects.Customer_Id.Sort == "DESC") {<span class="caret"></span>}</span></div>
+        </div></div></th>	
+	}
+} @* Customer_Id.Visible (end) *@		
+@{
+
+	// Render list options (header, right)
+	Projects_list.ListOptions.Render("header", "right");
+}
+	</tr>
+</thead>
+<tbody>
+@{ // Begin Code
+if (Projects.ExportAll && ew_NotEmpty(Projects.Export)) {
+	Projects_list.StopRec = Projects_list.TotalRecs;
+} else {
+
+	// Set the last record to display
+	if (Projects_list.TotalRecs > Projects_list.StartRec + Projects_list.DisplayRecs - 1) {
+		Projects_list.StopRec = Projects_list.StartRec + Projects_list.DisplayRecs - 1;
+	} else {
+		Projects_list.StopRec = Projects_list.TotalRecs;
+	}
+}
+if (Projects_list.Recordset != null && Projects_list.Recordset.HasRows) {
+
+	// Move to first record
+	for (var i = 1; i <= Projects_list.StartRec - 1; i++) {
+		if (Projects_list.Recordset.Read()) {
+			Projects_list.RecCnt++;
+		}
+	}		
+} else if (!Projects.AllowAddDeleteRow && Projects_list.StopRec == 0) {
+	Projects_list.StopRec = Projects.GridAddRowCount;
+}
+
+// Initialize aggregate
+Projects.RowType = EW_ROWTYPE_AGGREGATEINIT;
+Projects.ResetAttrs();
+Projects_list.RenderRow();
+
+// Output data rows
+bool Eof = false; // ASPX
+while (Projects_list.RecCnt < Projects_list.StopRec) { // Begin While
+	if (Projects.CurrentAction != "gridadd" && !Eof) { // ASPX
+		Eof = !Projects_list.Recordset.Read();
+	}
+	Projects_list.RecCnt++;
+	if (Projects_list.RecCnt >= Projects_list.StartRec) {
+		Projects_list.RowCnt++;
+
+		// Set up key count
+		Projects_list.KeyCount = ew_ConvertToInt(Projects_list.RowIndex);
+
+		// Init row class and style
+		Projects.ResetAttrs();
+		Projects.CssClass = "";
+		if (Projects.CurrentAction == "gridadd") {
+		} else {
+			Projects_list.LoadRowValues(Projects_list.Recordset); // Load row values
+		}
+		Projects.RowType = EW_ROWTYPE_VIEW; // Render view
+
+		// Set up row id / data-rowindex
+		Projects.RowAttrs.Add("data-rowindex", Projects_list.RowCnt);
+		Projects.RowAttrs.Add("id", "r" + Convert.ToString(Projects_list.RowCnt) + "_Projects");
+		Projects.RowAttrs.Add("data-rowtype", Projects.RowType);
+
+		// Render row
+		Projects_list.RenderRow();
+
+		// Render list options
+		Projects_list.RenderListOptions();
+	<tr @(Html.Raw(Projects.RowAttributes))>
+	@{
+
+		// Render list options (body, left)
+		Projects_list.ListOptions.Render("body", "left", Projects_list.RowCnt);
+	}
+	@if (Projects.Id.Visible) { // Id.Visible (begin)
+		<td data-name="Id"@(Html.Raw(Projects.Id.CellAttributes))>
+<span @(Html.Raw(Projects.Id.ViewAttributes))>
+@Html.Raw(Projects.Id.ListViewValue)</span>
+<a id="@(Projects_list.PageObjName + "_row_" + Convert.ToString(Projects_list.RowCnt))"></a></td>
+	} @* Id.Visible (end) *@
+	@if (Projects.DateCreated.Visible) { // DateCreated.Visible (begin)
+		<td data-name="DateCreated"@(Html.Raw(Projects.DateCreated.CellAttributes))>
+<span @(Html.Raw(Projects.DateCreated.ViewAttributes))>
+@Html.Raw(Projects.DateCreated.ListViewValue)</span>
+</td>
+	} @* DateCreated.Visible (end) *@
+	@if (Projects.DateOfLastChange.Visible) { // DateOfLastChange.Visible (begin)
+		<td data-name="DateOfLastChange"@(Html.Raw(Projects.DateOfLastChange.CellAttributes))>
+<span @(Html.Raw(Projects.DateOfLastChange.ViewAttributes))>
+@Html.Raw(Projects.DateOfLastChange.ListViewValue)</span>
+</td>
+	} @* DateOfLastChange.Visible (end) *@
+	@if (Projects.Status.Visible) { // Status.Visible (begin)
+		<td data-name="Status"@(Html.Raw(Projects.Status.CellAttributes))>
+<span @(Html.Raw(Projects.Status.ViewAttributes))>
+@Html.Raw(Projects.Status.ListViewValue)</span>
+</td>
+	} @* Status.Visible (end) *@
+	@if (Projects.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
+		<td data-name="ChangedBy_Id"@(Html.Raw(Projects.ChangedBy_Id.CellAttributes))>
+<span @(Html.Raw(Projects.ChangedBy_Id.ViewAttributes))>
+@Html.Raw(Projects.ChangedBy_Id.ListViewValue)</span>
+</td>
+	} @* ChangedBy_Id.Visible (end) *@
+	@if (Projects.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+		<td data-name="CreatedBy_Id"@(Html.Raw(Projects.CreatedBy_Id.CellAttributes))>
+<span @(Html.Raw(Projects.CreatedBy_Id.ViewAttributes))>
+@Html.Raw(Projects.CreatedBy_Id.ListViewValue)</span>
+</td>
+	} @* CreatedBy_Id.Visible (end) *@
+	@if (Projects.Owner_Id.Visible) { // Owner_Id.Visible (begin)
+		<td data-name="Owner_Id"@(Html.Raw(Projects.Owner_Id.CellAttributes))>
+<span @(Html.Raw(Projects.Owner_Id.ViewAttributes))>
+@Html.Raw(Projects.Owner_Id.ListViewValue)</span>
+</td>
+	} @* Owner_Id.Visible (end) *@
+	@if (Projects.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+		<td data-name="Customer_Id"@(Html.Raw(Projects.Customer_Id.CellAttributes))>
+<span @(Html.Raw(Projects.Customer_Id.ViewAttributes))>
+@Html.Raw(Projects.Customer_Id.ListViewValue)</span>
+</td>
+	} @* Customer_Id.Visible (end) *@
+	@{
+
+		// Render list options (body, right)
+		Projects_list.ListOptions.Render("body", "right", Projects_list.RowCnt);
+	}
+	</tr>
+	} @* End if *@
+} @* End While *@
+} @* End Code *@
+</tbody>
+</table>
+} @* End If TotalRecs > 0 *@
+@if (ew_Empty(Projects.CurrentAction)) {
+<input type="hidden" name="a_list" id="a_list" value="">
+}
+</div>
+</form>
+@if (Projects_list.Recordset != null) { // Close recordset
+	Projects_list.Recordset.Close();
+	Projects_list.Recordset.Dispose();
+}
+		@if (ew_Empty(Projects.Export)) {
+		<div class="ewGridLowerPanel">
+		@if (Projects.CurrentAction != "gridadd" && Projects.CurrentAction != "gridedit") {
+			<form name="ewPagerForm" class="ewForm form-horizontal ewPagerForm" action="@ew_CurrentPage()">
+@if (Projects_list.Pager == null) {
+	Projects_list.Pager = new cPrevNextPager(Projects_list.StartRec, Projects_list.DisplayRecs, Projects_list.TotalRecs); 
+}
+@if (Projects_list.Pager.RecordCount > 0) {
+<div class="ewPager">
+<span>@Html.Raw(Language.Phrase("Page"))&nbsp;</span>
+<div class="ewPrevNext"><div class="input-group">
+<div class="input-group-btn">
+<!--first page button-->
+	@if (Projects_list.Pager.FirstButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerFirst")))" href="@(Projects_list.PageUrl)start=@Projects_list.Pager.FirstButton.Start"><span class="icon-first ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerFirst")))"><span class="icon-first ewIcon"></span></a>
+	}
+<!--previous page button-->
+	@if (Projects_list.Pager.PrevButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerPrevious")))" href="@(Projects_list.PageUrl)start=@Projects_list.Pager.PrevButton.Start"><span class="icon-prev ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerPrevious")))"><span class="icon-prev ewIcon"></span></a>
+	}
+</div>
+<!--current page number-->
+	<input class="form-control input-sm" type="text" name="@EW_TABLE_PAGE_NO" value="@Projects_list.Pager.CurrentPage">
+<div class="input-group-btn">		
+<!--next page button-->
+	@if (Projects_list.Pager.NextButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerNext")))" href="@(Projects_list.PageUrl)start=@Projects_list.Pager.NextButton.Start"><span class="icon-next ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerNext")))"><span class="icon-next ewIcon"></span></a>
+	}
+<!--last page button-->
+	@if (Projects_list.Pager.LastButton.Enabled) {
+	<a class="btn btn-default btn-sm" title="@(Html.Raw(Language.Phrase("PagerLast")))" href="@(Projects_list.PageUrl)start=@Projects_list.Pager.LastButton.Start"><span class="icon-last ewIcon"></span></a>
+	} else {
+	<a class="btn btn-default btn-sm disabled" title="@(Html.Raw(Language.Phrase("PagerLast")))"><span class="icon-last ewIcon"></span></a>
+	}
+</div>
+</div>
+</div>
+<span>&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@Projects_list.Pager.PageCount</span>
+</div>
+	<div class="ewPager ewRec">
+		<span>@Html.Raw(Language.Phrase("Record"))&nbsp;@(Projects_list.Pager.FromIndex)&nbsp;@Html.Raw(Language.Phrase("To"))&nbsp;@(Projects_list.Pager.ToIndex)&nbsp;@Html.Raw(Language.Phrase("Of"))&nbsp;@(Projects_list.Pager.RecordCount)</span>
+	</div>
+}
+			</form>
+		}
+		<div class="ewListOtherOptions">
+		@foreach (var kvp in Projects_list.OtherOptions) {
+			kvp.Value.Render("body", "bottom");
+		}
+		</div>
+		<div class="clearfix"></div>
+		</div>
+		}
+</div>
+}
+@if (Projects_list.TotalRecs <= 0 && Projects.CurrentAction == "") { // Show other options
+<div class="ewListOtherOptions">
+	@foreach (var kvp in Projects_list.OtherOptions) {
+		kvp.Value.ButtonClass = "";
+		kvp.Value.Render("body", "");
+	}
+</div>
+<div class="clearfix"></div>
+} 
+@if (ew_Empty(Projects.Export)) {
+<script type="text/javascript">
+fProjectslist.Init();
+</script>
+}
+@{
+	Projects_list.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(Projects.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	Projects_list.Page_Terminate();
+}

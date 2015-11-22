@@ -1,0 +1,201 @@
+@functions {
+
+	//
+	// Page class for ChecklistTemplates
+	//
+	public class cChecklistTemplates_view<C, S> : cChecklistTemplates_view_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+	}
+
+	// ChecklistTemplates_view	
+	public static cChecklistTemplates_view<cConnection, cAdvancedSecurity> ChecklistTemplates_view {
+		get { return (cChecklistTemplates_view<cConnection, cAdvancedSecurity>)ew_PageData["ChecklistTemplates_view"]; }
+		set { ew_PageData["ChecklistTemplates_view"] = value; }
+	}
+
+	// CurrentPage
+	public static cChecklistTemplates_view<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cChecklistTemplates_view<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cChecklistTemplates_view<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create detail grid object (Checklists_grid)
+	if (Checklists_grid == null) {
+		Checklists_grid = new cChecklists_grid<cConnection, cAdvancedSecurity>();
+	}
+
+	// Create detail grid object (ChecklistItemTemplates_grid)
+	if (ChecklistItemTemplates_grid == null) {
+		ChecklistItemTemplates_grid = new cChecklistItemTemplates_grid<cConnection, cAdvancedSecurity>();
+	}
+
+	// Create page object
+	if (ChecklistTemplates_view == null) {
+		ChecklistTemplates_view = new cChecklistTemplates_view<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	ChecklistTemplates_view.Page_Init();
+
+	// Page main
+	ChecklistTemplates_view.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	ChecklistTemplates_view.Page_Render();
+}
+@if (ew_Empty(ChecklistTemplates.Export)) {
+<script type="text/javascript">
+
+// Page object
+var ChecklistTemplates_view = new ew_Page("ChecklistTemplates_view");
+ChecklistTemplates_view.PageID = "view"; // Page ID
+var EW_PAGE_ID = ChecklistTemplates_view.PageID; // For backward compatibility
+
+// Form object
+var fChecklistTemplatesview = new ew_Form("fChecklistTemplatesview");
+
+// Form_CustomValidate event
+fChecklistTemplatesview.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fChecklistTemplatesview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+// Form object for search
+
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(ChecklistTemplates.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(ChecklistTemplates.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+	@{ 
+		ChecklistTemplates_view.ExportOptions.Render("body");
+		foreach (var kvp in ChecklistTemplates_view.OtherOptions) {
+			kvp.Value.Render("body");
+		}
+	}
+@if (ew_Empty(ChecklistTemplates.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+}
+@{
+	ChecklistTemplates_view.ShowPageHeader();
+}
+@{
+	ChecklistTemplates_view.ShowMessage();
+}
+<form name="fChecklistTemplatesview" id="fChecklistTemplatesview" class="form-inline ewForm ewViewForm" method="post">
+@if (ChecklistTemplates_view.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@ChecklistTemplates_view.Token">
+}
+<input type="hidden" name="t" value="ChecklistTemplates">
+<table  class="table table-bordered table-striped ewViewTable">
+@if (ChecklistTemplates.Id.Visible) { @* ChecklistTemplates.Id.Visible (begin) *@
+	<tr id="r_Id">
+		<td><span id="elh_ChecklistTemplates_Id">@Html.Raw(ChecklistTemplates.Id.FldCaption)</span></td>
+		<td @Html.Raw(ChecklistTemplates.Id.CellAttributes)>
+<span id="el_ChecklistTemplates_Id" class="form-group">
+<span @(Html.Raw(ChecklistTemplates.Id.ViewAttributes))>
+@Html.Raw(ChecklistTemplates.Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* ChecklistTemplates.Id.Visible (end) *@
+@if (ChecklistTemplates.zName.Visible) { @* ChecklistTemplates.zName.Visible (begin) *@
+	<tr id="r_zName">
+		<td><span id="elh_ChecklistTemplates_zName">@Html.Raw(ChecklistTemplates.zName.FldCaption)</span></td>
+		<td @Html.Raw(ChecklistTemplates.zName.CellAttributes)>
+<span id="el_ChecklistTemplates_zName" class="form-group">
+<span @(Html.Raw(ChecklistTemplates.zName.ViewAttributes))>
+@Html.Raw(ChecklistTemplates.zName.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* ChecklistTemplates.zName.Visible (end) *@
+</table>
+@if (ChecklistTemplates_view.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	ChecklistTemplates_view.Recordset.Close();
+	ChecklistTemplates_view.Recordset.Dispose();
+}
+@if ((new List<string>(ChecklistTemplates.CurrentDetailTable.Split(new char[] {','}))).Contains("Checklists") && Checklists.DetailView) {
+	if (ew_NotEmpty(ChecklistTemplates.CurrentDetailTable)) { 
+		<h4 class="ewDetailCaption">@Html.Raw(Language.TablePhrase("Checklists", "TblCaption"))</h4>
+	}
+		@RenderPage("Checklistsgrid.cshtml")
+}
+@if ((new List<string>(ChecklistTemplates.CurrentDetailTable.Split(new char[] {','}))).Contains("ChecklistItemTemplates") && ChecklistItemTemplates.DetailView) {
+	if (ew_NotEmpty(ChecklistTemplates.CurrentDetailTable)) { 
+		<h4 class="ewDetailCaption">@Html.Raw(Language.TablePhrase("ChecklistItemTemplates", "TblCaption"))</h4>
+	}
+		@RenderPage("ChecklistItemTemplatesgrid.cshtml")
+}
+</form>
+@if (ew_Empty(ChecklistTemplates.Export)) {
+<script type="text/javascript">
+fChecklistTemplatesview.Init();
+</script>
+}
+@{
+	ChecklistTemplates_view.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(ChecklistTemplates.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	ChecklistTemplates_view.Page_Terminate();
+}

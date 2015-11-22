@@ -1,0 +1,270 @@
+@functions {
+
+	//
+	// Page class for AspNetUsers
+	//
+	public class cAspNetUsers_view<C, S> : cAspNetUsers_view_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["Id"] =Guid.NewGuid().ToString();
+			rsnew["EmailConfirmed"]=false;
+			rsnew["PhoneNumberConfirmed"]=false;
+			rsnew["TwoFactorEnabled"]=false;
+			rsnew["LockoutEnabled"]=false;
+			rsnew["AccessFailedCount"]=0;
+			rsnew["UserName"]=rsnew["Email"];
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["UserRole"]=1;
+
+		/*
+			byte[] salt;
+			byte[] buffer2;
+			string password = Convert.ToString(rsnew["PasswordHash"]);
+			using (System.Security.Cryptography.Rfc2898DeriveBytes bytes = new System.Security.Cryptography.Rfc2898DeriveBytes(password, 0x10, 0x3e8))
+			{
+				salt = bytes.Salt;
+				buffer2 = bytes.GetBytes(0x20);
+			}
+			byte[] dst = new byte[0x31];
+			Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
+			Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
+			rsnew["PasswordHash"]=Convert.ToBase64String(dst);*/
+			Microsoft.AspNet.Identity.PasswordHasher hasher = new Microsoft.AspNet.Identity.PasswordHasher();
+			rsnew["PasswordHash"]=hasher.HashPassword(Convert.ToString(rsnew["PasswordHash"]));
+			rsnew["SecurityStamp"] =Guid.NewGuid().ToString();
+			return true;
+		}
+	}
+
+	// AspNetUsers_view	
+	public static cAspNetUsers_view<cConnection, cAdvancedSecurity> AspNetUsers_view {
+		get { return (cAspNetUsers_view<cConnection, cAdvancedSecurity>)ew_PageData["AspNetUsers_view"]; }
+		set { ew_PageData["AspNetUsers_view"] = value; }
+	}
+
+	// CurrentPage
+	public static cAspNetUsers_view<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cAspNetUsers_view<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cAspNetUsers_view<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (AspNetUsers_view == null) {
+		AspNetUsers_view = new cAspNetUsers_view<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	AspNetUsers_view.Page_Init();
+
+	// Page main
+	AspNetUsers_view.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	AspNetUsers_view.Page_Render();
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+<script type="text/javascript">
+
+// Page object
+var AspNetUsers_view = new ew_Page("AspNetUsers_view");
+AspNetUsers_view.PageID = "view"; // Page ID
+var EW_PAGE_ID = AspNetUsers_view.PageID; // For backward compatibility
+
+// Form object
+var fAspNetUsersview = new ew_Form("fAspNetUsersview");
+
+// Form_CustomValidate event
+fAspNetUsersview.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fAspNetUsersview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fAspNetUsersview.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(AspNetUsers.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+	@{ 
+		AspNetUsers_view.ExportOptions.Render("body");
+		foreach (var kvp in AspNetUsers_view.OtherOptions) {
+			kvp.Value.Render("body");
+		}
+	}
+@if (ew_Empty(AspNetUsers.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+}
+@{
+	AspNetUsers_view.ShowPageHeader();
+}
+@{
+	AspNetUsers_view.ShowMessage();
+}
+<form name="fAspNetUsersview" id="fAspNetUsersview" class="form-inline ewForm ewViewForm" method="post">
+@if (AspNetUsers_view.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@AspNetUsers_view.Token">
+}
+<input type="hidden" name="t" value="AspNetUsers">
+<table  class="table table-bordered table-striped ewViewTable">
+@if (AspNetUsers.FirstName.Visible) { @* AspNetUsers.FirstName.Visible (begin) *@
+	<tr id="r_FirstName">
+		<td><span id="elh_AspNetUsers_FirstName">@Html.Raw(AspNetUsers.FirstName.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.FirstName.CellAttributes)>
+<span id="el_AspNetUsers_FirstName" class="form-group">
+<span @(Html.Raw(AspNetUsers.FirstName.ViewAttributes))>
+@Html.Raw(AspNetUsers.FirstName.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.FirstName.Visible (end) *@
+@if (AspNetUsers.LastName.Visible) { @* AspNetUsers.LastName.Visible (begin) *@
+	<tr id="r_LastName">
+		<td><span id="elh_AspNetUsers_LastName">@Html.Raw(AspNetUsers.LastName.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.LastName.CellAttributes)>
+<span id="el_AspNetUsers_LastName" class="form-group">
+<span @(Html.Raw(AspNetUsers.LastName.ViewAttributes))>
+@Html.Raw(AspNetUsers.LastName.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.LastName.Visible (end) *@
+@if (AspNetUsers.UserRole.Visible) { @* AspNetUsers.UserRole.Visible (begin) *@
+	<tr id="r_UserRole">
+		<td><span id="elh_AspNetUsers_UserRole">@Html.Raw(AspNetUsers.UserRole.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.UserRole.CellAttributes)>
+<span id="el_AspNetUsers_UserRole" class="form-group">
+<span @(Html.Raw(AspNetUsers.UserRole.ViewAttributes))>
+@Html.Raw(AspNetUsers.UserRole.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.UserRole.Visible (end) *@
+@if (AspNetUsers.DateCreated.Visible) { @* AspNetUsers.DateCreated.Visible (begin) *@
+	<tr id="r_DateCreated">
+		<td><span id="elh_AspNetUsers_DateCreated">@Html.Raw(AspNetUsers.DateCreated.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.DateCreated.CellAttributes)>
+<span id="el_AspNetUsers_DateCreated" class="form-group">
+<span @(Html.Raw(AspNetUsers.DateCreated.ViewAttributes))>
+@Html.Raw(AspNetUsers.DateCreated.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.DateCreated.Visible (end) *@
+@if (AspNetUsers.zEmail.Visible) { @* AspNetUsers.zEmail.Visible (begin) *@
+	<tr id="r_zEmail">
+		<td><span id="elh_AspNetUsers_zEmail">@Html.Raw(AspNetUsers.zEmail.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.zEmail.CellAttributes)>
+<span id="el_AspNetUsers_zEmail" class="form-group">
+<span @(Html.Raw(AspNetUsers.zEmail.ViewAttributes))>
+@Html.Raw(AspNetUsers.zEmail.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.zEmail.Visible (end) *@
+@if (AspNetUsers.PasswordHash.Visible) { @* AspNetUsers.PasswordHash.Visible (begin) *@
+	<tr id="r_PasswordHash">
+		<td><span id="elh_AspNetUsers_PasswordHash">@Html.Raw(AspNetUsers.PasswordHash.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.PasswordHash.CellAttributes)>
+<span id="el_AspNetUsers_PasswordHash" class="form-group">
+<span @(Html.Raw(AspNetUsers.PasswordHash.ViewAttributes))>
+@Html.Raw(AspNetUsers.PasswordHash.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.PasswordHash.Visible (end) *@
+@if (AspNetUsers.Customer_Id.Visible) { @* AspNetUsers.Customer_Id.Visible (begin) *@
+	<tr id="r_Customer_Id">
+		<td><span id="elh_AspNetUsers_Customer_Id">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</span></td>
+		<td @Html.Raw(AspNetUsers.Customer_Id.CellAttributes)>
+<span id="el_AspNetUsers_Customer_Id" class="form-group">
+<span @(Html.Raw(AspNetUsers.Customer_Id.ViewAttributes))>
+@Html.Raw(AspNetUsers.Customer_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* AspNetUsers.Customer_Id.Visible (end) *@
+</table>
+@if (AspNetUsers_view.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	AspNetUsers_view.Recordset.Close();
+	AspNetUsers_view.Recordset.Dispose();
+}
+</form>
+@if (ew_Empty(AspNetUsers.Export)) {
+<script type="text/javascript">
+fAspNetUsersview.Init();
+</script>
+}
+@{
+	AspNetUsers_view.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(AspNetUsers.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	AspNetUsers_view.Page_Terminate();
+}

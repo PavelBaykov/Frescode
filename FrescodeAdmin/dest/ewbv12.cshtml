@@ -1,0 +1,18 @@
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (ewbv == null) {
+		ewbv = new cewbv();
+	}
+
+	// Page main
+	ewbv.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+}

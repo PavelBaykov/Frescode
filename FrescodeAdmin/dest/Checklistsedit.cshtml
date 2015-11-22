@@ -1,0 +1,434 @@
+@functions {
+
+	//
+	// Page class for Checklists
+	//
+	public class cChecklists_edit<C, S> : cChecklists_edit_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			return true;
+		}
+
+		// Row Inserted event
+		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {	
+
+		// Insert record
+		// NOTE: Modify your SQL here, replace the table name, field name and field values
+
+		string sInsertSql = "INSERT INTO ChecklistItems "+
+					 "(Status, DateOfLastChange,ChangedBy_Id,Checklist_Id,ItemTemplate_Id) "+
+					 "SELECT 	0 as Status,"+
+					 "CURRENT_TIMESTAMP as DateOfLastChange,"+
+					 "'"+Convert.ToString(rsnew["ChangedBy_Id"])+"'" + " as ChangedBy_Id,"+
+					 rsnew["Id"] +" as Checklist_Id,"+
+					 "chit.Id as ItemTemplate_Id "+
+					 "FROM 	ChecklistItemTemplates chit "+
+					 "WHERE chit.Checklist_Id="+rsnew["ChecklistTemplate_Id"]
+					 ;
+		ew_Execute(sInsertSql);
+		}
+	}
+
+	// Checklists_edit	
+	public static cChecklists_edit<cConnection, cAdvancedSecurity> Checklists_edit {
+		get { return (cChecklists_edit<cConnection, cAdvancedSecurity>)ew_PageData["Checklists_edit"]; }
+		set { ew_PageData["Checklists_edit"] = value; }
+	}
+
+	// CurrentPage
+	public static cChecklists_edit<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cChecklists_edit<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cChecklists_edit<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create master table object (ChecklistTemplates)
+	if (ChecklistTemplates == null) {
+		ChecklistTemplates = new cChecklistTemplates_master();
+	}
+
+	// Create page object
+	if (Checklists_edit == null) {
+		Checklists_edit = new cChecklists_edit<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	Checklists_edit.Page_Init();
+
+	// Page main
+	Checklists_edit.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	Checklists_edit.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var Checklists_edit = new ew_Page("Checklists_edit");
+Checklists_edit.PageID = "edit"; // Page ID
+var EW_PAGE_ID = Checklists_edit.PageID; // For backward compatibility
+
+// Form object
+var fChecklistsedit = new ew_Form("fChecklistsedit");
+
+// Validate form
+fChecklistsedit.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+		elm = this.GetElements("x" + infix + "_ChecklistTemplate_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.ChecklistTemplate_Id.ReqErrMsg.Replace("%s", Checklists.ChecklistTemplate_Id.FldCaption))))");
+		elm = this.GetElements("x" + infix + "_Project_Id");
+		if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
+			return this.OnError(elm, "@(Html.Raw(ew_JsEncode2(Checklists.Project_Id.ReqErrMsg.Replace("%s", Checklists.Project_Id.FldCaption))))");
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fChecklistsedit.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fChecklistsedit.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fChecklistsedit.Lists["x_ChangedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistsedit.Lists["x_ChecklistTemplate_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistsedit.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistsedit.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(Checklists.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(Checklists.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	Checklists_edit.ShowPageHeader();
+}
+@{
+	Checklists_edit.ShowMessage();
+}
+<form name="fChecklistsedit" id="fChecklistsedit" class="form-horizontal ewForm ewEditForm" action="@ew_CurrentPage()" method="post">
+@if (Checklists_edit.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@Checklists_edit.Token">
+} 
+<input type="hidden" name="t" value="Checklists">
+<input type="hidden" name="a_edit" id="a_edit" value="U">
+<div>
+@if (Checklists.Id.Visible) { // Id.Visible (begin)
+	<div id="r_Id" class="form-group">
+		<label id="elh_Checklists_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(Checklists.Id.CellAttributes))>
+<span id="el_Checklists_Id">
+<span @(Html.Raw(Checklists.Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(Checklists.Id.EditValue)</p></span>
+</span>
+<input type="hidden" data-field="x_Id" name="x_Id" id="x_Id" value="@(Checklists.Id.CurrentValue)">
+@Html.Raw(Checklists.Id.CustomMsg)</div></div>
+	</div>
+} @* Id.Visible (end) *@ 
+@if (Checklists.ChangedBy_Id.Visible) { // ChangedBy_Id.Visible (begin)
+	<div id="r_ChangedBy_Id" class="form-group">
+		<label id="elh_Checklists_ChangedBy_Id" for="x_ChangedBy_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.ChangedBy_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(Checklists.ChangedBy_Id.CellAttributes))>
+<span id="el_Checklists_ChangedBy_Id">
+<select data-field="x_ChangedBy_Id" id="x_ChangedBy_Id" name="x_ChangedBy_Id" @(Html.Raw(Checklists.ChangedBy_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Checklists.ChangedBy_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Checklists.ChangedBy_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Checklists.ChangedBy_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+@if (ew_NotEmpty(odwrk[2])) {
+	@ew_ValueSeparator(1,Checklists.ChangedBy_Id)@odwrk[2]
+}
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [FirstName] AS [DispFld], [LastName] AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[AspNetUsers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Checklists_edit.GetCustomValue("FldSelectFilter", "ChangedBy_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Checklists.Lookup_Selecting(Checklists.ChangedBy_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_ChangedBy_Id" id="s_x_ChangedBy_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=202">
+</span>
+@Html.Raw(Checklists.ChangedBy_Id.CustomMsg)</div></div>
+	</div>
+} @* ChangedBy_Id.Visible (end) *@ 
+@if (Checklists.ChecklistTemplate_Id.Visible) { // ChecklistTemplate_Id.Visible (begin)
+	<div id="r_ChecklistTemplate_Id" class="form-group">
+		<label id="elh_Checklists_ChecklistTemplate_Id" for="x_ChecklistTemplate_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.ChecklistTemplate_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Checklists.ChecklistTemplate_Id.CellAttributes))>
+@if (ew_NotEmpty(Checklists.ChecklistTemplate_Id.SessionValue)) {
+<span id="el_Checklists_ChecklistTemplate_Id">
+<span @(Html.Raw(Checklists.ChecklistTemplate_Id.ViewAttributes))>
+<p class="form-control-static">@Html.Raw(Checklists.ChecklistTemplate_Id.ViewValue)</p></span>
+</span>
+<input type="hidden" id="x_ChecklistTemplate_Id" name="x_ChecklistTemplate_Id" value="@Checklists.ChecklistTemplate_Id.CurrentValue">
+} else {
+<span id="el_Checklists_ChecklistTemplate_Id">
+<select data-field="x_ChecklistTemplate_Id" id="x_ChecklistTemplate_Id" name="x_ChecklistTemplate_Id" @(Html.Raw(Checklists.ChecklistTemplate_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Checklists.ChecklistTemplate_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Checklists.ChecklistTemplate_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Checklists.ChecklistTemplate_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [Name] AS [DispFld], '' AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[ChecklistTemplates]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Checklists_edit.GetCustomValue("FldSelectFilter", "ChecklistTemplate_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Checklists.Lookup_Selecting(Checklists.ChecklistTemplate_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_ChecklistTemplate_Id" id="s_x_ChecklistTemplate_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=3">
+</span>
+}
+@Html.Raw(Checklists.ChecklistTemplate_Id.CustomMsg)</div></div>
+	</div>
+} @* ChecklistTemplate_Id.Visible (end) *@ 
+@if (Checklists.CreatedBy_Id.Visible) { // CreatedBy_Id.Visible (begin)
+	<div id="r_CreatedBy_Id" class="form-group">
+		<label id="elh_Checklists_CreatedBy_Id" for="x_CreatedBy_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.CreatedBy_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(Checklists.CreatedBy_Id.CellAttributes))>
+<span id="el_Checklists_CreatedBy_Id">
+<select data-field="x_CreatedBy_Id" id="x_CreatedBy_Id" name="x_CreatedBy_Id" @(Html.Raw(Checklists.CreatedBy_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Checklists.CreatedBy_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Checklists.CreatedBy_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Checklists.CreatedBy_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+@if (ew_NotEmpty(odwrk[2])) {
+	@ew_ValueSeparator(1,Checklists.CreatedBy_Id)@odwrk[2]
+}
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [FirstName] AS [DispFld], [LastName] AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[AspNetUsers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Checklists_edit.GetCustomValue("FldSelectFilter", "CreatedBy_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Checklists.Lookup_Selecting(Checklists.CreatedBy_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_CreatedBy_Id" id="s_x_CreatedBy_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=202">
+</span>
+@Html.Raw(Checklists.CreatedBy_Id.CustomMsg)</div></div>
+	</div>
+} @* CreatedBy_Id.Visible (end) *@ 
+@if (Checklists.Project_Id.Visible) { // Project_Id.Visible (begin)
+	<div id="r_Project_Id" class="form-group">
+		<label id="elh_Checklists_Project_Id" for="x_Project_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(Checklists.Project_Id.FldCaption)@Html.Raw(Language.Phrase("FieldRequiredIndicator"))</label>
+		<div class="col-sm-10"><div @(Html.Raw(Checklists.Project_Id.CellAttributes))>
+<span id="el_Checklists_Project_Id">
+<select data-field="x_Project_Id" id="x_Project_Id" name="x_Project_Id" @(Html.Raw(Checklists.Project_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(Checklists.Project_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)Checklists.Project_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], Checklists.Project_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [Name] AS [DispFld], '' AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[Projects]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(Checklists_edit.GetCustomValue("FldSelectFilter", "Project_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+Checklists.Lookup_Selecting(Checklists.Project_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_Project_Id" id="s_x_Project_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=3">
+</span>
+@Html.Raw(Checklists.Project_Id.CustomMsg)</div></div>
+	</div>
+} @* Project_Id.Visible (end) *@ 
+</div>
+@if (Checklists_edit.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	Checklists_edit.Recordset.Close();
+	Checklists_edit.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+@{
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("SaveBtn"))</button>
+}
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fChecklistsedit.Init();
+</script>
+@{
+	Checklists_edit.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	Checklists_edit.Page_Terminate();
+}

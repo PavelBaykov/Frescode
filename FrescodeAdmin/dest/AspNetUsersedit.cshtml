@@ -1,0 +1,298 @@
+@functions {
+
+	//
+	// Page class for AspNetUsers
+	//
+	public class cAspNetUsers_edit<C, S> : cAspNetUsers_edit_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			rsnew["Id"] =Guid.NewGuid().ToString();
+			rsnew["EmailConfirmed"]=false;
+			rsnew["PhoneNumberConfirmed"]=false;
+			rsnew["TwoFactorEnabled"]=false;
+			rsnew["LockoutEnabled"]=false;
+			rsnew["AccessFailedCount"]=0;
+			rsnew["UserName"]=rsnew["Email"];
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["UserRole"]=1;
+
+		/*
+			byte[] salt;
+			byte[] buffer2;
+			string password = Convert.ToString(rsnew["PasswordHash"]);
+			using (System.Security.Cryptography.Rfc2898DeriveBytes bytes = new System.Security.Cryptography.Rfc2898DeriveBytes(password, 0x10, 0x3e8))
+			{
+				salt = bytes.Salt;
+				buffer2 = bytes.GetBytes(0x20);
+			}
+			byte[] dst = new byte[0x31];
+			Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
+			Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
+			rsnew["PasswordHash"]=Convert.ToBase64String(dst);*/
+			Microsoft.AspNet.Identity.PasswordHasher hasher = new Microsoft.AspNet.Identity.PasswordHasher();
+			rsnew["PasswordHash"]=hasher.HashPassword(Convert.ToString(rsnew["PasswordHash"]));
+			rsnew["SecurityStamp"] =Guid.NewGuid().ToString();
+			return true;
+		}
+	}
+
+	// AspNetUsers_edit	
+	public static cAspNetUsers_edit<cConnection, cAdvancedSecurity> AspNetUsers_edit {
+		get { return (cAspNetUsers_edit<cConnection, cAdvancedSecurity>)ew_PageData["AspNetUsers_edit"]; }
+		set { ew_PageData["AspNetUsers_edit"] = value; }
+	}
+
+	// CurrentPage
+	public static cAspNetUsers_edit<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cAspNetUsers_edit<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cAspNetUsers_edit<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (AspNetUsers_edit == null) {
+		AspNetUsers_edit = new cAspNetUsers_edit<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	AspNetUsers_edit.Page_Init();
+
+	// Page main
+	AspNetUsers_edit.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	AspNetUsers_edit.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var AspNetUsers_edit = new ew_Page("AspNetUsers_edit");
+AspNetUsers_edit.PageID = "edit"; // Page ID
+var EW_PAGE_ID = AspNetUsers_edit.PageID; // For backward compatibility
+
+// Form object
+var fAspNetUsersedit = new ew_Form("fAspNetUsersedit");
+
+// Validate form
+fAspNetUsersedit.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fAspNetUsersedit.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fAspNetUsersedit.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fAspNetUsersedit.Lists["x_Customer_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Id","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(AspNetUsers.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(AspNetUsers.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	AspNetUsers_edit.ShowPageHeader();
+}
+@{
+	AspNetUsers_edit.ShowMessage();
+}
+<form name="fAspNetUsersedit" id="fAspNetUsersedit" class="form-horizontal ewForm ewEditForm" action="@ew_CurrentPage()" method="post">
+@if (AspNetUsers_edit.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@AspNetUsers_edit.Token">
+} 
+<input type="hidden" name="t" value="AspNetUsers">
+<input type="hidden" name="a_edit" id="a_edit" value="U">
+<div>
+@if (AspNetUsers.FirstName.Visible) { // FirstName.Visible (begin)
+	<div id="r_FirstName" class="form-group">
+		<label id="elh_AspNetUsers_FirstName" for="x_FirstName" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.FirstName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.FirstName.CellAttributes))>
+<span id="el_AspNetUsers_FirstName">
+<textarea data-field="x_FirstName" name="x_FirstName" id="x_FirstName" cols="35" rows="4" placeholder="@AspNetUsers.FirstName.PlaceHolder" @(Html.Raw(AspNetUsers.FirstName.EditAttributes))>@AspNetUsers.FirstName.EditValue</textarea>
+</span>
+@Html.Raw(AspNetUsers.FirstName.CustomMsg)</div></div>
+	</div>
+} @* FirstName.Visible (end) *@ 
+@if (AspNetUsers.LastName.Visible) { // LastName.Visible (begin)
+	<div id="r_LastName" class="form-group">
+		<label id="elh_AspNetUsers_LastName" for="x_LastName" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.LastName.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.LastName.CellAttributes))>
+<span id="el_AspNetUsers_LastName">
+<textarea data-field="x_LastName" name="x_LastName" id="x_LastName" cols="35" rows="4" placeholder="@AspNetUsers.LastName.PlaceHolder" @(Html.Raw(AspNetUsers.LastName.EditAttributes))>@AspNetUsers.LastName.EditValue</textarea>
+</span>
+@Html.Raw(AspNetUsers.LastName.CustomMsg)</div></div>
+	</div>
+} @* LastName.Visible (end) *@ 
+@if (AspNetUsers.zEmail.Visible) { // zEmail.Visible (begin)
+	<div id="r_zEmail" class="form-group">
+		<label id="elh_AspNetUsers_zEmail" for="x_zEmail" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.zEmail.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.zEmail.CellAttributes))>
+<span id="el_AspNetUsers_zEmail">
+<input type="text" data-field="x_zEmail" name="x_zEmail" id="x_zEmail" size="30" maxlength="256" placeholder="@AspNetUsers.zEmail.PlaceHolder" value="@AspNetUsers.zEmail.EditValue" @(Html.Raw(AspNetUsers.zEmail.EditAttributes))>
+</span>
+@Html.Raw(AspNetUsers.zEmail.CustomMsg)</div></div>
+	</div>
+} @* zEmail.Visible (end) *@ 
+@if (AspNetUsers.Customer_Id.Visible) { // Customer_Id.Visible (begin)
+	<div id="r_Customer_Id" class="form-group">
+		<label id="elh_AspNetUsers_Customer_Id" for="x_Customer_Id" class="col-sm-2 control-label ewLabel">@Html.Raw(AspNetUsers.Customer_Id.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(AspNetUsers.Customer_Id.CellAttributes))>
+<span id="el_AspNetUsers_Customer_Id">
+<select data-field="x_Customer_Id" id="x_Customer_Id" name="x_Customer_Id" @(Html.Raw(AspNetUsers.Customer_Id.EditAttributes))>
+@{ emptywrk = true; }
+@if (ew_IsList(AspNetUsers.Customer_Id.EditValue)) {
+	alwrk = (List<OrderedDictionary>)AspNetUsers.Customer_Id.EditValue;
+	foreach (var odwrk in alwrk) {
+		if (ew_SameStr(odwrk[0], AspNetUsers.Customer_Id.CurrentValue)) {
+			selwrk = " selected=\"selected\"";
+			emptywrk = false;
+		} else {
+			selwrk = "";
+		}
+		for (var i = 1; i < odwrk.Count; i++) {
+			odwrk[i] = ew_RemoveHtml(Convert.ToString(odwrk[i]));
+		}
+<option value="@odwrk[0]" @(Html.Raw(selwrk))>
+@odwrk[1]
+</option>
+	}
+}
+</select>
+<span>@{
+sSqlWrk = "SELECT [Id], [Id] AS [DispFld], '' AS [Disp2Fld], '' AS [Disp3Fld], '' AS [Disp4Fld] FROM [dbo].[Customers]";
+sWhereWrk = "";
+sLookupTblFilter = Convert.ToString(AspNetUsers_edit.GetCustomValue("FldSelectFilter", "Customer_Id"));
+if (ew_NotEmpty(sLookupTblFilter)) {
+	sWhereWrk = ew_JoinFilter(sWhereWrk, sLookupTblFilter);
+}
+
+// Call Lookup selecting
+AspNetUsers.Lookup_Selecting(AspNetUsers.Customer_Id, ref sWhereWrk);
+if (sWhereWrk != "") {
+	sSqlWrk += " WHERE " + sWhereWrk;
+}
+}</span>
+<input type="hidden" name="s_x_Customer_Id" id="s_x_Customer_Id" value="s=@(Html.Raw(ew_Encrypt(sSqlWrk)))&amp;f0=@(Html.Raw(ew_Encrypt("[Id] = {filter_value}")))&amp;t0=3">
+</span>
+@Html.Raw(AspNetUsers.Customer_Id.CustomMsg)</div></div>
+	</div>
+} @* Customer_Id.Visible (end) *@ 
+</div>
+<input type="hidden" data-field="x_Id" name="x_Id" id="x_Id" value="@(AspNetUsers.Id.CurrentValue)">
+@if (AspNetUsers_edit.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	AspNetUsers_edit.Recordset.Close();
+	AspNetUsers_edit.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+@{
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("SaveBtn"))</button>
+}
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fAspNetUsersedit.Init();
+</script>
+@{
+	AspNetUsers_edit.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	AspNetUsers_edit.Page_Terminate();
+}

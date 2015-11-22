@@ -1,0 +1,273 @@
+@functions {
+
+	//
+	// Page class for Checklists
+	//
+	public class cChecklists_view<C, S> : cChecklists_view_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+			rsnew["DateCreated"]=DateTime.Now;
+			rsnew["DateOfLastChange"]=DateTime.Now;
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+			return true;
+		}
+
+		// Row Inserted event
+		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {	
+
+		// Insert record
+		// NOTE: Modify your SQL here, replace the table name, field name and field values
+
+		string sInsertSql = "INSERT INTO ChecklistItems "+
+					 "(Status, DateOfLastChange,ChangedBy_Id,Checklist_Id,ItemTemplate_Id) "+
+					 "SELECT 	0 as Status,"+
+					 "CURRENT_TIMESTAMP as DateOfLastChange,"+
+					 "'"+Convert.ToString(rsnew["ChangedBy_Id"])+"'" + " as ChangedBy_Id,"+
+					 rsnew["Id"] +" as Checklist_Id,"+
+					 "chit.Id as ItemTemplate_Id "+
+					 "FROM 	ChecklistItemTemplates chit "+
+					 "WHERE chit.Checklist_Id="+rsnew["ChecklistTemplate_Id"]
+					 ;
+		ew_Execute(sInsertSql);
+		}
+	}
+
+	// Checklists_view	
+	public static cChecklists_view<cConnection, cAdvancedSecurity> Checklists_view {
+		get { return (cChecklists_view<cConnection, cAdvancedSecurity>)ew_PageData["Checklists_view"]; }
+		set { ew_PageData["Checklists_view"] = value; }
+	}
+
+	// CurrentPage
+	public static cChecklists_view<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cChecklists_view<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cChecklists_view<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create master table object (ChecklistTemplates)
+	if (ChecklistTemplates == null) {
+		ChecklistTemplates = new cChecklistTemplates_master();
+	}
+
+	// Create page object
+	if (Checklists_view == null) {
+		Checklists_view = new cChecklists_view<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	Checklists_view.Page_Init();
+
+	// Page main
+	Checklists_view.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	Checklists_view.Page_Render();
+}
+@if (ew_Empty(Checklists.Export)) {
+<script type="text/javascript">
+
+// Page object
+var Checklists_view = new ew_Page("Checklists_view");
+Checklists_view.PageID = "view"; // Page ID
+var EW_PAGE_ID = Checklists_view.PageID; // For backward compatibility
+
+// Form object
+var fChecklistsview = new ew_Form("fChecklistsview");
+
+// Form_CustomValidate event
+fChecklistsview.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fChecklistsview.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+fChecklistsview.Lists["x_ChangedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistsview.Lists["x_ChecklistTemplate_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistsview.Lists["x_CreatedBy_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_FirstName","x_LastName","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+fChecklistsview.Lists["x_Project_Id"] = {"LinkField":"x_Id","Ajax":true,"AutoFill":false,"DisplayFields":["x_zName","","",""],"ParentFields":[],"FilterFields":[],"Options":[]};
+
+// Form object for search
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+}
+@if (ew_Empty(Checklists.Export)) {
+<div class="ewToolbar">
+@if (ew_Empty(Checklists.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+	@{ 
+		Checklists_view.ExportOptions.Render("body");
+		foreach (var kvp in Checklists_view.OtherOptions) {
+			kvp.Value.Render("body");
+		}
+	}
+@if (ew_Empty(Checklists.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+}
+@{
+	Checklists_view.ShowPageHeader();
+}
+@{
+	Checklists_view.ShowMessage();
+}
+<form name="fChecklistsview" id="fChecklistsview" class="form-inline ewForm ewViewForm" method="post">
+@if (Checklists_view.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@Checklists_view.Token">
+}
+<input type="hidden" name="t" value="Checklists">
+<table  class="table table-bordered table-striped ewViewTable">
+@if (Checklists.Id.Visible) { @* Checklists.Id.Visible (begin) *@
+	<tr id="r_Id">
+		<td><span id="elh_Checklists_Id">@Html.Raw(Checklists.Id.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.Id.CellAttributes)>
+<span id="el_Checklists_Id" class="form-group">
+<span @(Html.Raw(Checklists.Id.ViewAttributes))>
+@Html.Raw(Checklists.Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.Id.Visible (end) *@
+@if (Checklists.DateCreated.Visible) { @* Checklists.DateCreated.Visible (begin) *@
+	<tr id="r_DateCreated">
+		<td><span id="elh_Checklists_DateCreated">@Html.Raw(Checklists.DateCreated.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.DateCreated.CellAttributes)>
+<span id="el_Checklists_DateCreated" class="form-group">
+<span @(Html.Raw(Checklists.DateCreated.ViewAttributes))>
+@Html.Raw(Checklists.DateCreated.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.DateCreated.Visible (end) *@
+@if (Checklists.DateOfLastChange.Visible) { @* Checklists.DateOfLastChange.Visible (begin) *@
+	<tr id="r_DateOfLastChange">
+		<td><span id="elh_Checklists_DateOfLastChange">@Html.Raw(Checklists.DateOfLastChange.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.DateOfLastChange.CellAttributes)>
+<span id="el_Checklists_DateOfLastChange" class="form-group">
+<span @(Html.Raw(Checklists.DateOfLastChange.ViewAttributes))>
+@Html.Raw(Checklists.DateOfLastChange.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.DateOfLastChange.Visible (end) *@
+@if (Checklists.ChangedBy_Id.Visible) { @* Checklists.ChangedBy_Id.Visible (begin) *@
+	<tr id="r_ChangedBy_Id">
+		<td><span id="elh_Checklists_ChangedBy_Id">@Html.Raw(Checklists.ChangedBy_Id.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.ChangedBy_Id.CellAttributes)>
+<span id="el_Checklists_ChangedBy_Id" class="form-group">
+<span @(Html.Raw(Checklists.ChangedBy_Id.ViewAttributes))>
+@Html.Raw(Checklists.ChangedBy_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.ChangedBy_Id.Visible (end) *@
+@if (Checklists.ChecklistTemplate_Id.Visible) { @* Checklists.ChecklistTemplate_Id.Visible (begin) *@
+	<tr id="r_ChecklistTemplate_Id">
+		<td><span id="elh_Checklists_ChecklistTemplate_Id">@Html.Raw(Checklists.ChecklistTemplate_Id.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.ChecklistTemplate_Id.CellAttributes)>
+<span id="el_Checklists_ChecklistTemplate_Id" class="form-group">
+<span @(Html.Raw(Checklists.ChecklistTemplate_Id.ViewAttributes))>
+@Html.Raw(Checklists.ChecklistTemplate_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.ChecklistTemplate_Id.Visible (end) *@
+@if (Checklists.CreatedBy_Id.Visible) { @* Checklists.CreatedBy_Id.Visible (begin) *@
+	<tr id="r_CreatedBy_Id">
+		<td><span id="elh_Checklists_CreatedBy_Id">@Html.Raw(Checklists.CreatedBy_Id.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.CreatedBy_Id.CellAttributes)>
+<span id="el_Checklists_CreatedBy_Id" class="form-group">
+<span @(Html.Raw(Checklists.CreatedBy_Id.ViewAttributes))>
+@Html.Raw(Checklists.CreatedBy_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.CreatedBy_Id.Visible (end) *@
+@if (Checklists.Project_Id.Visible) { @* Checklists.Project_Id.Visible (begin) *@
+	<tr id="r_Project_Id">
+		<td><span id="elh_Checklists_Project_Id">@Html.Raw(Checklists.Project_Id.FldCaption)</span></td>
+		<td @Html.Raw(Checklists.Project_Id.CellAttributes)>
+<span id="el_Checklists_Project_Id" class="form-group">
+<span @(Html.Raw(Checklists.Project_Id.ViewAttributes))>
+@Html.Raw(Checklists.Project_Id.ViewValue)</span>
+</span>
+</td>
+	</tr>
+} @* Checklists.Project_Id.Visible (end) *@
+</table>
+@if (Checklists_view.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	Checklists_view.Recordset.Close();
+	Checklists_view.Recordset.Dispose();
+}
+</form>
+@if (ew_Empty(Checklists.Export)) {
+<script type="text/javascript">
+fChecklistsview.Init();
+</script>
+}
+@{
+	Checklists_view.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+@if (ew_Empty(Checklists.Export)) {
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+}
+@{
+	Checklists_view.Page_Terminate();
+}

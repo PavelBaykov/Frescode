@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2EE34251-75BC-4DF2-BE59-AA4518910623}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FrescodeAdmin</RootNamespace>
+    <AssemblyName>FrescodeAdmin</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="Admin_new\default.cshtml" />
+    <Content Include="dest\ASPNETMaker.log" />
+    <Content Include="dest\AspNetUsersadd.cshtml" />
+    <Content Include="dest\AspNetUsersdelete.cshtml" />
+    <Content Include="dest\AspNetUsersedit.cshtml" />
+    <Content Include="dest\AspNetUserslist.cshtml" />
+    <Content Include="dest\AspNetUsersview.cshtml" />
+    <Content Include="dest\aspxcss\fonts\ew.eot" />
+    <Content Include="dest\aspxcss\fonts\ew.ttf" />
+    <Content Include="dest\aspxcss\fonts\ew.woff" />
+    <Content Include="dest\bootstrap3\css\bootstrap-theme.css.map" />
+    <Content Include="dest\bootstrap3\css\bootstrap.css.map" />
+    <Content Include="dest\bootstrap3\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="dest\bootstrap3\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="dest\bootstrap3\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="dest\bootstrap3\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="dest\ChecklistItemslist.cshtml" />
+    <Content Include="dest\ChecklistItemsview.cshtml" />
+    <Content Include="dest\ChecklistItemTemplatesadd.cshtml" />
+    <Content Include="dest\ChecklistItemTemplatesdelete.cshtml" />
+    <Content Include="dest\ChecklistItemTemplatesedit.cshtml" />
+    <Content Include="dest\ChecklistItemTemplatesgrid.cshtml" />
+    <Content Include="dest\ChecklistItemTemplateslist.cshtml" />
+    <Content Include="dest\ChecklistItemTemplatesview.cshtml" />
+    <Content Include="dest\Checklistsadd.cshtml" />
+    <Content Include="dest\Checklistsdelete.cshtml" />
+    <Content Include="dest\Checklistsedit.cshtml" />
+    <Content Include="dest\Checklistsgrid.cshtml" />
+    <Content Include="dest\Checklistslist.cshtml" />
+    <Content Include="dest\Checklistsview.cshtml" />
+    <Content Include="dest\ChecklistTemplatesadd.cshtml" />
+    <Content Include="dest\ChecklistTemplatesdelete.cshtml" />
+    <Content Include="dest\ChecklistTemplatesedit.cshtml" />
+    <Content Include="dest\ChecklistTemplateslist.cshtml" />
+    <Content Include="dest\ChecklistTemplatesmaster.cshtml" />
+    <Content Include="dest\ChecklistTemplatesview.cshtml" />
+    <Content Include="dest\default.cshtml" />
+    <Content Include="dest\ewbv12.cshtml" />
+    <Content Include="dest\ewemail12.cshtml" />
+    <Content Include="dest\ewlookup12.cshtml" />
+    <Content Include="dest\ewmenu.cshtml" />
+    <Content Include="dest\ewmobilemenu.cshtml" />
+    <Content Include="dest\ewupload12.cshtml" />
+    <Content Include="dest\InspectionDrawingDatasadd.cshtml" />
+    <Content Include="dest\InspectionDrawingDatasdelete.cshtml" />
+    <Content Include="dest\InspectionDrawingDatasedit.cshtml" />
+    <Content Include="dest\InspectionDrawingDataslist.cshtml" />
+    <Content Include="dest\InspectionDrawingDatasview.cshtml" />
+    <Content Include="dest\InspectionDrawingDatas_Data_bv.cshtml" />
+    <Content Include="dest\InspectionDrawingsadd.cshtml" />
+    <Content Include="dest\InspectionDrawingsdelete.cshtml" />
+    <Content Include="dest\InspectionDrawingsedit.cshtml" />
+    <Content Include="dest\InspectionDrawingslist.cshtml" />
+    <Content Include="dest\InspectionDrawingsview.cshtml" />
+    <Content Include="dest\Projectsadd.cshtml" />
+    <Content Include="dest\Projectsdelete.cshtml" />
+    <Content Include="dest\Projectsedit.cshtml" />
+    <Content Include="dest\Projectslist.cshtml" />
+    <Content Include="dest\Projectsview.cshtml" />
+    <Content Include="dest\UserProjectsadd.cshtml" />
+    <Content Include="dest\UserProjectsdelete.cshtml" />
+    <Content Include="dest\UserProjectsedit.cshtml" />
+    <Content Include="dest\UserProjectslist.cshtml" />
+    <Content Include="dest\UserProjectsview.cshtml" />
+    <Content Include="dest\_layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Admin_new\{6EA87CB0-ED50-4AE1-9743-D14163EABB5A}.xml" />
+    <Content Include="App_Code\AspNetMaker12_Admin_new_dll\text.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\AspNetMaker12_Admin_new.dll" />
+    <Content Include="bin\FrescodeAdmin.dll" />
+    <Content Include="bin\FrescodeAdmin.pdb" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.resources.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.xml" />
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.resources.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.xml" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.resources.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.xml" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <Content Include="bin\Microsoft.Web.Helpers.dll" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\NLog.xml" />
+    <Content Include="bin\roslyn\csc.exe" />
+    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
+    <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
+    <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
+    <Content Include="bin\roslyn\vbc.exe" />
+    <Content Include="bin\roslyn\VBCSCompiler.exe" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\unirest-net.dll" />
+    <Content Include="bin\WebMatrix.Data.dll" />
+    <Content Include="dest\aspxcss\Admin_new.css" />
+    <Content Include="dest\aspxcss\fonts\ew.svg" />
+    <Content Include="dest\aspxcss\jquery.fileupload-ui.css" />
+    <Content Include="dest\aspximages\aspnetmkrlogo1.png" />
+    <Content Include="dest\aspxjs\ewx12.js" />
+    <Content Include="dest\aspxjs\jsrender.min.js" />
+    <Content Include="dest\aspxjs\typeahead.bundle.min.js" />
+    <Content Include="dest\aspxjs\userfn12.js" />
+    <Content Include="dest\aspxlang\english.xml" />
+    <Content Include="dest\aspxtxt\changepwd.txt" />
+    <Content Include="dest\aspxtxt\forgotpwd.txt" />
+    <Content Include="dest\aspxtxt\notify.txt" />
+    <Content Include="dest\aspxtxt\resetpwd.txt" />
+    <Content Include="dest\bootstrap3\css\bootstrap-theme.css" />
+    <Content Include="dest\bootstrap3\css\bootstrap-theme.min.css" />
+    <Content Include="dest\bootstrap3\css\bootstrap.css" />
+    <Content Include="dest\bootstrap3\css\bootstrap.min.css" />
+    <Content Include="dest\bootstrap3\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="dest\bootstrap3\js\bootstrap.js" />
+    <Content Include="dest\bootstrap3\js\bootstrap.min.js" />
+    <Content Include="dest\bootstrap3\js\npm.js" />
+    <Content Include="dest\colorbox\colorbox.css" />
+    <Content Include="dest\colorbox\images\border.png" />
+    <Content Include="dest\colorbox\images\controls.png" />
+    <Content Include="dest\colorbox\images\loading.gif" />
+    <Content Include="dest\colorbox\images\loading_background.png" />
+    <Content Include="dest\colorbox\images\overlay.png" />
+    <Content Include="dest\colorbox\jquery.colorbox-min.js" />
+    <Content Include="dest\colorbox\jquery.colorbox.js" />
+    <Content Include="dest\jqueryfileupload\jquery.ui.widget.js" />
+    <Content Include="dest\jqueryfileupload\jqueryfileupload.min.js" />
+    <Content Include="dest\jqueryfileupload\load-image.min.js" />
+    <Content Include="dest\jquery\images\ajax-loader.gif" />
+    <Content Include="dest\jquery\images\icons-18-black.png" />
+    <Content Include="dest\jquery\images\icons-18-white.png" />
+    <Content Include="dest\jquery\images\icons-36-black.png" />
+    <Content Include="dest\jquery\images\icons-36-white.png" />
+    <Content Include="dest\jquery\jquery-1.11.3.min.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\AspNetMaker12_Admin_new\ChecklistItemTemplatesgridcls.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Code\AspNetMaker12_Admin_new\Checklistsgridcls.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Code\AspNetMaker12_Admin_new\ChecklistTemplatesmaster.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Code\AspNetMaker12_Admin_new\ewevent12.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="bin\FrescodeAdmin.dll.config" />
+    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
+    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
+    <None Include="Properties\PublishProfiles\inspectionreportadmin - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\inspectionreportadmin - Web Deploy.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60146</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60146/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

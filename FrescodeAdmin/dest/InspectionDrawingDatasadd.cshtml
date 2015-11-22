@@ -1,0 +1,244 @@
+@functions {
+
+	//
+	// Page class for InspectionDrawingDatas
+	//
+	public class cInspectionDrawingDatas_add<C, S> : cInspectionDrawingDatas_add_base<C, S>
+		where C : cConnection, new()
+		where S : cAdvancedSecurity, new()
+	{
+
+		// TblAddReturnPage
+		public string Get_TblAddReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// TblEditReturnPage
+		public string Get_TblEditReturnPage() {
+			return ReturnUrl;		
+		}
+
+		// Row Inserting event
+		public override bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) {
+
+			// Enter your code here
+			// To cancel, set return value to False and error message to CancelMessage
+
+				var response = unirest_net.http.Unirest
+			.post("http://localhost/PdfConverter/ConvertPdfToImage?resultWidth=600")
+			.field("file", (byte[])rsnew["Data"])
+
+			//.field("file", File.ReadAllBytes(@"C:\Users\pavelbaykov89\Desktop\GenerateReport.pdf"))
+			.asBinary();
+			var memoryStream = new MemoryStream();
+			response.Raw.CopyTo(memoryStream);
+			memoryStream.Flush();
+			var imageData = memoryStream.ToArray();
+			rsnew["Data"]=imageData;
+			return true;
+		}
+
+		// Row Inserted event
+		public override void Row_Inserted(OrderedDictionary rsold, OrderedDictionary rsnew) {
+
+			//ew_Write("Row Inserted");
+			//var response = unirest_net.http.Unirest
+			//.post("http://localhost/PdfConverter/ConvertPdfToImage?resultWidth=600")
+			//.field("file", rsnew["Data"])
+			//.field("file", File.ReadAllBytes(@"C:\Users\pavelbaykov89\Desktop\GenerateReport.pdf"))
+			//.asBinary();
+			//var memoryStream = new MemoryStream();
+			//response.Raw.CopyTo(memoryStream);
+			//memoryStream.Flush();
+			//var imageData = memoryStream.ToArray();
+			//rsnew["Data"]=imageData;
+
+		}
+	}
+
+	// InspectionDrawingDatas_add	
+	public static cInspectionDrawingDatas_add<cConnection, cAdvancedSecurity> InspectionDrawingDatas_add {
+		get { return (cInspectionDrawingDatas_add<cConnection, cAdvancedSecurity>)ew_PageData["InspectionDrawingDatas_add"]; }
+		set { ew_PageData["InspectionDrawingDatas_add"] = value; }
+	}
+
+	// CurrentPage
+	public static cInspectionDrawingDatas_add<cConnection, cAdvancedSecurity> CurrentPage {
+		get { return (cInspectionDrawingDatas_add<cConnection, cAdvancedSecurity>)ew_PageData["CurrentPage"]; }
+		set { ew_PageData["CurrentPage"] = value; }
+	}
+
+	// CurrentTable
+	public static cInspectionDrawingDatas_add<cConnection, cAdvancedSecurity> CurrentTable {
+		get { return CurrentPage; }
+		set { CurrentPage = value; }
+	}
+}
+@{
+	EW_ROOT_RELATIVE_PATH = "..";
+	EW_RELATIVE_PATH = "";
+	Layout = EW_RELATIVE_PATH + "_layout.cshtml";
+
+	// Header
+	ew_Header(false);
+
+	// Create page object
+	if (InspectionDrawingDatas_add == null) {
+		InspectionDrawingDatas_add = new cInspectionDrawingDatas_add<cConnection, cAdvancedSecurity>();
+	}
+
+	// Page init
+	InspectionDrawingDatas_add.Page_Init();
+
+	// Page main
+	InspectionDrawingDatas_add.Page_Main();
+
+	// Global Page Rendering event
+	Page_Rendering();
+
+	// Page Rendering event
+	InspectionDrawingDatas_add.Page_Render();
+}
+<script type="text/javascript">
+
+// Page object
+var InspectionDrawingDatas_add = new ew_Page("InspectionDrawingDatas_add");
+InspectionDrawingDatas_add.PageID = "add"; // Page ID
+var EW_PAGE_ID = InspectionDrawingDatas_add.PageID; // For backward compatibility
+
+// Form object
+var fInspectionDrawingDatasadd = new ew_Form("fInspectionDrawingDatasadd");
+
+// Validate form
+fInspectionDrawingDatasadd.Validate = function() {
+	if (!this.ValidateRequired)
+		return true; // Ignore validation
+	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
+	this.PostAutoSuggest();	
+	if ($fobj.find("#a_confirm").val() == "F")
+		return true;
+	var elm, felm, uelm, addcnt = 0;
+	var $k = $fobj.find("#" + this.FormKeyCountName); // Get key_count
+	var rowcnt = ($k[0]) ? parseInt($k.val(), 10) : 1;
+	var startcnt = (rowcnt == 0) ? 0 : 1; // Check rowcnt == 0 => Inline-Add
+	var gridinsert = $fobj.find("#a_list").val() == "gridinsert";
+	for (var i = startcnt; i <= rowcnt; i++) {
+		var infix = ($k[0]) ? String(i) : "";
+		$fobj.data("rowindex", infix);
+
+		// Set up row object
+		ew_ElementsToRow(fobj);
+
+		// Fire Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+	}
+
+	// Process detail forms
+	var dfs = $fobj.find("input[name='detailpage']").get();
+	for (var i = 0; i < dfs.length; i++) {
+		var df = dfs[i], val = df.value;
+		if (val && ewForms[val])
+			if (!ewForms[val].Validate())
+				return false;
+	}
+	return true;
+}
+
+// Form_CustomValidate event
+fInspectionDrawingDatasadd.Form_CustomValidate = 
+ function(fobj) { // DO NOT CHANGE THIS LINE!
+
+ 	// Your custom validation code here, return false if invalid. 
+ 	return true;
+ }
+
+// Use JavaScript validation or not
+fInspectionDrawingDatasadd.ValidateRequired = @((EW_CLIENT_VALIDATE) ? "true" : "false");
+
+// Dynamic selection lists
+// Form object for search
+
+</script>
+<script type="text/javascript">
+
+// Write your client script here, no need to add script tags.
+</script>
+<div class="ewToolbar">
+@if (ew_Empty(InspectionDrawingDatas.Export)) {<div style="display: inline-block">
+@{
+	if (Breadcrumb != null) {
+		Breadcrumb.Render();
+	}
+}
+</div>}
+@if (ew_Empty(InspectionDrawingDatas.Export)) {
+@Html.Raw(Language.SelectionForm())
+}
+	<div class="clearfix"></div>
+</div>
+@{
+	InspectionDrawingDatas_add.ShowPageHeader();
+}
+@{
+	InspectionDrawingDatas_add.ShowMessage();
+}
+<form name="fInspectionDrawingDatasadd" id="fInspectionDrawingDatasadd" class="form-horizontal ewForm ewAddForm" action="@ew_CurrentPage()" method="post">
+<br>
+@if (InspectionDrawingDatas_add.CheckToken) { 
+<input type="hidden" name="@EW_TOKEN_NAME" value="@InspectionDrawingDatas_add.Token">
+}
+<input type="hidden" name="t" value="InspectionDrawingDatas">
+<input type="hidden" name="a_add" id="a_add" value="A">
+<div>
+@if (InspectionDrawingDatas.Data.Visible) { // Data.Visible (begin)
+	<div id="r_Data" class="form-group">
+		<label id="elh_InspectionDrawingDatas_Data" class="col-sm-2 control-label ewLabel">@Html.Raw(InspectionDrawingDatas.Data.FldCaption)</label>
+		<div class="col-sm-10"><div @(Html.Raw(InspectionDrawingDatas.Data.CellAttributes))>
+<span id="el_InspectionDrawingDatas_Data">
+<div id="fd_x_Data">
+<span title="@Html.Raw(ew_NotEmpty(InspectionDrawingDatas.Data.FldTitle) ? InspectionDrawingDatas.Data.FldTitle : Language.Phrase("ChooseFile"))" class="btn btn-default btn-sm fileinput-button ewTooltip @Html.Raw((InspectionDrawingDatas.Data.ReadOnly || InspectionDrawingDatas.Data.Disabled) ? " hide" : "")">
+	<span>@Html.Raw(Language.Phrase("ChooseFileBtn"))</span>
+	<input type="file" title=" " data-field="x_Data" name="x_Data" id="x_Data" @Html.Raw(InspectionDrawingDatas.Data.EditAttributes)>
+</span>
+<input type="hidden" name="fn_x_Data" id= "fn_x_Data" value="@InspectionDrawingDatas.Data.Upload.FileName">
+<input type="hidden" name="fa_x_Data" id= "fa_x_Data" value="0">
+<input type="hidden" name="fs_x_Data" id= "fs_x_Data" value="2147483647">
+<input type="hidden" name="fx_x_Data" id= "fx_x_Data" value="@InspectionDrawingDatas.Data.UploadAllowedFileExt">
+<input type="hidden" name="fm_x_Data" id= "fm_x_Data" value="@InspectionDrawingDatas.Data.UploadMaxFileSize">
+</div>
+<table id="ft_x_Data" class="table table-condensed pull-left ewUploadTable"><tbody class="files"></tbody></table>
+</span>
+@Html.Raw(InspectionDrawingDatas.Data.CustomMsg)</div></div>
+	</div>
+}  @* Data.Visible (end) *@
+</div>
+@if (InspectionDrawingDatas_add.Recordset != null) { // Close the main data reader for detail tables // ASPX
+	InspectionDrawingDatas_add.Recordset.Close();
+	InspectionDrawingDatas_add.Recordset.Dispose();
+}
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+<button class="btn btn-primary ewButton" name="btnAction" id="btnAction" type="submit">@Html.Raw(Language.Phrase("AddBtn"))</button>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+fInspectionDrawingDatasadd.Init();
+</script>
+@{
+	InspectionDrawingDatas_add.ShowPageFooter();
+	if (EW_DEBUG_ENABLED) {
+		ew_Write(ew_DebugMsg());		
+		ew_Write(ew_ElapsedTime(StartTime));		
+	}
+}
+<script type="text/javascript">
+
+// Write your table-specific startup script here
+// document.write("page loaded");
+
+</script>
+@{
+	InspectionDrawingDatas_add.Page_Terminate();
+}
