@@ -198,7 +198,15 @@ namespace Frescode.Controllers
             viewModel.Description = checklistItem.ItemTemplate.Description;
             viewModel.ProjectName = checklistItem.Checklist.Project.Name;
             viewModel.DefectSpotsList = new List<DefectSpotViewModel>();
-            viewModel.InspectionDrawingPath = $"/InspectionDrawing/GetInspectionDrawing?inspectionDrawingId={checklistItem.ItemTemplate.InspectionDrawing.InspectionDrawingDataId}";
+            if (checklistItem.ItemTemplate.InspectionDrawing?.InspectionDrawingData != null)
+            {
+                viewModel.InspectionDrawingPath =
+                    $"/InspectionDrawing/GetInspectionDrawing?inspectionDrawingId={checklistItem.ItemTemplate.InspectionDrawing.InspectionDrawingDataId}";
+            }
+            else
+            {
+                viewModel.InspectionDrawingPath = string.Empty;
+            }
             foreach (var defectSpot in checklistItem.DefectionSpots)
             {
                 var defectSpotViewModel = new DefectSpotViewModel();
