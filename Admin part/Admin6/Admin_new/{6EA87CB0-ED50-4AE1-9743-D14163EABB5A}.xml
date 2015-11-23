@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
-<configuration date="2015/11/22" author="e.World Technology Ltd.">
-<project id="{6EA87CB0-ED50-4AE1-9743-D14163EABB5A}" file="C:\Users\pavelbaykov89\Documents\FrescodeRepo\FrescodeRepo\src\Admin part\Admin_new.agx" name="Admin_new" product="ASPNETMaker" version="12.0" datetime="2015/11/22 23:40:49" languagefolder="aspxlang" userlevel="">
+<configuration date="2015/11/23" author="e.World Technology Ltd.">
+<project id="{6EA87CB0-ED50-4AE1-9743-D14163EABB5A}" file="C:\Users\pavelbaykov89\Documents\FrescodeRepo\FrescodeRepo\src\Admin part\Admin_new.agx" name="Admin_new" product="ASPNETMaker" version="12.0" datetime="2015/11/23 09:25:33" languagefolder="aspxlang" userlevel="">
 <table id="ChecklistItems" name="ChecklistItems" caption="Checklist Items" userlevel="" priv="1"/>
 <table id="ChecklistItemTemplates" name="ChecklistItemTemplates" caption="Checklist Item Templates" userlevel="" priv="1"/>
 <table id="Checklists" name="Checklists" caption="Checklists" userlevel="" priv="1"/>

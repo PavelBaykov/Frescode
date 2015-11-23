@@ -239,7 +239,7 @@ public bool Row_Inserting(OrderedDictionary rsold, ref OrderedDictionary rsnew) 
 	// Enter your code here
 	// To cancel, set return value to False and error message to CancelMessage
 		var response = unirest_net.http.Unirest
-	.post("http://localhost/PdfConverter/ConvertPdfToImage?resultWidth=600")
+	.post("http://inspectionreport.azurewebsites.net/PdfConverter/ConvertPdfToImage?resultWidth=600")
 	.field("file", (byte[])rsnew["Data"])
 	//.field("file", File.ReadAllBytes(@"C:\Users\pavelbaykov89\Desktop\GenerateReport.pdf"))
 	.asBinary();

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" standalone="yes"?>
-<ew-language date="2015/11/22" version="12.0.3" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2015/11/23" version="12.0.3" id="en" name="English" desc="English" author="e.World Technology Ltd.">
 	<locale>
 		<phrase id="use_system_locale" value="1"/>
 		<phrase id="decimal_point" value="."/>
