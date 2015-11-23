@@ -189,7 +189,8 @@
                                 $(this).dialog("close");
                             },
                             "Delete": function() {
-                                mainViewModel.DefectSpotsList.remove($elem.data("ViewModel"));
+                                var viewModel = $elem.data("ViewModel");
+                                mainViewModel.DeleteDefectSpotCommand(viewModel);
                                 $elem.trigger("remove");
                                 $(this).dialog("close");
                             },
