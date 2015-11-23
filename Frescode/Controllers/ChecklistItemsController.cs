@@ -198,7 +198,7 @@ namespace Frescode.Controllers
             viewModel.Description = checklistItem.ItemTemplate.Description;
             viewModel.ProjectName = checklistItem.Checklist.Project.Name;
             viewModel.DefectSpotsList = new List<DefectSpotViewModel>();
-            if (checklistItem.ItemTemplate.InspectionDrawing?.InspectionDrawingData != null)
+            if (checklistItem.ItemTemplate.InspectionDrawing?.InspectionDrawingDataId != null)
             {
                 viewModel.InspectionDrawingPath =
                     $"/InspectionDrawing/GetInspectionDrawing?inspectionDrawingId={checklistItem.ItemTemplate.InspectionDrawing.InspectionDrawingDataId}";
