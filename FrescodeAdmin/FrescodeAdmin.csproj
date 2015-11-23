@@ -66,6 +66,123 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\AspNetMaker12_Admin_new.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\FrescodeAdmin.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\FrescodeAdmin.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\FrescodeAdmin.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.Web.Helpers.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Newtonsoft.Json.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\NLog.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\csc.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\System.Collections.Immutable.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\System.Reflection.Metadata.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\vbc.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\VBCSCompiler.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\roslyn\VBCSCompiler.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\System.Web.Helpers.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\System.Web.Razor.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\System.Web.WebPages.Deployment.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\System.Web.WebPages.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\System.Web.WebPages.Razor.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\unirest-net.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\WebMatrix.Data.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="Admin_new\default.cshtml" />
     <Content Include="dest\ASPNETMaker.log" />
@@ -138,41 +255,6 @@
     <Content Include="App_Code\AspNetMaker12_Admin_new_dll\text.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="bin\AspNetMaker12_Admin_new.dll" />
-    <Content Include="bin\FrescodeAdmin.dll" />
-    <Content Include="bin\FrescodeAdmin.pdb" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Core.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Core.resources.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Core.xml" />
-    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.resources.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.xml" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Owin.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Owin.resources.dll" />
-    <Content Include="bin\Microsoft.AspNet.Identity.Owin.xml" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
-    <Content Include="bin\Microsoft.Web.Helpers.dll" />
-    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
-    <Content Include="bin\NLog.xml" />
-    <Content Include="bin\roslyn\csc.exe" />
-    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
-    <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
-    <Content Include="bin\roslyn\vbc.exe" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe" />
-    <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
-    <Content Include="bin\System.Web.WebPages.dll" />
-    <Content Include="bin\System.Web.WebPages.Razor.dll" />
-    <Content Include="bin\unirest-net.dll" />
-    <Content Include="bin\WebMatrix.Data.dll" />
     <Content Include="dest\aspxcss\Admin_new.css" />
     <Content Include="dest\aspxcss\fonts\ew.svg" />
     <Content Include="dest\aspxcss\jquery.fileupload-ui.css" />
@@ -230,10 +312,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="bin\FrescodeAdmin.dll.config" />
-    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <None Include="Properties\PublishProfiles\inspectionreportadmin - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\inspectionreportadmin - Web Deploy.pubxml" />
   </ItemGroup>
