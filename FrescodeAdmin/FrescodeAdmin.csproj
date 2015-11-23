@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\AspNetMaker12_Admin_new_dll\TextFile1.txt" />
     <Content Include="bin\AspNetMaker12_Admin_new.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -240,9 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin_new\{6EA87CB0-ED50-4AE1-9743-D14163EABB5A}.xml" />
-    <Content Include="App_Code\AspNetMaker12_Admin_new_dll\text.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="dest\aspxcss\Admin_new.css" />
     <Content Include="dest\aspxcss\fonts\ew.svg" />
     <Content Include="dest\aspxcss\jquery.fileupload-ui.css" />
