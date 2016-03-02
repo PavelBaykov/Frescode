@@ -1,28 +1,27 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Mvc;
 using DALLib;
 using DALLib.Entities;
-using MediatR;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Data.Entity.Migrations;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net;
 
-
-namespace Frescode.Controllers
+namespace DALLib.Migrations
 {
-    [AllowAnonymous]
-    public class InitDbController : BaseController
+    internal sealed class Configuration : DbMigrationsConfiguration<DALLib.RootContext>
     {
-        public InitDbController(IMediator mediator, RootContext rootContext) : base(mediator, rootContext)
+        public Configuration()
         {
+            AutomaticMigrationsEnabled = false;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> InitDb()
+        protected override void Seed(DALLib.RootContext context)
         {
             var user1 = new User
             {
@@ -46,12 +45,14 @@ namespace Frescode.Controllers
                 Projects = new List<Project>(),
             };
 
-            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var userStore = new UserStore<User>(context);
+            var userManager = new UserManager<User>(userStore);
+
             userManager.Create(user1, "123456");
             userManager.Create(user2, "123456");
 
-            user1 = Context.Users.Single(x => x.UserName == user1.UserName);
-            user2 = Context.Users.Single(x => x.UserName == user2.UserName);
+            user1 = context.Users.Single(x => x.UserName == user1.UserName);
+            user2 = context.Users.Single(x => x.UserName == user2.UserName);
 
             var customer = new Customer
             {
@@ -74,11 +75,12 @@ namespace Frescode.Controllers
                 Status = ProjectStatus.Done
             };
 
+            var webClient = new WebClient();
+            var floorPlanBytes = webClient.DownloadData("http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
+
             var httpClient = new HttpClient();
-            var floorPlanBytes = await httpClient.GetByteArrayAsync(
-                "http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
-            //var floorPlanBytes = await httpClient.GetByteArrayAsync(
-            //    "http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
+            //var floorPlanBytes = await httpClient.GetByteArrayAsync("");
+            //httpClient.GetByteArrayAsync("http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
             var inspectionDrawingData = new InspectionDrawingData
             {
                 Data = floorPlanBytes
@@ -239,8 +241,8 @@ namespace Frescode.Controllers
             checklistItemTemplate2.Descendants.Add(checklistItem2);
             checklist1.Items.Add(checklistItem1);
             checklist1.Items.Add(checklistItem2);
-            Context.ChecklistItems.Add(checklistItem1);
-            Context.ChecklistItems.Add(checklistItem2);
+            context.ChecklistItems.Add(checklistItem1);
+            context.ChecklistItems.Add(checklistItem2);
 
             //checklist2.ChecklistInit(Context);
             //checklist3.ChecklistInit(Context);
@@ -289,29 +291,28 @@ namespace Frescode.Controllers
             checklistItem1.DefectionSpots.Add(defectSpot1);
             checklistItem2.DefectionSpots.Add(defectSpot2);
 
-            Context.DefectionSpots.Add(defectSpot1);
-            Context.DefectionSpots.Add(defectSpot2);
+            context.DefectionSpots.Add(defectSpot1);
+            context.DefectionSpots.Add(defectSpot2);
 
             user1.Projects.Add(project1);
             user1.ProjectsOwned.Add(project1);
             customer.Users.Add(user1);
             customer.Projects.Add(project1);
 
-            Context.Projects.Add(project1);
-            Context.Customers.Add(customer);
-            Context.Checklists.Add(checklist1);
+            context.Projects.Add(project1);
+            context.Customers.Add(customer);
+            context.Checklists.Add(checklist1);
 
-            Context.ChecklistItems.Add(checklistItem1);
-            Context.ChecklistItems.Add(checklistItem2);
-            Context.ChecklistTemplates.Add(checklistTemplate);
-            Context.ChecklistTemplates.Add(checklistTemplate2);
-            Context.ChecklistItemTemplates.Add(checklistItemTemplate1);
-            Context.ChecklistItemTemplates.Add(checklistItemTemplate2);
-            Context.ChecklistItemTemplates.Add(checklistItemTemplate3);
-            Context.ChecklistItemTemplates.Add(checklistItemTemplate4);
+            context.ChecklistItems.Add(checklistItem1);
+            context.ChecklistItems.Add(checklistItem2);
+            context.ChecklistTemplates.Add(checklistTemplate);
+            context.ChecklistTemplates.Add(checklistTemplate2);
+            context.ChecklistItemTemplates.Add(checklistItemTemplate1);
+            context.ChecklistItemTemplates.Add(checklistItemTemplate2);
+            context.ChecklistItemTemplates.Add(checklistItemTemplate3);
+            context.ChecklistItemTemplates.Add(checklistItemTemplate4);
 
-            Context.SaveChanges();
-            return Json(new { ok = true }, JsonRequestBehavior.AllowGet);
+            context.SaveChanges();
         }
     }
 }

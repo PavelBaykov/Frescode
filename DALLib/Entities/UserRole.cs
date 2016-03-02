@@ -2,6 +2,6 @@ namespace DALLib.Entities
 {
     public enum UserRole
     {
-        Reader
+        Reader, Admin, SuperUser
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using Frescode.DAL.Entities;
+using DALLib.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Frescode.DAL

@@ -24,5 +24,7 @@ namespace DALLib.Entities
         public ICollection<Project> Projects { get; set; } 
         public Customer Customer { get; set; }
         public ICollection<Project> ProjectsOwned { get; set; }
+
+        
     }
 }

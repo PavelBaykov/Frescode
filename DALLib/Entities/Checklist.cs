@@ -14,23 +14,23 @@ namespace DALLib.Entities
         public User ChangedBy { get; set; }
         public Project Project { get; set; }
 
-        public void ChecklistInit(RootContext rootContext)
-        {
-            foreach (var tempItem in ChecklistTemplate.Items)
-            {
-                var checkListItemTmp = new ChecklistItem
-                {
-                    Checklist = this,
-                    ItemTemplate = tempItem,
-                    Status = ChecklistItemStatus.NotCompleted,
-                    DateOfLastChange = DateTime.UtcNow,
-                    ChangedBy = Project.ChangedBy
-                };
-                Items.Add(checkListItemTmp);
-                tempItem.Descendants.Add(checkListItemTmp);
-                rootContext.ChecklistItems.Add(checkListItemTmp);
-            }
-        }
+        //public void ChecklistInit(RootContext rootContext)
+        //{
+        //    foreach (var tempItem in ChecklistTemplate.Items)
+        //    {
+        //        var checkListItemTmp = new ChecklistItem
+        //        {
+        //            Checklist = this,
+        //            ItemTemplate = tempItem,
+        //            Status = ChecklistItemStatus.NotCompleted,
+        //            DateOfLastChange = DateTime.UtcNow,
+        //            ChangedBy = Project.ChangedBy
+        //        };
+        //        Items.Add(checkListItemTmp);
+        //        tempItem.Descendants.Add(checkListItemTmp);
+        //        rootContext.ChecklistItems.Add(checkListItemTmp);
+        //    }
+        //}
 
     }
 }
