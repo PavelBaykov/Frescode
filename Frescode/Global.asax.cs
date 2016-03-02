@@ -8,7 +8,7 @@ using Autofac.Extras.CommonServiceLocator;
 using Autofac.Features.Variance;
 using Autofac.Integration.Mvc;
 using Frescode.Auth;
-using Frescode.DAL;
+using DALLib;
 using MediatR;
 using Microsoft.Practices.ServiceLocation;
 

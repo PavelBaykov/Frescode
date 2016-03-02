@@ -4,8 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Frescode.BL.Commands;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
+using DALLib.Entities;
 using MediatR;
 
 namespace Frescode.BL.CommandsHandler

@@ -1,6 +1,6 @@
 ﻿using System;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
+using DALLib.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;

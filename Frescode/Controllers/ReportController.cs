@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
+using DALLib.Entities;
 using MediatR;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;

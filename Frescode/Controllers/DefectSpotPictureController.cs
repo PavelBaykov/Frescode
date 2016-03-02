@@ -6,8 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Frescode.Auth;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
+using DALLib.Entities;
 using MediatR;
 
 namespace Frescode.Controllers

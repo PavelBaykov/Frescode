@@ -6,7 +6,7 @@ namespace Frescode.DAL
 {
     public class RootContext : IdentityDbContext<User>
     {
-        public RootContext() : base("AzureConnection")
+        public RootContext() : base("DefaultConnection")
         {
             
         }

@@ -1,5 +1,5 @@
 ﻿using System.Security.Principal;
-using Frescode.DAL;
+using DALLib;
 
 namespace Frescode.Auth
 {

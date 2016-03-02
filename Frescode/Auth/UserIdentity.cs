@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Principal;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
+using DALLib.Entities;
 
 namespace Frescode.Auth
 {

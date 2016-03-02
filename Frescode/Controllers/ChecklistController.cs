@@ -3,9 +3,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
 using MediatR;
+using DALLib.Entities;
 
 namespace Frescode.Controllers
 {

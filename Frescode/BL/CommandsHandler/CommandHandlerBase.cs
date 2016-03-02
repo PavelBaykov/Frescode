@@ -1,4 +1,4 @@
-﻿using Frescode.DAL;
+﻿using DALLib;
 
 namespace Frescode.BL.CommandsHandler
 {

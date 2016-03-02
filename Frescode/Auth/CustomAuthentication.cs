@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
-using Frescode.DAL;
-using Frescode.DAL.Entities;
+using DALLib;
+using DALLib.Entities;
 
 namespace Frescode.Auth
 {

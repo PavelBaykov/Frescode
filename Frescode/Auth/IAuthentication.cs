@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 using System.Web;
-using Frescode.DAL.Entities;
+using DALLib.Entities;
 
 namespace Frescode.Auth
 {

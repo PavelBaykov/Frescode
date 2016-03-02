@@ -295,22 +295,8 @@
     <Compile Include="Controllers\PictureController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DAL\Entities\Checklist.cs" />
-    <Compile Include="DAL\Entities\ChecklistItem.cs" />
-    <Compile Include="DAL\Entities\ChecklistItemStatus.cs" />
-    <Compile Include="DAL\Entities\ChecklistItemTemplate.cs" />
-    <Compile Include="DAL\Entities\ChecklistTemplate.cs" />
-    <Compile Include="DAL\Entities\Customer.cs" />
-    <Compile Include="DAL\Entities\DefectionSpot.cs" />
-    <Compile Include="DAL\Entities\InspectionDrawing.cs" />
-    <Compile Include="DAL\Entities\Picture.cs" />
-    <Compile Include="DAL\Entities\Project.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
-    <Compile Include="DAL\Entities\User.cs" />
-    <Compile Include="DAL\Entities\UserRole.cs" />
-    <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\RootContext.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3996,6 +3982,12 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DALLib\DALLib.csproj">
+      <Project>{9a2552fc-04ba-41b5-840f-6212217332ee}</Project>
+      <Name>DALLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
