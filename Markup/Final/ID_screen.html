@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/core.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
+	<script type='text/javascript' src='assets/js/core/libraries/knockout-3.3.0.js'></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/selects/select2.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/media/fancybox.min.js"></script>
+	<script type="text/javascript" src="assets/js/pages/gallery.js"></script>
+	<!-- /theme JS files -->
+
+	<!--Custom CSS-->
+	<link href="assets/css/Custom.css" rel="stylesheet" type="text/css">
+	<!--/Custom CSS-->
+
+	<script>
+         var rootViewModel = {
+            mainViewModel: ko.observable(),
+            breadcrumbViewModel: ko.observable()
+        };
+
+		
+		/*BreadcrumbPart*/
+		var breadcrumbArray = ko.observableArray();
+
+		breadcrumbArray.push({url: "projects.html", text:"Projects"});
+		breadcrumbArray.push({url:"project_screen.html",text:"Manhattan project"});
+		breadcrumbArray.push({url:"",text:"Roof"});
+		rootViewModel.breadcrumbViewModel({breadcrumbsList:breadcrumbArray});
+		/*BreadcrumbPart over*/
+
+		/*defectspotsPart*/
+		var defectspotsArray = ko.observableArray();
+
+		defectspotsArray.push(
+			{id:1,descr:"A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot test A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot A really long description of a defect spot",pictures:["assets/images/demo/0.png","assets/images/demo/1.png"]},
+			{id:2,descr:"A really long description of a defect spot",pictures:["assets/images/demo/2.png"]}
+			);
+		
+		/*defectspotsPart over*/
+
+		/*checklistPart*/
+		var checklistsArray = ko.observableArray();
+
+		checklistsArray.push(
+			{id:1,name:"Equipment",editeddate:"01.06.2015",editedby:"Nina Tapio",done:4,total:4},
+			{id:2,name:"Really long  name which will make two rows in one column Really long  name which will make two rows in one column Really long  name which will make two rows in one column",editeddate:"01.06.2015",editedby:"Nina Tapio",done:4,total:4},
+			{id:3,name:"Cables",editeddate:"01.06.2015",editedby:"Nina Tapio",done:1,total:4},
+			{id:4,name:"Equipment",editeddate:"01.06.2015",editedby:"A really long name that does not exist",done:4,total:4},
+			{id:5,name:"Cables",editeddate:"01.06.2015",editedby:"Nina Tapio",done:4,total:4},
+			{id:6,name:"Equipment",editeddate:"01.06.2015",editedby:"Nina Tapio",done:4,total:4}
+			);
+		
+		/*checklistPart over*/
+
+		rootViewModel.mainViewModel({defectspotsList:defectspotsArray,checklistsList:checklistsArray});
+    </script>
+
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse bg-indigo-400 navbar-component" style="position: relative; z-index: 23;">
+		<div class="navbar-header">
+			<a class="navbar-brand" ><img src="assets/images/logo_light.png" alt=""></a>
+
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-text">
+					<i class="icon-menu7"></i>
+				</a></li>
+			</ul>
+		</div>		
+
+		<div class="navbar-collapse collapse navbar-right" id="navbar-text">
+			<div class="navbar-right">
+				<ul class="nav navbar-nav">
+					<li class="dropdown dropdown-user">
+						<a class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user-check position-left"></i>
+							<span>Pavel</span>
+							<i class="caret"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-right">
+							<!-- <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li> -->
+							<li><a href="#"><i class="icon-switch2"></i> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		
+			<ul class="nav navbar-nav">
+				<li class="dropdown language-switch">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="assets/images/online.png" class="position-left" alt="">
+						Online
+						<span class="caret"></span>
+					</a>
+
+					<ul class="dropdown-menu">
+						<li class="active"><a><img src="assets/images/online.png" alt="">Online</a></li>
+						<li><a href="offline_projects.html"><img src="assets/images/offline.png" alt="" >Offline</a></li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+	<!-- Page header -->
+	<div class="page-header" id="breadcrumb_view">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h3>
+					<a href="index.html" style="color:black">
+						<i  class="icon-arrow-left52 position-left" style="margin-right:11px"></i>
+					</a>					
+					<span class="text-semibold">Projects list</span>
+				</h3>
+				<ul class="breadcrumb breadcrumb-caret position-right" >
+					<!--ko foreach: breadcrumbsList -->
+						<!--ko if: $index()===$parent.breadcrumbsList().length-1 -->
+							<li class="active" data-bind="text: text"></li>
+						<!-- /ko -->
+						<!--ko ifnot: $index()===$parent.breadcrumbsList().length-1 -->
+							<li><a data-bind="text: text,  attr: { href: url }"></a></li>
+						<!-- /ko -->							
+					<!-- /ko -->
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<!-- /page header -->
+
+
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content" id = "main_content">
+			<!-- Main content -->
+			<div class="content-wrapper">
+				<div class="panel panel-default">
+					<div class="panel-body upper-panel">
+
+						<div class="tabbable">
+							<ul class="nav nav-tabs nav-tabs-highlight">
+								<li class="active"><a href="#highlighted-tab1" data-toggle="tab">Inspection drawing</a></li>
+								<li><a href="#highlighted-tab2" data-toggle="tab">Defect spots</a></li>
+								<li><a href="#highlighted-tab3" data-toggle="tab">Checklists</a></li>
+							</ul>
+
+							<div class="tab-content">
+								<div class="tab-pane active" id="highlighted-tab1">
+									<div class="row">
+										<div class="col-lg-12 col-sm-12">
+											<div class="thumbnail">
+												<div class="thumb">
+													<img src="assets/images/placeholder.jpg" alt="">
+													<div class="caption-overflow">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="tab-pane" id="highlighted-tab2">
+									<div class="panel-group panel-group-control panel-group-control-right content-group-lg">
+									<!-- ko foreach: defectspotsList -->
+									<div class="panel panel-white">
+										<div class="panel-heading collapsed" data-toggle="collapse" data-bind="attr:{href:'#collapsible-control-right-group'+$index()}">
+											<div class="row">														
+												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" data-bind="text:$index()+1">
+												
+												</div>
+												<div class = "col-lg-11 col-md-11 col-sm-11 col-xs-11">
+													<div class="panel-title">														
+														<a class="collapsed" data-toggle="collapse" data-bind="text:descr,attr:{href:'#collapsible-control-right-group'+$index()}">														
+														</a>
+													</div>													
+												</div>																							
+											</div>
+										</div>
+										<div data-bind="attr:{'id':'collapsible-control-right-group'+$index()}" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="row">
+													<!-- ko foreach: pictures -->
+													<div class="col-lg-2 col-sm-3 col-xs-4">
+														<div class="thumbnail">
+															<div class="thumb">
+																<span>
+																	<a data-bind="attr:{href:$data}" data-popup="lightbox" rel="gallery1" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding:0px">
+					                                               		<img data-bind="attr:{src:$data}" alt="" >
+					                                               	</a>
+					                                           </span>
+															</div>
+														</div>
+													</div>
+													<!-- /ko -->
+												</div>
+												<div class="row">
+													<div class="text-center">
+														<button type="button" class="btn  btn-success btn-labeled ">
+															<b><i class="icon-pencil7"></i></b> Edit defect spot
+														</button>
+														<button type="button" class="btn  btn-success btn-labeled ">
+															<b><i class="icon-bin"></i></b> Delete defect spot
+														</button>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>	
+									<!-- /ko -->
+																
+									</div>
+								</div>
+
+
+								<div class="tab-pane" id="highlighted-tab3">
+									<table class="table datatable-basic table-hover">
+										<thead>
+											<tr>
+												<th>Checklist</th>
+												<th>Last Edited</th>
+												<th>Edited by</th>
+												<th>Status</th>
+												<!--<th class="text-center">Actions</th>-->
+											</tr>
+										</thead>
+										<tbody>
+											<!-- ko foreach: checklistsList  -->
+												<tr data-bind="attr:{'data-url': 'id_items.html'}" >
+													<td data-bind="text: name"></td>
+													<td data-bind="text: editeddate"></td>
+													<td data-bind="text: editedby"></td>
+													<td><span class="label label-success" data-bind="text:done+'/'+total"></span></td>
+												</tr>
+											<!-- /ko -->
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<!-- /main content -->
+
+		
+
+
+	</div>
+	<!-- /page content -->
+
+	<!--Custom JS-->
+	<script type="text/javascript">
+		$( document ).ready(function() {
+   			 $("td").addClass("whitespace");
+   			 $("tr").addClass("hoverhref");
+
+   			 $('tbody tr').on( 'click', function () {
+  				window.location.href = $(this).data("url");});
+
+		});
+		
+	</script>
+
+	<!--DataTables config-->
+
+	<script type="text/javascript" src="assets/js/pages/datatables_custom_checklists.js"></script>
+	
+	<script type="text/javascript">
+       ko.applyBindings(rootViewModel.mainViewModel, document.getElementById('main_content'));
+       ko.applyBindings(rootViewModel.breadcrumbViewModel, document.getElementById('breadcrumb_view'));
+    </script>
+
+</body>
+</html>

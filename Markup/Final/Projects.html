@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>FresCode - Inspection tool</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/core.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
+	<script type='text/javascript' src='assets/js/core/libraries/knockout-3.3.0.js'></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/selects/select2.min.js"></script>
+	<!-- /theme JS files -->
+
+	<!--Custom CSS-->
+	<link href="assets/css/Custom.css" rel="stylesheet" type="text/css">
+	<!--/Custom CSS-->
+
+	<script>
+        var rootViewModel = {
+            mainViewModel: ko.observable(),
+            breadcrumbViewModel: ko.observable()
+        };
+
+		/*BreadcrumbPart*/
+		var breadcrumbArray = ko.observableArray();
+
+		breadcrumbArray.push({url: "projects.html", text:"Projects"});
+		rootViewModel.breadcrumbViewModel({breadcrumbsList:breadcrumbArray});
+		/*BreadcrumbPart over*/
+		
+		/*ProjectsPart*/
+		var projectsArray = ko.observableArray();
+
+		projectsArray.push(
+			{id:1,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:2,name:"Really long project name which will make two rows in one column Really long project name which will make two rows in one column Really long project name which will make two rows in one column",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:3,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:4,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:5,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"A really long name that does not exist really"},
+			{id:6,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:7,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:8,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:9,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:10,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:11,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:12,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:13,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:14,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:15,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:16,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:17,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:18,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:19,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:20,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:13,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:14,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:15,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:16,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:17,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:18,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:19,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"},
+			{id:20,name:"Project Manhattan",editeddate:"01.06.2015",editedby:"Laura Narhi"}
+			);
+		rootViewModel.mainViewModel({projectsList:projectsArray});
+		/*ProjectsPart over*/
+    </script>
+
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse bg-indigo-400 navbar-component" style="position: relative; z-index: 23;">
+		<div class="navbar-header">
+			<a class="navbar-brand" ><img src="assets/images/logo_light.png" alt=""></a>
+
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-text">
+					<i class="icon-menu7"></i>
+				</a></li>
+			</ul>
+		</div>		
+
+		<div class="navbar-collapse collapse navbar-right" id="navbar-text">
+			<div class="navbar-right">
+				<ul class="nav navbar-nav">
+					<li class="dropdown dropdown-user">
+						<a class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user-check position-left"></i>
+							<span>Pavel</span>
+							<i class="caret"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-right">
+							<!-- <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li> -->
+							<li><a href="#"><i class="icon-switch2"></i> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		
+			<ul class="nav navbar-nav">
+				<li class="dropdown language-switch">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="assets/images/online.png" class="position-left" alt="">
+						Online
+						<span class="caret"></span>
+					</a>
+
+					<ul class="dropdown-menu">
+						<li class="active"><a><img src="assets/images/online.png" alt="">Online</a></li>
+						<li><a href="offline_projects.html"><img src="assets/images/offline.png" alt="" >Offline</a></li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+	<!-- Page header -->
+	<div class="page-header" id="breadcrumb_view">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h3>
+					<a href="index.html" style="color:black">
+						<i  class="icon-arrow-left52 position-left" style="margin-right:11px"></i>
+					</a>					
+					<span class="text-semibold">Projects list</span>
+				</h3>
+				<ul class="breadcrumb breadcrumb-caret position-right" >
+					<!--ko foreach: breadcrumbsList -->
+						<!--ko if: $index()===$parent.breadcrumbsList().length-1 -->
+							<li class="active" data-bind="text: text"></li>
+						<!-- /ko -->
+						<!--ko ifnot: $index()===$parent.breadcrumbsList().length-1 -->
+							<li><a data-bind="text: text,  attr: { href: url }"></a></li>
+						<!-- /ko -->							
+					<!-- /ko -->
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<!-- /page header -->
+
+
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content" id="main_content">
+			<!-- Main content -->
+			<div class="content-wrapper">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table class="table datatable-basic table-hover">
+							<thead>
+								<tr>
+									<th>Project</th>
+									<th>Last Edited</th>
+									<th>Edited by</th>
+									<th>Download</th>
+									<!--<th class="text-center">Actions</th>-->
+								</tr>
+							</thead>
+							<tbody>
+								<!-- ko foreach: projectsList -->
+								<tr data-bind="attr: {'data-url':'project_screen.html'}">
+									<td data-bind = "text:name"></td>
+									<td data-bind = "text:editeddate"></td>
+									<td data-bind = "text:editedby"></td>
+									<td>
+										<button type="button" class="btn btn-default btn-rounded btn-xs" data-bind="attr: {'data-url':'Project_download.html'}">
+											<i class="icon-download position-left"></i> Download
+										</button>
+									</td>
+								</tr>
+								<!-- /ko -->														
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /main content -->
+
+
+
+	</div>
+	<!-- /page content -->
+
+	<!--Custom JS-->
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			 $("td").addClass("whitespace");
+			 $("tr").addClass("hoverhref");
+
+			$('tbody tr').on( 'click', function () {
+				window.location.href = $(this).data("url");}
+				);	
+
+  			$('tbody tr button').on( 'click', function(event) {
+  				event.stopPropagation();
+				window.location.href = $(this).data("url");}
+			);
+		});
+		
+	</script>
+
+	<script type="text/javascript">
+       ko.applyBindings(rootViewModel.mainViewModel, document.getElementById('main_content'));
+       ko.applyBindings(rootViewModel.breadcrumbViewModel, document.getElementById('breadcrumb_view'));
+    </script>
+	<!--DataTables config-->
+	<script type="text/javascript" src="assets/js/pages/datatables_basic.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+.whitespace{
+	white-space: normal !important;
+}
+
+.hoverhref{
+	cursor: pointer;
+}
+
+.detailedItem{
+	background-color: #F5F5F5;
+}
+
+.number{
+	width:50px;
+}
+
+.extend{
+	width:100px;
+}
+
+.defectspots-table tr{
+	border-bottom:1px solid #ddd;
+}
+
+.panel-heading i{
+	margin-right:10px;
+}
+
+.cell-center-align{
+	text-align: center;
+}
+
+.datatable-header{
+	padding-top: 0px;
+}
+
+td.detailedItemArrow {
+    background: url(../images/arrow_down.png) no-repeat center center;
+}
+tr.shown td.detailedItemArrow {
+    background: url(../images/arrow_up.png) no-repeat center center;
+}
+
+@media screen and (max-width: 769px){
+	
+	.mobileBold{
+	font-weight: 700;
+	}
+} 
+
+.newphoto{
+	position:absolute;
+	top:50%;
+	width:100%;
+	margin-top: -10px;
+}
+.custom-row {
+    height: 160px !important;
+}
+.row-centered {
+    margin: auto;
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    height: 175px;
+    min-width: 225px;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+.panel-collapse{
+	background-color: #F5F5F5;
+}
+.panel-heading {
+    cursor: pointer;
+}
+
+body{
+	padding-top:0px;
+}
+
+
+/*For buttons on project list view*/
+.btn-xs, .btn-group-xs>.btn
+{
+	padding: 1px 8px;
+}
+
+.page-title{
+	padding: 15px 36px 15px 0px;
+}

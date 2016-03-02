@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>FresCode - Inspection tool</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/core.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
+	<script type='text/javascript' src='assets/js/core/libraries/knockout-3.3.0.js'></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/selects/select2.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/styling/uniform.min.js"></script>	
+	<script type="text/javascript" src="assets/js/plugins/forms/styling/switch.min.js"></script>
+	<script type="text/javascript" src="assets/js/pages/form_checkboxes_radios.js"></script>
+	<!-- /theme JS files -->
+    
+	<!--Custom CSS-->
+	<link href="assets/css/Custom.css" rel="stylesheet" type="text/css">
+
+	<script>
+		var rootViewModel = {
+            mainViewModel: ko.observable(),
+            breadcrumbViewModel: ko.observable()
+        };
+		
+		/*BreadcrumbPart*/
+		var breadcrumbArray = ko.observableArray();
+
+		breadcrumbArray.push({url: "projects.html", text:"Projects"});
+		breadcrumbArray.push({url:"project_screen.html",text:"Manhattan project"});
+		breadcrumbArray.push({url:"",text:"Equipment"});
+		rootViewModel.breadcrumbViewModel({breadcrumbsList:breadcrumbArray});
+		/*BreadcrumbPart over*/
+
+		/*itemsPart*/
+		var itemsArray = ko.observableArray();
+
+		itemsArray.push(
+			{id:1,name:"Conductor ABC",editeddate:"01.06.2015",editedby:"Nina Tapio",status:ko.observable(false),descr:"A really long decription which will make a lot of lines will appear here 										A really long decription which will make a lot of lines will appear here										A really long decription which will make a lot of lines will appear here A really long decription which will make a lot of lines will appear here A really long decription which will make a lot of lines will appear here"},
+			{id:2,name:"Really long  name which will make two rows in one column Really long  name which will make two rows in one column Really long  name which will make two rows in one column",editeddate:"01.06.2015",editedby:"Nina Tapio",status:ko.observable(true),descr:"Description2"},
+			{id:3,name:"Conductor BCE",editeddate:"01.06.2015",editedby:"Sara Forsberg",status:ko.observable(false),descr:"Description3"},
+			{id:4,name:"Semi-conductor GFJL",editeddate:"01.06.2015",editedby:"A really long name that does not exist",status:ko.observable(false),descr:"Description4"},
+			{id:5,name:"Semi-conductor",editeddate:"01.06.2015",editedby:"Nina Tapio",status:ko.observable(false),descr:"Description5"},
+			{id:6,name:"Equipment",editeddate:"01.06.2015",editedby:"Nina Tapio",status:ko.observable(true),descr:"Description6"}
+			);
+		rootViewModel.mainViewModel({itemsList:itemsArray});
+
+		ko.bindingHandlers.bootstrapSwitchOn = {
+		    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+		        
+		        $(element).bootstrapSwitch();
+		        $(element).bootstrapSwitch('state', ko.utils.unwrapObservable(valueAccessor())); 
+		        $(element).on('switchChange.bootstrapSwitch', function (e, data) {
+		            var value = valueAccessor();
+            		value(data);
+		        }); 
+		    }
+    	};
+
+          
+
+
+		/*itemsPart over*/
+    </script>
+</head>
+
+<body>
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse bg-indigo-400 navbar-component" style="position: relative; z-index: 23;">
+		<div class="navbar-header">
+			<a class="navbar-brand" ><img src="assets/images/logo_light.png" alt=""></a>
+
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-text">
+					<i class="icon-menu7"></i>
+				</a></li>
+			</ul>
+		</div>		
+
+		<div class="navbar-collapse collapse navbar-right" id="navbar-text">
+			<div class="navbar-right">
+				<ul class="nav navbar-nav">
+					<li class="dropdown dropdown-user">
+						<a class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user-check position-left"></i>
+							<span>Pavel</span>
+							<i class="caret"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-right">
+							<!-- <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li> -->
+							<li><a href="#"><i class="icon-switch2"></i> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		
+			<ul class="nav navbar-nav">
+				<li class="dropdown language-switch">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="assets/images/online.png" class="position-left" alt="">
+						Online
+						<span class="caret"></span>
+					</a>
+
+					<ul class="dropdown-menu">
+						<li class="active"><a><img src="assets/images/online.png" alt="">Online</a></li>
+						<li><a href="offline_projects.html"><img src="assets/images/offline.png" alt="" >Offline</a></li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+
+	<!-- Second navbar -->	<!-- /second navbar -->
+
+
+	<!-- Page header -->
+	<div class="page-header" id="breadcrumb_view">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h3>
+					<a href="index.html" style="color:black">
+						<i  class="icon-arrow-left52 position-left" style="margin-right:11px"></i>
+					</a>					
+					<span class="text-semibold">Projects list</span>
+				</h3>
+				<ul class="breadcrumb breadcrumb-caret position-right" >
+					<!--ko foreach: breadcrumbsList -->
+						<!--ko if: $index()===$parent.breadcrumbsList().length-1 -->
+							<li class="active" data-bind="text: text"></li>
+						<!-- /ko -->
+						<!--ko ifnot: $index()===$parent.breadcrumbsList().length-1 -->
+							<li><a data-bind="text: text,  attr: { href: url }"></a></li>
+						<!-- /ko -->							
+					<!-- /ko -->
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<!-- /page header -->
+
+
+	<div class="page-container">
+		<!-- Page content -->
+		<div class="page-content" id="main_content">
+			<!-- Main content -->
+			<div class="content-wrapper">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table class="table datatable-basic table-hover">
+							<thead>
+								<tr>
+									<th>Item</th>
+									<th>Last Edited</th>
+									<th>Edited by</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- ko foreach: itemsList -->
+									<tr data-bind="attr:{'data-description':descr}" =""  >
+									<td data-bind="text:name"></td>
+									<td data-bind="text:editeddate"></td>
+									<td data-bind="text:editedby"></td>
+									<td class='checkboxcolumn'>									
+										<input type="checkbox" data-on-color="success" data-off-color="danger" data-on-text="<i class=' icon-checkmark2'></i>" data-off-text="<i class=' icon-cross'></i>" class="switch" data-size="mini"
+										data-bind="bootstrapSwitchOn: status">		
+										
+									</td>
+								</tr>
+								<!-- /ko -->
+							</tbody>
+						</table>
+					</div>
+				</div>			
+			</div>
+		</div>
+		<!-- /main content -->
+
+	
+
+	</div>
+	<!-- /page content -->
+
+
+
+
+	<!--Custom JS-->
+	<script type="text/javascript">
+		$( document ).ready(function() {
+   			 $("td").addClass("whitespace");
+   			 $("tr").addClass("hoverhref");
+
+   			 $('.switchery').click(function(e) {
+   			 	e.stopPropagation();
+			 });
+
+		});
+	</script>
+	<!--/Custom JS-->
+
+	<!--DataTables config-->
+	<script type="text/javascript" src="assets/js/pages/datatables_custom_items.js"></script>
+	<!--/DataTables config-->
+
+	<script type="text/javascript">
+       ko.applyBindings(rootViewModel.mainViewModel, document.getElementById('main_content'));
+       ko.applyBindings(rootViewModel.breadcrumbViewModel, document.getElementById('breadcrumb_view'));
+    </script>	
+
+</body>
+</html>

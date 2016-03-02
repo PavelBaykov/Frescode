@@ -4,13 +4,10 @@
     ViewBag.Title = "Projects List";
 }
 
-@section Header
-{
-   
-}
-
 @section AdditionalScripts{
-    <script type="text/javascript" src="/assets/js/pages/datatables_basic.js"></script>
+    <script type="text/javascript" src="assetsfinal/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="assetsfinal/js/pages/datatables_basic.js"></script>
+    <script type="text/javascript" src="assetsfinal/js/plugins/forms/selects/select2.min.js"></script>
 
     <script>
         userId = @Html.Raw(Json.Encode(ViewBag.UserId));
@@ -28,10 +25,12 @@
             self.Name = ko.observable();
             self.DateOfLastChange = ko.observable();
             self.ChangedBy = ko.observable();
-            self.Status = ko.observable();
             self.GotoChecklistsListCommand = function() {
                 window.location.href = "Project/" +self.Id() + "/";
-            }
+            };
+            self.GotoDownloadProjectCommand = function() {
+                window.location.href = "Download/" +self.Id() + "/";
+            };
         }
 
         function getProjects(callback) {
@@ -63,7 +62,7 @@
                     projectViewModel.Name(project.Name);
                     projectViewModel.DateOfLastChange(project.DateOfLastChange);
                     projectViewModel.ChangedBy(project.ChangedBy);
-                    projectViewModel.Status(project.Status);
+                    
                     mainViewModel.ProjectsList.push(projectViewModel);
                 });
                 initDataTables();
@@ -77,13 +76,33 @@
     </script>
 }
 
+@section Header
+{
+    <!-- Page header -->
+    @*<div class="page-header" id="breadcrumb_view">
+        <div class="page-header-content">
+            <div class="page-title">
+                <h3>
+                    <a style="color:black">
+                        <i class="icon-user position-left" style="margin-right:8px"></i>
+                    </a>
+                    <span class="text-semibold">Your Projects list</span>
+                </h3>
+                <ul class="breadcrumb breadcrumb-caret position-right">
+                    <li class="active">Projects</li>
+                    
+                </ul>
+            </div>
+
+        </div>
+    </div>*@
+    <!-- /page header -->
+}
+
 <div id="main_content" class="page-content">
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title"><i class="icon-user"></i>Your projects list</h4>
-            </div>
             <div class="panel-body">
                 <table class="table datatable-basic table-hover">
                     <thead>
@@ -91,25 +110,19 @@
                         <th>Project</th>
                         <th>Last Edited</th>
                         <th>Edited by</th>
-                        <th>Status</th>
-                        <!--<th class="text-center">Actions</th>-->
+                        <th>Download</th>
                     </tr>
                     </thead>
                     <tbody>
                     <!-- ko foreach: ProjectsList -->
-                    <tr class="whitespace hoverhref" data-bind="click: GotoChecklistsListCommand">
+                    <tr class="whitespace hoverhref" data-bind="click: GotoChecklistsListCommand" >
                         <td data-bind="html: Name"></td>
                         <td data-bind="html: DateOfLastChange"></td>
                         <td data-bind="html: ChangedBy"></td>
                         <td>
-                            <span class="label" data-bind="
-                                      css: {
-                                          'label-success' : Status() === 'Done',
-                                          'label-primary' : Status() === 'In Progress',
-                                          'label-warning' : Status() === 'Reported'
-                                      },
-                                      text: Status
-                                      "></span>
+                            <button type="button" class="btn btn-default btn-rounded btn-xs" data-bind="click: GotoDownloadProjectCommand, clickBubble: false">
+                                <i class="icon-download position-left"></i> Download
+                            </button>
                         </td>
                     </tr>
                     <!-- /ko -->

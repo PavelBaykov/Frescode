@@ -33,31 +33,32 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetProjectsList()
         {
-            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.UserName == User.Identity.Name);
+            var userId = User.Identity.GetUserId();
+            var user = Context.Users.Include(x => x.Projects).SingleOrDefault(x => x.Id == userId);
 
             var viewModel = new ProjectsListViewModel();
             foreach (var project in user.Projects)
             {
-                var status = "Undefined";
-                switch (project.Status)
-                {
-                    case ProjectStatus.Done:
-                        status = "Done";
-                        break;
-                    case ProjectStatus.InProgress:
-                        status = "In Progress";
-                        break;
-                    case ProjectStatus.Reported:
-                        status = "Reported";
-                        break;
-                }
+                //var status = "Undefined";
+                //switch (project.Status)
+                //{
+                //    case ProjectStatus.Done:
+                //        status = "Done";
+                //        break;
+                //    case ProjectStatus.InProgress:
+                //        status = "In Progress";
+                //        break;
+                //    case ProjectStatus.Reported:
+                //        status = "Reported";
+                //        break;
+                //}
                 var projectViewModel = new ProjectViewModel
                 {
                     Id = project.Id,
                     Name = project.Name,
                     ChangedBy = $"{project.ChangedBy?.FirstName} {project.ChangedBy?.LastName}",
-                    DateOfLastChange = project.DateOfLastChange.ToString("MM/dd/yy H:mm:ss"),
-                    Status = status
+                    DateOfLastChange = project.DateOfLastChange.ToString("MM/dd/yy"),
+                    //Status = status
                 };
                 viewModel.ProjectsList.Add(projectViewModel);
             }
@@ -87,6 +88,6 @@ namespace Frescode.Controllers
         public string Name { get; set; }
         public string ChangedBy { get; set; }
         public string DateOfLastChange { get; set; }
-        public string Status { get; set; }
+        //public string Status { get; set; }
     }
 }

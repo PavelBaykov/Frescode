@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>FresCode - Inspection tool</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/core.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
+	<script type='text/javascript' src='assets/js/core/libraries/knockout-3.3.0.js'></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/selects/select2.min.js"></script>
+	<script type="text/javascript" src="assets/js/pages/foldersmove.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/velocity/velocity.min.js"></script>
+	<!-- /theme JS files -->
+
+	<!--Custom CSS-->
+	<link href="assets/css/Custom.css" rel="stylesheet" type="text/css">
+	<!--/Custom CSS-->
+
+	<script>
+
+		var rootViewModel = {
+            mainViewModel: ko.observable(),
+            breadcrumbViewModel: ko.observable()
+        };
+
+		
+		/*BreadcrumbPart*/
+		var breadcrumbArray = ko.observableArray();
+
+		breadcrumbArray.push({url: "offline_projects.html", text:"Projects"});
+		breadcrumbArray.push({url:"",text:"Manhattan project"});
+		rootViewModel.breadcrumbViewModel({breadcrumbsList:breadcrumbArray});
+		/*BreadcrumbPart over*/
+
+		/*checklistPart*/
+		var checklistsArray = ko.observableArray();
+
+		checklistsArray.push(
+			{id:1,name:"Equipment",done:4,total:4},
+			{id:2,name:"Really long  name which will make two rows in one column Really long  name which will make two rows in one column Really long  name which will make two rows in one column",done:4,total:4},
+			{id:3,name:"Cables",done:1,total:4},
+			{id:4,name:"Equipment",done:4,total:4},
+			{id:5,name:"Cables",done:4,total:4},
+			{id:6,name:"Equipment",done:4,total:4}
+			);
+		/*checklistPart over*/
+
+		/*foldersPart*/
+		var drawingArray=[
+				{folder:'Folder1/',name:"file1.png",id:"1"},
+				{folder:'Folder2/Folder21/',name:"file2.png",id:"2"},
+				{folder:'Folder2/Folder21/Folder211/',name:"file4.png",id:"3"},
+				{folder:'Folder2/Folder21/Folder211/',name:"file5.png",id:"4"},
+				{folder:"",name:"File3",id:"5"}
+			];
+		/*foldersPart over*/
+
+		rootViewModel.mainViewModel({checklistsList:checklistsArray, foldersList:ko.observable(new FoldersList(drawingArray))});
+       
+    </script>
+
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse bg-indigo-400 navbar-component" style="position: relative; z-index: 23;">
+		<div class="navbar-header">
+			<a class="navbar-brand" ><img src="assets/images/logo_light.png" alt=""></a>
+
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-text">
+					<i class="icon-menu7"></i>
+				</a></li>
+			</ul>
+		</div>		
+
+		<div class="navbar-collapse collapse navbar-right" id="navbar-text">		
+			<ul class="nav navbar-nav">
+				<li class="dropdown language-switch">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="assets/images/offline.png" class="position-left" alt="">
+						Offline
+						<span class="caret"></span>
+					</a>
+
+					<ul class="dropdown-menu">
+						<li class="active"><a ><img src="assets/images/offline.png" alt="" >Offline</a></li>
+						<li><a href="projects.html"><img src="assets/images/online.png" alt="">Online</a></li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+	<!-- Page header -->
+	<div class="page-header" id="breadcrumb_view">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h3>
+					<a href="index.html" style="color:black">
+						<i  class="icon-arrow-left52 position-left" style="margin-right:11px"></i>
+					</a>					
+					<span class="text-semibold">Projects list</span>
+				</h3>
+				<ul class="breadcrumb breadcrumb-caret position-right" >
+					<!--ko foreach: breadcrumbsList -->
+						<!--ko if: $index()===$parent.breadcrumbsList().length-1 -->
+							<li class="active" data-bind="text: text"></li>
+						<!-- /ko -->
+						<!--ko ifnot: $index()===$parent.breadcrumbsList().length-1 -->
+							<li><a data-bind="text: text,  attr: { href: url }"></a></li>
+						<!-- /ko -->							
+					<!-- /ko -->
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<!-- /page header -->
+
+
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content" id="main_content">
+			<!-- Main content -->
+			<div class="content-wrapper">
+				<div class="panel panel-default">
+					<!-- <div class="panel-heading">
+						<h4 class="panel-title"><i class="icon-user"></i>Your projects list</h4>
+					</div> -->
+					<div class="panel-body upper-panel">
+
+						<div class="tabbable">
+							<ul class="nav nav-tabs nav-tabs-highlight">
+								<li class="active"><a href="#highlighted-tab1" data-toggle="tab">Inspection drawings</a></li>
+								<li><a href="#highlighted-tab2" data-toggle="tab">Project checklists</a></li>
+							</ul>
+
+							<div class="tab-content">
+								<div class="tab-pane active" id="highlighted-tab1">
+									<div class="row">
+										<!-- Block annotaiton -->
+										<div class="col-md-12">
+											<ul class="media-list media-list-linked media-list-bordered custom-box">
+											<!-- ko if: foldersList().level()>0 -->
+												<li class="media">
+													<a class="media-link" data-bind="click:folderOut">
+														<div class="media-left">
+															<img src="assets/images/Turn-Up-2-icon.png"  alt="">
+														</div>
+
+														<div class="media-body">
+															<h6 class="media-heading media-center-text" data-bind="text:foldersList().path"></h6>
+														</div>
+													</a>
+												</li>
+											<!-- /ko -->
+											<!-- ko foreach: foldersList().folders -->
+												<li class="media">
+													<a class="media-link" data-bind="click:folderIn">
+														<div class="media-left">
+															<img src="assets/images/folder-icon.png"  alt="">
+														</div>
+
+														<div class="media-body">
+															<h6 class="media-heading media-center-text" data-bind="text:$data"></h6>
+														</div>
+													</a>
+												</li>
+											<!-- /ko -->
+											<!-- ko foreach: foldersList().files -->
+												<li class="media">
+													<a class="media-link" data-bind="click: onDrawingClick" data-url="id_screen.html">
+														<div class="media-left">
+															<img src="assets/images/Icon-Blue1.png"  alt="">
+														</div>
+
+														<div class="media-body">
+															<h6 class="media-heading media-center-text" data-bind="text:name"></h6>
+														</div>
+													</a>
+												</li>
+											<!-- /ko -->
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane" id="highlighted-tab2">
+									<table class="table datatable-basic table-hover">
+										<thead>
+											<tr>
+												<th>Checklist</th>
+												
+												<th>Status</th>
+												<!--<th class="text-center">Actions</th>-->
+											</tr>
+										</thead>
+										<tbody>
+											<!-- ko foreach: checklistsList  -->
+												<tr data-bind="attr:{'data-url': 'offline_project_items.html'}" >
+													<td data-bind="text: name"></td>
+													
+													<td><span class="label label-success" data-bind="text:done+'/'+total"></span></td>
+												</tr>
+											<!-- /ko -->
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<!-- /main content -->
+
+		
+
+
+	</div>
+	<!-- /page content -->
+
+	<!--Custom JS-->
+	<script type="text/javascript">
+		$( document ).ready(function() {
+   			 $("td").addClass("whitespace");
+   			 $("tr").addClass("hoverhref");
+
+   			 $('tbody tr').on( 'click', function () {
+  				window.location.href = $(this).data("url");});
+		});
+
+		function onDrawingClick(elem){
+			window.location.href = "offline_id_screen.html";
+			//console.log(elem.id);
+		};
+		
+	</script>
+	<!--/Custom JS-->
+
+	<!--DataTables config-->
+	<script type="text/javascript" src="assets/js/pages/offline_datatables_custom_checklists.js"></script>
+	<!--/DataTables config-->
+
+<script type="text/javascript">
+       ko.applyBindings(rootViewModel.mainViewModel, document.getElementById('main_content'));
+       ko.applyBindings(rootViewModel.breadcrumbViewModel, document.getElementById('breadcrumb_view'));
+    </script>
+</body>
+</html>

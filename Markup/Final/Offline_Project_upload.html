@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/core.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
+	<script type='text/javascript' src='assets/js/core/libraries/knockout-3.3.0.js'></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="assets/js/plugins/forms/styling/switch.min.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/forms/styling/uniform.min.js"></script>
+	<script type="text/javascript" src="assets/js/pages/form_checkboxes_radios.js"></script>
+	<script type="text/javascript" src="assets/js/plugins/notifications/sweet_alert.min.js"></script>	
+	<script type="text/javascript" src="assets/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /theme JS files -->
+
+	<!--Custom CSS-->
+	<link href="assets/css/Custom.css" rel="stylesheet" type="text/css">
+	<!--/Custom CSS-->
+	<script>
+        var rootViewModel = {
+            mainViewModel: ko.observable(),
+            breadcrumbViewModel: ko.observable()
+        };
+
+		/*BreadcrumbPart*/
+		var breadcrumbArray = ko.observableArray();
+
+		breadcrumbArray.push({url: "offline_projects.html", text:"Offline repository"});
+		breadcrumbArray.push({url: "", text:"Manhattan project upload"});
+		rootViewModel.breadcrumbViewModel({breadcrumbsList:breadcrumbArray});
+		/*BreadcrumbPart over*/
+
+		/*IDrawingsPart*/
+		var drawingArray = ko.observableArray();
+		drawingArray.push(
+				{folder:'Folder1/',name:"file1.png",id:"1",upload: ko.observable(false),todelete:ko.observable(false)},
+				{folder:'Folder2/Folder21/',name:"file2.png",id:"2",upload: ko.observable(false),todelete:ko.observable(false)},
+				{folder:'Folder2/Folder21/Folder211/',name:"file4.png",id:"3",upload: ko.observable(false),todelete:ko.observable(false)},
+				{folder:'Folder2/Folder21/Folder211/',name:"file5.png",id:"4",upload: ko.observable(false),todelete:ko.observable(false)},
+				{folder:"",name:"File3",id:"5",upload: ko.observable(false),todelete:ko.observable(false)}
+		);
+	
+		/*IDrawingsPart over*/
+
+		/*checklistPart*/
+		var checklistsArray = ko.observableArray();
+
+		checklistsArray.push(
+			{id:1,name:"Equipment",done:4,total:4,upload: ko.observable(false),todelete:ko.observable(false)},
+			{id:2,name:"Really long  name which will make two rows in one column Really long  name which will make two rows in one column Really long  name which will make two rows in one column",done:4,total:4,upload: ko.observable(false),todelete:ko.observable(false)}
+			);
+		/*checklistPart over*/
+
+		rootViewModel.mainViewModel({drawingsList:drawingArray, checklistsList:checklistsArray});
+
+		ko.bindingHandlers.bootstrapSwitchOn = {
+		    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+		        
+		        $(element).bootstrapSwitch();
+		        $(element).bootstrapSwitch('state', ko.utils.unwrapObservable(valueAccessor())); 
+		        $(element).on('switchChange.bootstrapSwitch', function (e, data) {
+		            var value = valueAccessor();
+            		value(data);
+		        }); 
+		    }
+    	};		
+    </script>
+
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse bg-indigo-400 navbar-component" style="position: relative; z-index: 23;">
+		<div class="navbar-header">
+			<a class="navbar-brand" ><img src="assets/images/logo_light.png" alt=""></a>
+
+			<ul class="nav navbar-nav pull-right visible-xs-block">
+				<li><a data-toggle="collapse" data-target="#navbar-text">
+					<i class="icon-menu7"></i>
+				</a></li>
+			</ul>
+		</div>		
+
+		<div class="navbar-collapse collapse navbar-right" id="navbar-text">
+			
+		
+			<ul class="nav navbar-nav">
+				<li class="dropdown language-switch">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="assets/images/offline.png" class="position-left" alt="">
+						Offline
+						<span class="caret"></span>
+					</a>
+
+					<ul class="dropdown-menu">
+						<li class="active"><a ><img src="assets/images/offline.png" alt="" >Offline</a></li>
+						<li><a href="projects.html"><img src="assets/images/online.png" alt="">Online</a></li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+	<!-- Page header -->
+	<div class="page-header" id="breadcrumb_view">
+		<div class="page-header-content">
+			<div class="page-title">
+				<h3>
+					<a href="index.html" style="color:black">
+						<i  class="icon-arrow-left52 position-left" style="margin-right:11px"></i>
+					</a>					
+					<span class="text-semibold">Projects list</span>
+				</h3>
+				<ul class="breadcrumb breadcrumb-caret position-right" >
+					<!--ko foreach: breadcrumbsList -->
+						<!--ko if: $index()===$parent.breadcrumbsList().length-1 -->
+							<li class="active" data-bind="text: text"></li>
+						<!-- /ko -->
+						<!--ko ifnot: $index()===$parent.breadcrumbsList().length-1 -->
+							<li><a data-bind="text: text,  attr: { href: url }"></a></li>
+						<!-- /ko -->							
+					<!-- /ko -->
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<!-- /page header -->
+
+
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content" id="main_content">
+			
+			<div class="panel panel-flat">
+				<div class="panel-heading">
+					<h5 class="panel-title">Inspection drawings to upload:</h5>							
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+
+									<th class="col-lg-8 col-md-8 col-sm-8">Inspection drawing name</th>
+									<th class="col-lg-2 col-md-2 col-sm-2">Upload</th>
+									<th class="col-lg-2 col-md-2 col-sm-2">Delete after upload</th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: drawingsList">
+								
+								<tr>
+									<td>
+										<span data-bind="text:name"><span>
+									</td>
+									<td>
+										<input type="checkbox" class="switch" data-on-text="Yes" data-off-text="No" data-size="mini" data-on-color="success" data-bind="bootstrapSwitchOn : upload">
+									</td>
+									<td>
+										<input type="checkbox" class="switch" data-on-text="Yes" data-off-text="No" data-size="mini" data-on-color="success" data-bind="bootstrapSwitchOn : todelete">
+									</td>
+								</tr>
+								
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+			
+
+				<div class="panel-heading">
+					<h5 class="panel-title">Project checklists to upload:</h5>							
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+
+									<th class="col-lg-8 col-md-8 col-sm-8">Checklist name</th>
+									<th class="col-lg-2 col-md-2 col-sm-2">Upload</th>
+									<th class="col-lg-2 col-md-2 col-sm-2">Delete after upload</th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: checklistsList">
+								<tr>
+									<td>
+										<span data-bind="text:name"><span>
+									</td>
+									<td>
+										<input type="checkbox" class="switch" data-on-text="Yes" data-off-text="No" data-size="mini" data-on-color="success" data-bind="bootstrapSwitchOn : upload">
+									</td>
+									<td>
+										<input type="checkbox" class="switch" data-on-text="Yes" data-off-text="No" data-size="mini" data-on-color="success" data-bind="bootstrapSwitchOn : todelete">
+									</td>
+								</tr>								
+							</tbody>
+						</table>
+					</div>
+				</div>
+					<div class="panel-body text-center">
+		                    	<button type="button" class="btn bg-teal-400 btn-labeled btn-success" id="sweet_warning"><b><i class="icon-upload"></i></b> Upload </button>
+		                    	
+					</div>
+					
+			</div>
+					
+		</div>
+		<!-- /main content -->
+
+		
+
+
+	</div>
+	<!-- /page content -->
+
+	<!--Custom JS-->
+	<script type="text/javascript">
+		$( document ).ready(function() {
+
+        	$('#sweet_warning').on('click', function() {
+		        swal({
+		            title: "Are you sure?",
+		            // text: "Are you sure you want to donload current project?",
+		            type: "warning",
+		            showCancelButton: true,
+		            confirmButtonColor: "#FF7043",
+		            confirmButtonText: "Yes, upload it!"
+        		},
+        		function(){
+        			$.blockUI({ 
+				            message: '<i class="icon-spinner4 spinner"></i>',
+				            // timeout: 2000, //unblock after 2 seconds
+				            overlayCSS: {
+				                backgroundColor: '#1b2024',
+				                opacity: 0.8,
+				                cursor: 'wait'
+				            },
+				            css: {
+				                border: 0,
+				                color: '#fff',
+				                padding: 0,
+				                backgroundColor: 'transparent'
+				            }
+				        });
+        			setTimeout(function(){
+        				$.unblockUI();
+        			    swal("Project uploaded!");   }, 2000); 
+        		});
+    		});
+
+		});
+		
+	</script>
+	<script type="text/javascript">
+       ko.applyBindings(rootViewModel.mainViewModel, document.getElementById('main_content'));
+       ko.applyBindings(rootViewModel.breadcrumbViewModel, document.getElementById('breadcrumb_view'));
+    </script>
+
+
+</body>
+</html>
