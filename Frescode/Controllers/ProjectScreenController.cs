@@ -46,7 +46,7 @@ namespace Frescode.Controllers
                     Id = checklist.Id,
                     Name = checklist.ChecklistTemplate.Name,
                     ChangedBy = $"{checklist.ChangedBy.FirstName} {checklist.ChangedBy.LastName}",
-                    DateOfLastChange = checklist.DateOfLastChange.ToString("MM/dd/yy H:mm:ss"),
+                    DateOfLastChange = checklist.DateOfLastChange.ToString("MM/dd/yy"),
                     Status = $"{checklist.Items.Count(x => x.Status == ChecklistItemStatus.Completed)}/{checklist.Items.Count()}"
                 };
                 viewModel.ChecklistsList.Add(checklistViewModel);

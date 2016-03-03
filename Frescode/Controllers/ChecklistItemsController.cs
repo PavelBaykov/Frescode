@@ -172,7 +172,7 @@ namespace Frescode.Controllers
                     Id = item.Id,
                     Name = item.ItemTemplate.Name,
                     ChangedBy = $"{item.ChangedBy.FirstName} {item.ChangedBy.LastName}",
-                    DateOfLastChange = item.DateOfLastChange.ToString("MM/dd/yy H:mm:ss"),
+                    DateOfLastChange = item.DateOfLastChange.ToString("MM/dd/yy"),
                     Status = item.Status == ChecklistItemStatus.Completed,
                     //DefectSpotsCount = item.DefectionSpots.Count(),
                     Description = item.ItemTemplate.Description
