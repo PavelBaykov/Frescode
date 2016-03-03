@@ -21,7 +21,7 @@ function format ( r ) {
     '</table>';
     }
 
-$(function() {
+function initDataTables() {
 
 
     // Table setup
@@ -131,4 +131,4 @@ $(function() {
         minimumResultsForSearch: "-1"
     });
     
-});
+}

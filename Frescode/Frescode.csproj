@@ -3780,6 +3780,7 @@
     <Content Include="starters\layout_navbar_fixed_main.html" />
     <Content Include="starters\layout_navbar_fixed_secondary.html" />
     <Content Include="starters\layout_sidebar_sticky.html" />
+    <Content Include="Views\Checklist\ChecklistsList.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4031,7 +4032,6 @@
     <Content Include="starters\assets\less\core\variables\core-variables.less" />
     <Content Include="starters\assets\less\core\variables\variables.less" />
     <Content Include="Views\Project\ProjectsList.cshtml" />
-    <Content Include="Views\Checklist\ChecklistsList.cshtml" />
     <Content Include="Scripts\knockout.mapping.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,7 +1,7 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "Checklist Items";
+    ViewBag.Title = "Checklist screen";
 }
 
 @section Header
@@ -10,7 +10,14 @@
 }
 
 @section AdditionalScripts{
-    <script type="text/javascript" src="/assets/js/pages/datatables_custom_items.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/selects/select2.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/pages/datatables_custom_items.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/pages/form_checkboxes_radios.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/styling/uniform.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/styling/switch.min.js"></script>
+
+    
 
     <script>
         ko.bindingHandlers.bootstrapSwitchOn = {
@@ -30,7 +37,6 @@
                 }
             }
         };
-
 
         userId = @Html.Raw(Json.Encode(ViewBag.UserId));
         checklistId = @Html.Raw(Json.Encode(ViewBag.ChecklistId));
@@ -53,7 +59,7 @@
             self.ChangedBy = ko.observable();
             self.Status = ko.observable();
 
-            self.DefectSpotsCount = ko.observable();
+            //self.DefectSpotsCount = ko.observable();
             self.Description = ko.observable();
             self.InitSubscribtions = function() {
                 self.Status.subscribe(function() {
@@ -97,12 +103,12 @@
                     checklistViewModel.DateOfLastChange(checklistItem.DateOfLastChange);
                     checklistViewModel.ChangedBy(checklistItem.ChangedBy);
                     checklistViewModel.Status(checklistItem.Status);
-                    checklistViewModel.DefectSpotsCount(checklistItem.DefectSpotsCount);
+                    //checklistViewModel.DefectSpotsCount(checklistItem.DefectSpotsCount);
                     checklistViewModel.Description(checklistItem.Description);
                     mainViewModel.ChecklistItemsList.push(checklistViewModel);
-                    checklistViewModel.InitSubscribtions();
+                    //checklistViewModel.InitSubscribtions();
                 });
-                initCheckboxes();
+                //initCheckboxes();
                 initDataTables();
             });
         }
@@ -113,13 +119,10 @@
     </script>
 }
 
-<div id="main_content" class="page-content">
+<div class="page-content" id="main_content">
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title"><i class="icon-clipboard2"></i><span data-bind="text: ChecklistName"></span></h4>
-            </div>
             <div class="panel-body">
                 <table class="table datatable-basic table-hover">
                     <thead>
@@ -131,22 +134,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                    
-                    <!-- ko foreach: ChecklistItemsList -->
-                    <tr class="whitespace hoverhref" data-url="#" data-bind="
-                        attr: {
-                            'data-description' : Description,
-                            'data-quantity' : DefectSpotsCount,
-                            'data-url': 'Details/' + Id() +'/'
-                        }">
-                        <td data-bind="html: Name"></td>
-                        <td data-bind="html: DateOfLastChange"></td>
-                        <td data-bind="html: ChangedBy"></td>
-                        <td class='checkboxcolumn'>
-                            <input type="checkbox" data-on-text="On" data-off-text="Off" data-bind="bootstrapSwitchOn: Status"/>
-                        </td>
-                    </tr>
-                    <!-- /ko -->
+
+                        <!-- ko foreach: ChecklistItemsList -->
+                        <tr class="whitespace hoverhref" data-url="#" data-bind="attr: { 'data-description' : Description}">
+                            <td data-bind="html: Name"></td>
+                            <td data-bind="html: DateOfLastChange"></td>
+                            <td data-bind="html: ChangedBy"></td>
+                            <td class='checkboxcolumn'>
+                                <input type="checkbox" data-on-color="success" data-off-color="danger" data-on-text="<i class=' icon-checkmark2'></i>"
+                                       data-off-text="<i class=' icon-cross'></i>" class="switch" data-size="mini"
+                                       data-bind="bootstrapSwitchOn: Status">
+                            </td>
+                        </tr>
+                        <!-- /ko -->
 
                     </tbody>
                 </table>

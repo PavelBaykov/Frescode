@@ -18,12 +18,12 @@ namespace Frescode.Controllers
             
         }
 
-        public ActionResult ChecklistsList(int projectId)
-        {
-            ViewBag.ProjectId = projectId;
-            ViewBag.UserId = User.Identity.Name;
-            return View();
-        }
+        //public ActionResult ChecklistsList(int projectId)
+        //{
+        //    ViewBag.ProjectId = projectId;
+        //    ViewBag.UserId = User.Identity.Name;
+        //    return View();
+        //}
 
         [HttpGet]
         public async Task<ActionResult> GetBreadcrumbText(int checklistId)
