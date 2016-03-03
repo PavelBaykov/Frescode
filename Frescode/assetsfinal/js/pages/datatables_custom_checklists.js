@@ -8,7 +8,7 @@
 *  Latest update: Aug 1, 2015
 *
 * ---------------------------------------------------------------------------- */
-$(function() {
+function initDataTables() {
 
 
     // Table setup
@@ -84,4 +84,4 @@ $(function() {
         minimumResultsForSearch: "-1"
     });
     
-});
+};

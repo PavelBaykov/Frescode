@@ -88,6 +88,6 @@ namespace Frescode.Controllers
         public string Name { get; set; }
         public string ChangedBy { get; set; }
         public string DateOfLastChange { get; set; }
-        //public string Status { get; set; }
+        
     }
 }

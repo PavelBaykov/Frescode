@@ -63,7 +63,7 @@ namespace Frescode
             routes.MapRoute(
                name: "nestedChecklistsList",
                url: "Project/{projectId}",
-               defaults: new { controller = "Checklist", action = "ChecklistsList" }
+               defaults: new { controller = "ProjectScreen", action = "ProjectScreenList" }
             );
             routes.MapRoute(
                name: "ChecklistsListBreadcrumb",

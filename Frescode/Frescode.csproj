@@ -293,6 +293,7 @@
     <Compile Include="Controllers\InspectionDrawingController.cs" />
     <Compile Include="Controllers\PdfConverterController.cs" />
     <Compile Include="Controllers\PictureController.cs" />
+    <Compile Include="Controllers\ProjectScreenController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -4038,6 +4039,7 @@
     <Content Include="Views\ChecklistItems\ChecklistItemDetails.cshtml" />
     <Content Include="Views\ChecklistItems\DefectSpotAddition.cshtml" />
     <Content Include="Views\Shared\_Breadcrumb.cshtml" />
+    <Content Include="Views\ProjectScreen\ProjectScreenList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

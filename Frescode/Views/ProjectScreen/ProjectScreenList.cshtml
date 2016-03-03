@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewBag.Title = "Project screen";
+}
+
+@section AdditionalScripts{
+
+    <script type="text/javascript" src="/assetsfinal/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/selects/select2.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/pages/foldersmove.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/velocity/velocity.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/pages/datatables_custom_checklists.js"></script>
+
+    <script>
+        userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+        projectId = @Html.Raw(Json.Encode(ViewBag.ProjectId));
+
+        function ChecklistsViewModel() {
+            var self = this;
+
+            self.ChecklistsList = ko.observableArray();
+            self.ProjectName = ko.observable("");
+            self.GenerateReportCommand = function() {
+                window.open(
+                  "/Report/GenerateReport?projectId=" + projectId,
+                  "_blank"
+                );
+            };
+        }
+
+        function ChecklistViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.Name = ko.observable();
+            self.DateOfLastChange = ko.observable();
+            self.ChangedBy = ko.observable();
+            self.Status = ko.observable();
+            self.GotoChecklistItemsListCommand = function() {
+                window.location.href = "Checklist/" + self.Id() + "/";
+            }
+        }
+
+        function getChecklists(callback) {
+            $.getJSON('/ProjectScreen/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        rootViewModel.MainViewModel(new ChecklistsViewModel());
+        var mainViewModel = rootViewModel.MainViewModel();
+
+        function fillViewModel(checklistsList) {
+            $(document).ready(function() {
+                mainViewModel.ChecklistsList.removeAll();
+                mainViewModel.ProjectName(checklistsList.ProjectName);
+                _.each(checklistsList.ChecklistsList, function(checklist) {
+                    var checklistViewModel = new ChecklistViewModel();
+                    checklistViewModel.Id(checklist.Id);
+                    checklistViewModel.Name(checklist.Name);
+                    checklistViewModel.DateOfLastChange(checklist.DateOfLastChange);
+                    checklistViewModel.ChangedBy(checklist.ChangedBy);
+                    checklistViewModel.Status(checklist.Status);
+                    mainViewModel.ChecklistsList.push(checklistViewModel);
+                });
+                initDataTables();
+            });
+        }
+
+        getChecklists(function(projects) {
+            fillViewModel(projects);
+        });
+</script>
+}
+
+@section Header
+{
+    @Html.Partial("_Breadcrumb")
+}
+
+<div class="page-container">
+
+    <!-- Page content -->
+    <div class="page-content" id="main_content">
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <div class="panel panel-default">
+                <div class="panel-body upper-panel">
+
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs nav-tabs-highlight">
+                            <li class="active"><a href="#highlighted-tab1" data-toggle="tab">Inspection drawings</a></li>
+                            <li><a href="#highlighted-tab2" data-toggle="tab">Project checklists</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="highlighted-tab1">
+                                @*<div class="row">
+                                    <!-- Block annotaiton -->
+                                    <div class="col-md-12 ">
+                                        <ul class="media-list media-list-linked media-list-bordered custom-box">
+                                            <!-- ko if: foldersList().level()>0 -->
+                                            <li class="media">
+                                                <a class="media-link" data-bind="click:folderOut">
+                                                    <div class="media-left">
+                                                        <img src="assets/images/Turn-Up-2-icon.png" alt="">
+                                                    </div>
+
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading media-center-text" data-bind="text:foldersList().path"></h6>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <!-- /ko -->
+                                            <!-- ko foreach: foldersList().folders -->
+                                            <li class="media">
+                                                <a class="media-link" data-bind="click:folderIn">
+                                                    <div class="media-left">
+                                                        <img src="assets/images/folder-icon.png" alt="">
+                                                    </div>
+
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading media-center-text" data-bind="text:$data"></h6>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <!-- /ko -->
+                                            <!-- ko foreach: foldersList().files -->
+                                            <li class="media">
+                                                <a class="media-link" data-bind="click: onDrawingClick" data-url="id_screen.html">
+                                                    <div class="media-left">
+                                                        <img src="assets/images/Icon-Blue1.png" alt="">
+                                                    </div>
+
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading media-center-text" data-bind="text:name"></h6>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <!-- /ko -->
+                                        </ul>
+                                    </div>
+                                </div>*@
+                            </div>
+
+                            <div class="tab-pane" id="highlighted-tab2">
+                                <table class="table datatable-basic table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Checklist</th>
+                                            <th>Last Edited</th>
+                                            <th>Edited by</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- ko foreach: ChecklistsList  -->
+                                        <tr class="whitespace hoverhref" data-bind="click: GotoChecklistItemsListCommand">
+                                            <td data-bind="text: Name"></td>
+                                            <td data-bind="text: DateOfLastChange"></td>
+                                            <td data-bind="text: ChangedBy"></td>
+                                            <td><span class="label label-success" data-bind="text:Status"></span></td>
+                                        </tr>
+                                        <!-- /ko -->
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- /main content -->
+
+
+
+
+</div>
+

@@ -42,9 +42,9 @@
             FetchBreadcrumbText(s, viewModel.Text);
         });
         if (segments.length > 1) {
-            backPath = segments[segments.length - 2];
+            backPath = segments[segments.length - 1];
         } else {
-            backPath = "#";
+            backPath = "/";
         }
     }
     rootViewModel.BreadcrumbViewModel({ BreadcrumbsList: breadcrumbs, BackPath: ko.observable(backPath) });
@@ -59,13 +59,18 @@
                 <a data-bind="attr: { href: BackPath }" style="color: black"><i class="icon-arrow-left52 position-left" style="margin-right: 11px"></i></a><span class="text-semibold">@ViewBag.Title</span>
             </h3>
             <ul class="breadcrumb breadcrumb-caret position-right">
-                <li><a href="/">Home</a></li>
+                <li><a href="/">Projects</a></li>
 
-                <!-- ko foreach: breadcrumbViewModel.BreadcrumbsList -->
-                <li><a data-bind="attr: { href: Path }, text: Text"></a></li>
+                <!-- ko foreach: breadcrumbViewModel.BreadcrumbsList -->              
+
+                    <!-- ko if: breadcrumbViewModel.BreadcrumbsList().length-1 != $index() -->
+                        <li><a data-bind="attr: { href: Path }, text: Text"></a></li>
+                    <!-- /ko -->
+                    <!-- ko if: breadcrumbViewModel.BreadcrumbsList().length-1 == $index() -->
+                        <li class="active" data-bind="text: Text"></li>
+                    <!-- /ko -->
+
                 <!-- /ko -->
-
-                <li class="active">@Html.Raw(ViewBag.Title)</li>
             </ul>
         </div>
     </div>
