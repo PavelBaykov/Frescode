@@ -11,6 +11,6 @@ namespace DALLib.Entities
         public DateTime DateOfLastChange { get; set; }
         public User ChangedBy { get; set; }
         public Checklist Checklist { get; set; }
-        public ChecklistItemTemplate ItemTemplate { get; set; }
+        public ChecklistItemTemplate ItemTemplate { get; set; }/*Под вопросом*/
     }
 }

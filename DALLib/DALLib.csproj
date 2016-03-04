@@ -92,6 +92,7 @@
     <Compile Include="Entities\ChecklistTemplate.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\DefectionSpot.cs" />
+    <Compile Include="Entities\Structure.cs" />
     <Compile Include="Entities\InspectionDrawing.cs" />
     <Compile Include="Entities\Picture.cs" />
     <Compile Include="Entities\Project.cs" />
@@ -101,6 +102,14 @@
     <Compile Include="Migrations\201603021042435_InitialCreate.cs" />
     <Compile Include="Migrations\201603021042435_InitialCreate.Designer.cs">
       <DependentUpon>201603021042435_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603040648480_InitialCreate1.cs" />
+    <Compile Include="Migrations\201603040648480_InitialCreate1.Designer.cs">
+      <DependentUpon>201603040648480_InitialCreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603040657584_structures.cs" />
+    <Compile Include="Migrations\201603040657584_structures.Designer.cs">
+      <DependentUpon>201603040657584_structures.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +122,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603021042435_InitialCreate.resx">
       <DependentUpon>201603021042435_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603040648480_InitialCreate1.resx">
+      <DependentUpon>201603040648480_InitialCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603040657584_structures.resx">
+      <DependentUpon>201603040657584_structures.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

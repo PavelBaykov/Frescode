@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace DALLib.Entities
 {
@@ -6,9 +6,9 @@ namespace DALLib.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Size { get; set; }
-        public DateTime DateCreated { get; set; }
-        public User CreatedBy { get; set; }
+        public int Size { get; set; } /*Под вопросом*/
+        public DateTime DateCreated { get; set; }/*Под вопросом*/
+        public User CreatedBy { get; set; }/*Под вопросом*/
         public InspectionDrawingData InspectionDrawingData { get; set; }
         public int InspectionDrawingDataId { get; set; }
     }

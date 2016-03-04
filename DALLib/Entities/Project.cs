@@ -15,7 +15,8 @@ namespace DALLib.Entities
         public ICollection<User> Members { get; set; }
         public ICollection<Checklist> Checklists { get; set; }
         public Customer Customer { get; set; }
-        public ProjectStatus Status { get; set; }
+        public ProjectStatus Status { get; set; } /*Под вопросом*/
+        public ICollection<Structure> Structures { get; set; }
     }
 
     public enum ProjectStatus

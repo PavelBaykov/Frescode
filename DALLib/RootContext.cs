@@ -17,6 +17,7 @@ namespace DALLib
         }
 
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Structure> Structures { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Checklist> Checklists { get; set; }
         public DbSet<ChecklistTemplate> ChecklistTemplates { get; set; }
@@ -130,6 +131,11 @@ namespace DALLib
                 .HasRequired(inspectionDrawing => inspectionDrawing.InspectionDrawingData)
                 .WithMany()
                 .HasForeignKey(x => x.InspectionDrawingDataId);
+
+            modelBuilder.Entity<Project>()
+                .HasMany(proj => proj.Structures)
+                .WithRequired(s => s.Project)
+                .WillCascadeOnDelete(true);
         }
     }
 }

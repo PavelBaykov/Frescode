@@ -41,6 +41,20 @@
             }
         }
 
+        function StructureViewModel() {
+            var self = this;
+
+            self.id = ko.observable();
+            self.name = ko.observable();
+            self.folder = ko.observable();
+        }
+
+        function StructuresViewModel() {
+            var self = this;
+
+            self.StructuresList = ko.observable(new FoldersList([],null));
+        }
+
         function getChecklists(callback) {
             $.getJSON('/ProjectScreen/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
                 .error(function(e) {
@@ -58,13 +72,30 @@
                 });
         }
 
-        rootViewModel.MainViewModel(new ChecklistsViewModel());
+        function getStructures(callback) {
+            $.getJSON('/ProjectScreen/GetStructures?userId=' + userId + '&projectId=' + projectId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        rootViewModel.MainViewModel({Checklists: new ChecklistsViewModel(), Structures:new StructuresViewModel()});
         var mainViewModel = rootViewModel.MainViewModel();
 
-        function fillViewModel(checklistsList) {
+        function fillViewModelWithChecklists(checklistsList) {
             $(document).ready(function() {
-                mainViewModel.ChecklistsList.removeAll();
-                mainViewModel.ProjectName(checklistsList.ProjectName);
+                mainViewModel.Checklists.ChecklistsList.removeAll();
+                mainViewModel.Checklists.ProjectName(checklistsList.ProjectName);
                 _.each(checklistsList.ChecklistsList, function(checklist) {
                     var checklistViewModel = new ChecklistViewModel();
                     checklistViewModel.Id(checklist.Id);
@@ -72,15 +103,49 @@
                     checklistViewModel.DateOfLastChange(checklist.DateOfLastChange);
                     checklistViewModel.ChangedBy(checklist.ChangedBy);
                     checklistViewModel.Status(checklist.Status);
-                    mainViewModel.ChecklistsList.push(checklistViewModel);
+                    mainViewModel.Checklists.ChecklistsList.push(checklistViewModel);
                 });
                 initDataTables();
             });
         }
 
-        getChecklists(function(projects) {
-            fillViewModel(projects);
+        function fillViewModelWithStructures(structuresList) {
+            $(document).ready(function() {
+                var drawingArray=[];
+                _.each(structuresList.Structures, function(structure) {
+                    var structViewModel = new Object();
+                    structViewModel.id=structure.Id;
+                    structViewModel.name=structure.Name;
+                    structViewModel.folder=structure.Path;
+                    drawingArray.push(structViewModel);
+                });
+
+                rootViewModel.MainViewModel().Structures.
+                    StructuresList(new FoldersList(drawingArray,rootViewModel.MainViewModel().Structures.StructuresList));
+            });
+        }
+
+        //function getProjectScreenData(){
+        //    $.when($.getJSON('/ProjectScreen/GetStructures?userId=' + userId + '&projectId=' + projectId),
+        //            $.getJSON('/ProjectScreen/GetChecklistsList?userId=' + userId + '&projectId=' + projectId))
+        //        .done(function(structures,checklists){
+        //            fillViewModelWithStructures(structures[0]);
+        //            fillViewModelWithChecklists(checklists[0]);
+        //            initDataTables();
+        //    });
+        //}
+
+        getStructures(function(structures){
+            fillViewModelWithStructures(structures);
         });
+
+        getChecklists(function(checklists) {
+            fillViewModelWithChecklists(checklists);
+        });
+
+        //getProjectScreenData();
+
+        
 </script>
 }
 
@@ -106,28 +171,28 @@
 
                         <div class="tab-content">
                             <div class="tab-pane active" id="highlighted-tab1">
-                                @*<div class="row">
+                                <div class="row">
                                     <!-- Block annotaiton -->
                                     <div class="col-md-12 ">
                                         <ul class="media-list media-list-linked media-list-bordered custom-box">
-                                            <!-- ko if: foldersList().level()>0 -->
+                                            <!-- ko if: Structures.StructuresList().level()>0 -->
                                             <li class="media">
                                                 <a class="media-link" data-bind="click:folderOut">
                                                     <div class="media-left">
-                                                        <img src="assets/images/Turn-Up-2-icon.png" alt="">
+                                                        <img src="/assetsfinal/images/Turn-Up-2-icon.png" alt="">
                                                     </div>
 
                                                     <div class="media-body">
-                                                        <h6 class="media-heading media-center-text" data-bind="text:foldersList().path"></h6>
+                                                        <h6 class="media-heading media-center-text" data-bind="text:Structures.StructuresList().path"></h6>
                                                     </div>
                                                 </a>
                                             </li>
                                             <!-- /ko -->
-                                            <!-- ko foreach: foldersList().folders -->
+                                            <!-- ko foreach: Structures.StructuresList().folders -->
                                             <li class="media">
                                                 <a class="media-link" data-bind="click:folderIn">
                                                     <div class="media-left">
-                                                        <img src="assets/images/folder-icon.png" alt="">
+                                                        <img src="/assetsfinal/images/folder-icon.png" alt="">
                                                     </div>
 
                                                     <div class="media-body">
@@ -136,11 +201,11 @@
                                                 </a>
                                             </li>
                                             <!-- /ko -->
-                                            <!-- ko foreach: foldersList().files -->
+                                            <!-- ko foreach: Structures.StructuresList().files -->
                                             <li class="media">
-                                                <a class="media-link" data-bind="click: onDrawingClick" data-url="id_screen.html">
+                                                <a class="media-link"  data-url="id_screen.html">@*data-bind="click: onDrawingClick"*@
                                                     <div class="media-left">
-                                                        <img src="assets/images/Icon-Blue1.png" alt="">
+                                                        <img src="/assetsfinal/images/Icon-Blue1.png" alt="">
                                                     </div>
 
                                                     <div class="media-body">
@@ -151,7 +216,7 @@
                                             <!-- /ko -->
                                         </ul>
                                     </div>
-                                </div>*@
+                                </div>
                             </div>
 
                             <div class="tab-pane" id="highlighted-tab2">
@@ -165,7 +230,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- ko foreach: ChecklistsList  -->
+                                        <!-- ko foreach: Checklists.ChecklistsList  -->
                                         <tr class="whitespace hoverhref" data-bind="click: GotoChecklistItemsListCommand">
                                             <td data-bind="text: Name"></td>
                                             <td data-bind="text: DateOfLastChange"></td>

@@ -27,12 +27,12 @@
 							if (val.splittedFolder[self.level()]!=="") {
 								folders.push(val.splittedFolder[self.level()]);
 							}
-							else if (val.splittedFolder[self.level()]===""){
+							else if (val.splittedFolder[self.level()]==="" && val.name!=""){
 								files.push({name:val.name,id:val.id});	
 							}
 						});
 				var foldersunique=folders.filter(onlyUnique);
-				var filesunique=files.filter(onlyUnique);
+				var filesunique=files;
 
 				$.each(foldersunique,function(key,val){
 					self.folders.push(val);
@@ -48,9 +48,9 @@
 			};
 
 	function folderIn(elem){
-		rootViewModel.mainViewModel().foldersList().path(rootViewModel.mainViewModel().foldersList().path()+elem+'/');
-		rootViewModel.mainViewModel().foldersList().level(rootViewModel.mainViewModel().foldersList().level()+1);
-		foldersMove(rootViewModel.mainViewModel().foldersList().level());
+		rootViewModel().path(rootViewModel().path()+elem+'/');
+		rootViewModel().level(rootViewModel().level()+1);
+		foldersMove(rootViewModel().level());
 		
 	        // Add animate options
 			var animateMap = {},
@@ -74,15 +74,15 @@
 	}
 
 	function folderOut(elem){
-		var arr = rootViewModel.mainViewModel().foldersList().path().split('/');
+		var arr = rootViewModel().path().split('/');
 		arr.splice(arr.length-2,2);
 		var a=arr.join("/");
 		if (a!=="") {
 			a=a+'/';
 		} 
-		rootViewModel.mainViewModel().foldersList().path(a);
-		rootViewModel.mainViewModel().foldersList().level(rootViewModel.mainViewModel().foldersList().level()-1);
-		foldersMove(rootViewModel.mainViewModel().foldersList().level());
+		rootViewModel().path(a);
+		rootViewModel().level(rootViewModel().level()-1);
+		foldersMove(rootViewModel().level());
 
 		// Add animate options
 			var animateMap = {},
@@ -107,15 +107,15 @@
 	function foldersMove(lev){
 		var goodArr=new Array();			
 		
-		$.each(rootViewModel.mainViewModel().foldersList().drawingsStructure,function(key,val){
-			if (val.folder.startsWith(rootViewModel.mainViewModel().foldersList().path())){
+		$.each(rootViewModel().drawingsStructure,function(key,val){
+			if (val.folder.startsWith(rootViewModel().path())){
 				//console.log(val.folder);
-				goodArr.push(rootViewModel.mainViewModel().foldersList().drawingsStructure[key])
+				goodArr.push(rootViewModel().drawingsStructure[key])
 			}
 		});
 
-		rootViewModel.mainViewModel().foldersList().folders.removeAll();
-		rootViewModel.mainViewModel().foldersList().files.removeAll();
+		rootViewModel().folders.removeAll();
+		rootViewModel().files.removeAll();
 		
 		var folders=new Array();
 		var files=new Array();
@@ -124,20 +124,20 @@
 			if (val.splittedFolder.length>lev && val.splittedFolder[lev]!=="") {
 				folders.push(val.splittedFolder[lev]);
 			}
-			else if (val.splittedFolder[lev]===""){
+			else if (val.splittedFolder[lev]==="" && val.name!=""){
 				files.push({name:val.name,id:val.id});	
 			}
 		});
 
 		var foldersunique=folders.filter(onlyUnique);
-		var filesunique=files.filter(onlyUnique);
+		var filesunique=files;
 
 		$.each(foldersunique,function(key,val){
-			rootViewModel.mainViewModel().foldersList().folders.push(val);
+			rootViewModel().folders.push(val);
 		});
 
 		$.each(filesunique,function(key,val){
-			rootViewModel.mainViewModel().foldersList().files.push({name:val.name,id:val.id});
+			rootViewModel().files.push({name:val.name,id:val.id});
 		});
 
 

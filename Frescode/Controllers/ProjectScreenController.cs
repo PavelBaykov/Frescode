@@ -54,6 +54,28 @@ namespace Frescode.Controllers
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult GetStructures(int projectId)
+        {
+            var structuresFromDb = Context.Structures
+                .Include(s=> s.Project)
+                .Where(s => s.Project.Id == projectId);
+
+            var structures = new StructuresListViewModel();
+
+            foreach (var s in structuresFromDb)
+            {
+                var tmpStruct = new StructureViewModel();
+                tmpStruct.Name = s.Name;
+                tmpStruct.Path = s.Path;
+                tmpStruct.Id = s.Id;
+
+                structures.Structures.Add(tmpStruct);
+            }
+
+            return Json(structures, JsonRequestBehavior.AllowGet);
+        }
     }
 
     public class ChecklistsListViewModel
@@ -73,5 +95,22 @@ namespace Frescode.Controllers
         public string ChangedBy { get; set; }
         public string DateOfLastChange { get; set; }
         public string Status { get; set; }
+    }
+
+    public class StructuresListViewModel
+    {
+        public StructuresListViewModel()
+        {
+            Structures = new List<StructureViewModel>();
+        }
+        public List<StructureViewModel> Structures { get; set; }
+       
+    }
+
+    public class StructureViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }

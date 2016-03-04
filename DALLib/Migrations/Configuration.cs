@@ -291,6 +291,15 @@ namespace DALLib.Migrations
             checklistItem1.DefectionSpots.Add(defectSpot1);
             checklistItem2.DefectionSpots.Add(defectSpot2);
 
+            var structures = new List<Structure>(){
+                new Structure() { Path = "Folder1/", Name = "", Project = project1 },
+                new Structure() { Path = "Folder2/", Name = "", Project = project1 },
+                new Structure() { Path = "Folder1/Folder3/", Name = "", Project = project1 },
+                new Structure() { Path = "Folder1/", Name = "InspectionDrawing", Project = project1}
+            };
+
+            context.Structures.AddRange(structures);
+
             context.DefectionSpots.Add(defectSpot1);
             context.DefectionSpots.Add(defectSpot2);
 
