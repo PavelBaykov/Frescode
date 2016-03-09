@@ -23,6 +23,11 @@ namespace DALLib.Migrations
 
         protected override void Seed(DALLib.RootContext context)
         {
+
+            if (System.Diagnostics.Debugger.IsAttached == false)
+                System.Diagnostics.Debugger.Launch();
+
+
             var user1 = new User
             {
                 FirstName = "Pavel",
@@ -75,25 +80,23 @@ namespace DALLib.Migrations
                 Status = ProjectStatus.Done
             };
 
-            var webClient = new WebClient();
-            var floorPlanBytes = webClient.DownloadData("http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
+            //var webClient = new WebClient();
+            //var floorPlanBytes = webClient.DownloadData("http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
 
-            var httpClient = new HttpClient();
-            //var floorPlanBytes = await httpClient.GetByteArrayAsync("");
-            //httpClient.GetByteArrayAsync("http://www.hollandaleapartments.com/images/floor%20plans/Embassy-floor-plan.png");
-            var inspectionDrawingData = new InspectionDrawingData
-            {
-                Data = floorPlanBytes
-            };
+            //var httpClient = new HttpClient();
+            //var inspectionDrawingTemplate = new InspectionDrawingTemplate
+            //{
+            //    Data = floorPlanBytes
+            //};
 
-            var inspectionDrawing = new InspectionDrawing
-            {
-                CreatedBy = user1,
-                DateCreated = DateTime.Now,
-                Name = "Inspection Drawing 1",
-                Size = 1024,
-                InspectionDrawingData = inspectionDrawingData
-            };
+            //var inspectionDrawing = new InspectionDrawing
+            //{
+            //    CreatedBy = user1,
+            //    DateCreated = DateTime.Now,
+            //    Name = "Inspection Drawing 1",
+            //    Size = 1024,
+            //    InspectionDrawingTemplate = inspectionDrawingTemplate
+            //};
 
             var checklistTemplate = new ChecklistTemplate
             {
@@ -114,7 +117,7 @@ namespace DALLib.Migrations
                 Description = "Description of Item 1",
                 OrderNumber = 2,
                 Descendants = new List<ChecklistItem>(),
-                InspectionDrawing = inspectionDrawing
+                //InspectionDrawing = inspectionDrawing
             };
 
             var checklistItemTemplate2 = new ChecklistItemTemplate
@@ -124,7 +127,7 @@ namespace DALLib.Migrations
                 Description = "Description of Item 2",
                 OrderNumber = 1,
                 Descendants = new List<ChecklistItem>(),
-                InspectionDrawing = inspectionDrawing
+                //InspectionDrawing = inspectionDrawing
             };
 
             var checklistItemTemplate3 = new ChecklistItemTemplate
@@ -134,7 +137,7 @@ namespace DALLib.Migrations
                 Description = "Description of Item 1",
                 OrderNumber = 1,
                 Descendants = new List<ChecklistItem>(),
-                InspectionDrawing = inspectionDrawing
+                //InspectionDrawing = inspectionDrawing
             };
             var checklistItemTemplate4 = new ChecklistItemTemplate
             {
@@ -143,7 +146,7 @@ namespace DALLib.Migrations
                 Description = "Description of Item 2",
                 OrderNumber = 2,
                 Descendants = new List<ChecklistItem>(),
-                InspectionDrawing = inspectionDrawing
+                //InspectionDrawing = inspectionDrawing
             };
             var checklistItemTemplate5 = new ChecklistItemTemplate
             {
@@ -152,7 +155,7 @@ namespace DALLib.Migrations
                 Description = "Description of Item 3",
                 OrderNumber = 3,
                 Descendants = new List<ChecklistItem>(),
-                InspectionDrawing = inspectionDrawing
+                //InspectionDrawing = inspectionDrawing
             };
 
             /*#region  Add checklistItemTemplates to checklistTemplate
@@ -247,49 +250,49 @@ namespace DALLib.Migrations
             //checklist2.ChecklistInit(Context);
             //checklist3.ChecklistInit(Context);
 
-            var defectSpot1 = new DefectionSpot
-            {
-                ChecklistItem = checklistItem1,
-                DateCreated = DateTime.UtcNow,
-                Description = "Description of defect spot",
-                X = 0.2,
-                Y = 0.5,
-                OrderNumber = 1,
-                AttachedPictures = new List<Picture>()
-            };
-            var defectSpot2 = new DefectionSpot
-            {
-                ChecklistItem = checklistItem2,
-                DateCreated = DateTime.UtcNow,
-                Description = "Description of defect spot",
-                X = 0.3,
-                Y = 0.1,
-                OrderNumber = 1,
-                AttachedPictures = new List<Picture>()
-            };
-            var picture1 = new Picture
-            {
-                DateCaptured = DateTime.UtcNow,
-                Name = "Picture 1",
-                PictureData = new PictureData
-                {
-                    Data = floorPlanBytes
-                }
-            };
-            var picture2 = new Picture
-            {
-                DateCaptured = DateTime.UtcNow,
-                Name = "Picture 2",
-                PictureData = new PictureData
-                {
-                    Data = floorPlanBytes
-                }
-            };
-            defectSpot1.AttachedPictures.Add(picture1);
-            defectSpot2.AttachedPictures.Add(picture2);
+            //var defectSpot1 = new DefectionSpot
+            //{
+            //    ChecklistItem = checklistItem1,
+            //    DateCreated = DateTime.UtcNow,
+            //    Description = "Description of defect spot",
+            //    X = 0.2,
+            //    Y = 0.5,
+            //    OrderNumber = 1,
+            //    AttachedPictures = new List<Picture>()
+            //};
+            //var defectSpot2 = new DefectionSpot
+            //{
+            //    ChecklistItem = checklistItem2,
+            //    DateCreated = DateTime.UtcNow,
+            //    Description = "Description of defect spot",
+            //    X = 0.3,
+            //    Y = 0.1,
+            //    OrderNumber = 1,
+            //    AttachedPictures = new List<Picture>()
+            //};
+            //var picture1 = new Picture
+            //{
+            //    DateCaptured = DateTime.UtcNow,
+            //    Name = "Picture 1",
+            //    PictureData = new PictureData
+            //    {
+            //        Data = floorPlanBytes
+            //    }
+            //};
+            //var picture2 = new Picture
+            //{
+            //    DateCaptured = DateTime.UtcNow,
+            //    Name = "Picture 2",
+            //    PictureData = new PictureData
+            //    {
+            //        Data = floorPlanBytes
+            //    }
+            //};
+            //defectSpot1.AttachedPictures.Add(picture1);
+            //defectSpot2.AttachedPictures.Add(picture2);
 
-            checklistItem1.DefectionSpots.Add(defectSpot1);
-            checklistItem2.DefectionSpots.Add(defectSpot2);
+            //checklistItem1.DefectionSpots.Add(defectSpot1);
+            //checklistItem2.DefectionSpots.Add(defectSpot2);
 
             var structures = new List<Structure>(){
                 new Structure() { Path = "Folder1/", Name = "", Project = project1 },
@@ -300,8 +303,8 @@ namespace DALLib.Migrations
 
             context.Structures.AddRange(structures);
 
-            context.DefectionSpots.Add(defectSpot1);
-            context.DefectionSpots.Add(defectSpot2);
+            //context.DefectionSpots.Add(defectSpot1);
+            //context.DefectionSpots.Add(defectSpot2);
 
             user1.Projects.Add(project1);
             user1.ProjectsOwned.Add(project1);

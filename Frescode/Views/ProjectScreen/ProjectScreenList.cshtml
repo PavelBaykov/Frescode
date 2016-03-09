@@ -41,19 +41,19 @@
             }
         }
 
-        function StructureViewModel() {
-            var self = this;
+        //function StructureViewModel() {
+        //    var self = this;
 
-            self.id = ko.observable();
-            self.name = ko.observable();
-            self.folder = ko.observable();
-        }
+        //    self.id = ko.observable();
+        //    self.name = ko.observable();
+        //    self.folder = ko.observable();
+        //}
 
-        function StructuresViewModel() {
-            var self = this;
+        //function StructuresViewModel() {
+        //    var self = this;
 
-            self.StructuresList = ko.observable(new FoldersList([],null));
-        }
+        //    self.StructuresList = ko.observable(new FoldersList([],null));
+        //}
 
         function getChecklists(callback) {
             $.getJSON('/ProjectScreen/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
@@ -89,7 +89,8 @@
                 });
         }
 
-        rootViewModel.MainViewModel({Checklists: new ChecklistsViewModel(), Structures:new StructuresViewModel()});
+        var foldersList = new FoldersList();
+        rootViewModel.MainViewModel({Checklists: new ChecklistsViewModel(), Structures:foldersList});
         var mainViewModel = rootViewModel.MainViewModel();
 
         function fillViewModelWithChecklists(checklistsList) {
@@ -120,8 +121,7 @@
                     drawingArray.push(structViewModel);
                 });
 
-                rootViewModel.MainViewModel().Structures.
-                    StructuresList(new FoldersList(drawingArray,rootViewModel.MainViewModel().Structures.StructuresList));
+                foldersList.init(drawingArray);
             });
         }
 
@@ -175,22 +175,22 @@
                                     <!-- Block annotaiton -->
                                     <div class="col-md-12 ">
                                         <ul class="media-list media-list-linked media-list-bordered custom-box">
-                                            <!-- ko if: Structures.StructuresList().level()>0 -->
+                                            <!-- ko if: Structures.level()>0 -->
                                             <li class="media">
-                                                <a class="media-link" data-bind="click:folderOut">
+                                                <a class="media-link" data-bind="click: Structures.folderOut ">
                                                     <div class="media-left">
                                                         <img src="/assetsfinal/images/Turn-Up-2-icon.png" alt="">
                                                     </div>
 
                                                     <div class="media-body">
-                                                        <h6 class="media-heading media-center-text" data-bind="text:Structures.StructuresList().path"></h6>
+                                                        <h6 class="media-heading media-center-text" data-bind="text:Structures.path"></h6>
                                                     </div>
                                                 </a>
                                             </li>
                                             <!-- /ko -->
-                                            <!-- ko foreach: Structures.StructuresList().folders -->
+                                            <!-- ko foreach: Structures.folders -->
                                             <li class="media">
-                                                <a class="media-link" data-bind="click:folderIn">
+                                                <a class="media-link" data-bind="click: $parent.Structures.folderIn ">
                                                     <div class="media-left">
                                                         <img src="/assetsfinal/images/folder-icon.png" alt="">
                                                     </div>
@@ -201,9 +201,9 @@
                                                 </a>
                                             </li>
                                             <!-- /ko -->
-                                            <!-- ko foreach: Structures.StructuresList().files -->
+                                            <!-- ko foreach: Structures.files -->
                                             <li class="media">
-                                                <a class="media-link"  data-url="id_screen.html">@*data-bind="click: onDrawingClick"*@
+                                                <a class="media-link" data-url="id_screen.html" data-bind="click: onClickCommand">
                                                     <div class="media-left">
                                                         <img src="/assetsfinal/images/Icon-Blue1.png" alt="">
                                                     </div>

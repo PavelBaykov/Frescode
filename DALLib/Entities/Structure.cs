@@ -12,6 +12,6 @@ namespace DALLib.Entities
         public string Path { get; set; }
         public string Name { get; set; }
         public Project Project { get; set; }
-        //Add InspectionDrawing link
+        //public InspectionDrawing InspectionDrawing { get; set; }
     }
 }

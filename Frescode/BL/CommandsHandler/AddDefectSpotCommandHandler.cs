@@ -30,20 +30,20 @@ namespace Frescode.BL.CommandsHandler
                     AttachedPictures = new List<Picture>(),
                     ChecklistItem = await _rootContext.ChecklistItems.SingleOrDefaultAsync(c => c.Id == notification.ChecklistItemId)
                 };
-                _rootContext.DefectionSpots.Add(defectionSpot);
+                //_rootContext.DefectionSpots.Add(defectionSpot);
             }
             else
             {
-                defectionSpot = await _rootContext.DefectionSpots.SingleOrDefaultAsync(d => d.Id == notification.Id);
+                //defectionSpot = await _rootContext.DefectionSpots.SingleOrDefaultAsync(d => d.Id == notification.Id);
             }
-            defectionSpot.X = notification.X;
-            defectionSpot.Y = notification.Y;
-            defectionSpot.Description = notification.Description;
-            defectionSpot.OrderNumber = notification.OrderNumber;
+            //defectionSpot.X = notification.X;
+            //defectionSpot.Y = notification.Y;
+            //defectionSpot.Description = notification.Description;
+            //defectionSpot.OrderNumber = notification.OrderNumber;
 
-            await NormalizeOrderNumbers(notification.ChecklistItemId);
-            await _rootContext.SaveChangesAsync();
-            notification.Id = defectionSpot.Id;
+            //await NormalizeOrderNumbers(notification.ChecklistItemId);
+            //await _rootContext.SaveChangesAsync();
+            //notification.Id = defectionSpot.Id;
         }
 
         private async Task NormalizeOrderNumbers(int checklistItemId)

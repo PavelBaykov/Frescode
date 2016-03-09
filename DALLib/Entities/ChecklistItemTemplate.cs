@@ -11,7 +11,7 @@ namespace DALLib.Entities
         public int OrderNumber { get; set; }
 
         //Далее- под вопросом
-        public InspectionDrawing InspectionDrawing { get; set; }
-        public ICollection<ChecklistItem> Descendants { get; set; } 
+        //public InspectionDrawing InspectionDrawing { get; set; }
+        public ICollection<ChecklistItem> Descendants { get; set; }
     }
 }

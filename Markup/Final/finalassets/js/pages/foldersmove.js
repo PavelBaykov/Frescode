@@ -1,151 +1,135 @@
 //ToDo: refactor
 ;(function(){
 
+	var FolderViewModel = function(){
+		var self=this;
+		self.name=ko.observable();
+	};
+
+	var FileViewModel = function(){
+		var self=this;
+		self.id = ko.observable();
+		self.name=ko.observable();
+
+		self.onClickCommand = function(){
+			window.location.href="InspectionDrawing/"+self.id;
+		}
+	};
+
 	function onlyUnique(value, index, self) { 
 	    return self.indexOf(value) === index;
 	}
 
-	var rootViewModel=new Object();
-
-	var FoldersList = function(arr,viewModel){
-				var self = this;
-				self.level=ko.observable(0);
-				self.path=ko.observable("");
-				self.folders=ko.observableArray();
-				self.files = ko.observableArray();
-
-				self.drawingsStructure = new Array(); 
-
-				$.each(arr,function(key,val){
-						var splittedFolder = val.folder.split('/');
-						self.drawingsStructure.push({folder: val.folder,splittedFolder:splittedFolder,name:val.name, id:val.id});		
-
-				});
-				var folders=new Array();
-				var files=new Array();
-				$.each(self.drawingsStructure,function(key,val){
-							if (val.splittedFolder[self.level()]!=="") {
-								folders.push(val.splittedFolder[self.level()]);
-							}
-							else if (val.splittedFolder[self.level()]==="" && val.name!=""){
-								files.push({name:val.name,id:val.id});	
-							}
-						});
-				var foldersunique=folders.filter(onlyUnique);
-				var filesunique=files;
-
-				$.each(foldersunique,function(key,val){
-					self.folders.push(val);
-				});
-
-				$.each(filesunique,function(key,val){
-
-					self.files.push({name:val.name,id:val.id});
-				});
-
-				rootViewModel=viewModel;
-
-			};
-
-	function folderIn(elem){
-		rootViewModel().path(rootViewModel().path()+elem+'/');
-		rootViewModel().level(rootViewModel().level()+1);
-		foldersMove(rootViewModel().level());
-		
-	        // Add animate options
-			var animateMap = {},
-			animateOptions = {
-				easing: 'easeInOut',
-				duration: 250
-			};
-			animateMap["backgroundColorAlpha"] = 0.8;
-	        animateMap["backgroundColor"] = "#F5F5F5";
-
-	        // Add animation class to panel element
-	        $(".custom-box")
-	        .velocity(animateMap, animateOptions)
-	        .velocity("reverse", {
-	        	delay: 100,
-	        	complete: function() {
-	        		$(this).removeAttr('style');
-	        	}
-	        });
-	    
-	}
-
-	function folderOut(elem){
-		var arr = rootViewModel().path().split('/');
-		arr.splice(arr.length-2,2);
-		var a=arr.join("/");
-		if (a!=="") {
-			a=a+'/';
-		} 
-		rootViewModel().path(a);
-		rootViewModel().level(rootViewModel().level()-1);
-		foldersMove(rootViewModel().level());
-
-		// Add animate options
-			var animateMap = {},
-			animateOptions = {
-				easing: 'easeInOut',
-				duration: 250
-			};
-			animateMap["backgroundColorAlpha"] = 0.8;
-	        animateMap["backgroundColor"] = "#F5F5F5";
-
-	        // Add animation class to panel element
-	        $(".custom-box")
-	        .velocity(animateMap, animateOptions)
-	        .velocity("reverse", {
-	        	delay: 100,
-	        	complete: function() {
-	        		$(this).removeAttr('style');
-	        	}
-	        });
-	}
-
-	function foldersMove(lev){
-		var goodArr=new Array();			
-		
-		$.each(rootViewModel().drawingsStructure,function(key,val){
-			if (val.folder.startsWith(rootViewModel().path())){
-				//console.log(val.folder);
-				goodArr.push(rootViewModel().drawingsStructure[key])
-			}
+	function initFunction(arr,drawingsStructure){
+		$.each(arr,function(key,val){
+			var splittedFolder = val.folder.split('/');
+			drawingsStructure.push({folder: val.folder,splittedFolder:splittedFolder,name:val.name, id:val.id});		
 		});
+	}
 
-		rootViewModel().folders.removeAll();
-		rootViewModel().files.removeAll();
-		
+	function fillStructure(drawingsStructure, level, foldersObserve, filesObserve){
 		var folders=new Array();
 		var files=new Array();
-		
-		$.each(goodArr,function(key,val){
-			if (val.splittedFolder.length>lev && val.splittedFolder[lev]!=="") {
-				folders.push(val.splittedFolder[lev]);
+		$.each(drawingsStructure,function(key,val){
+			if (val.splittedFolder[(level())]!=="") {
+				folders.push(val.splittedFolder[level()]);
 			}
-			else if (val.splittedFolder[lev]==="" && val.name!=""){
+			else if (val.splittedFolder[level()]==="" && val.name!=""){
 				files.push({name:val.name,id:val.id});	
 			}
 		});
-
 		var foldersunique=folders.filter(onlyUnique);
-		var filesunique=files;
+		var filesunique=files.filter(onlyUnique);
 
 		$.each(foldersunique,function(key,val){
-			rootViewModel().folders.push(val);
+			var folderItem=new FolderViewModel();
+			folderItem.name=val;
+			foldersObserve.push(val);
 		});
 
 		$.each(filesunique,function(key,val){
-			rootViewModel().files.push({name:val.name,id:val.id});
+			var fileItem=new FileViewModel();
+			fileItem.id=val.id;
+			fileItem.name=val.name;
+			filesObserve.push(fileItem);
+		});
+	}
+
+	function addAnimation(){
+	// Add animate options
+			var animateMap = {},
+			animateOptions = {
+				easing: 'easeInOut',
+				duration: 250
+			};
+			animateMap["backgroundColorAlpha"] = 0.8;
+	        animateMap["backgroundColor"] = "#F5F5F5";
+
+	        // Add animation class to panel element
+	        $(".custom-box")
+	        .velocity(animateMap, animateOptions)
+	        .velocity("reverse", {
+	        	delay: 100,
+	        	complete: function() {
+	        		$(this).removeAttr('style');
+	        	}
+	        });
+	};
+
+	function foldersMove(lev,drawingsStructure,path,foldersObserve,filesObserve){
+		var goodArr=new Array();			
+		
+		$.each(drawingsStructure,function(key,val){
+			if (val.folder.startsWith(path)){
+				goodArr.push(drawingsStructure[key])
+			}
 		});
 
+		foldersObserve.removeAll();
+		filesObserve.removeAll();
+		
+		fillStructure(goodArr, lev, foldersObserve, filesObserve);
+	}
+
+	var FoldersList = function(){
+			
+			var self = this;
+			self.level=ko.observable(0);
+			self.path="";
+			self.folders=ko.observableArray();
+			self.files = ko.observableArray();
+
+			self.drawingsStructure = new Array(); 
+
+			self.init = function(arr){
+				initFunction(arr,self.drawingsStructure);
+				fillStructure(self.drawingsStructure,self.level,self.folders,self.files );	
+			};	
 
 
+
+			self.folderOut = function(elem){
+				var arr = self.path.split('/');
+				arr.splice(arr.length-2,2);
+				var cuttedPath=arr.join("/");
+				if (cuttedPath!=="") {
+					cuttedPath=cuttedPath+'/';
+				};
+				self.path=cuttedPath;
+				self.level(self.level()-1);
+				foldersMove(self.level,self.drawingsStructure,self.path,self.folders,self.files);
+
+				addAnimation();
+			};
+
+			self.folderIn = function(elem){
+				self.path=self.path+elem+'/';
+				self.level(self.level()+1);
+				foldersMove(self.level,self.drawingsStructure,self.path,self.folders,self.files);
+		
+		        addAnimation();
+			};			
 	}
 
 	window.FoldersList = FoldersList;
-	window.folderIn = folderIn;
-	window.folderOut = folderOut;
-
 }());
