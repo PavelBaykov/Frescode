@@ -9,9 +9,7 @@ namespace DALLib.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int OrderNumber { get; set; }
-
-        //Далее- под вопросом
-        //public InspectionDrawing InspectionDrawing { get; set; }
-        public ICollection<ChecklistItem> Descendants { get; set; }
+        public ICollection<ChecklistItemForProject> DescendantsForProject { get; set; }
+        public ICollection<ChecklistItemForInspectionDrawing> DescendantsForInspectionDrawing { get; set; }
     }
 }

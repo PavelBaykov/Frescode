@@ -28,9 +28,8 @@ namespace Frescode.Controllers
                 .Include(x => x.Checklists)
                 .Include(x => x.Checklists.Select(c => c.ChecklistTemplate))
                 .Include(x => x.Checklists.Select(c => c.Items))
-                .Include(x => x.Checklists.Select(c => c.Items.Select(i => i.DefectionSpots)))
                 .Include(x => x.Checklists.Select(c => c.Items.Select(i => i.ItemTemplate)))
-                .Include(x => x.Checklists.Select(c => c.Items.Select(i => i.DefectionSpots)))
+                //.Include(x => x.Checklists.Select(c => c.Items.Select(i => i.DefectionSpots)))
                 .Single(x => x.Id == projectId);
 
 
@@ -115,20 +114,20 @@ namespace Frescode.Controllers
                         XStringFormats.TopLeft);
                     _currentTop += itemDescriptionHeight + 5;
 
-                    foreach (var spot in item.DefectionSpots)
-                    {
-                        var description = spot.Description;
-                        var spotDescriptionHeight = MeasureHeight(_currentGraphics, description, new XFont("Arial", 13, XFontStyle.Regular), (int)_currentPage.Width + 160);
-                        CreateNewPageIfNeed(spotDescriptionHeight + 5);
-                        _formatter.DrawString("-", new XFont("Arial", 12, XFontStyle.Regular), XBrushes.Black,
-                            new XRect(93, _currentTop, _currentPage.Width - 50 - 93, spotDescriptionHeight),
-                            XStringFormats.TopLeft);
-                        _formatter.DrawString(description, new XFont("Arial", 12, XFontStyle.Regular), XBrushes.Black,
-                            new XRect(102, _currentTop, _currentPage.Width - 50 - 102, spotDescriptionHeight),
-                            XStringFormats.TopLeft);
+                    //foreach (var spot in item.DefectionSpots)
+                    //{
+                    //    var description = spot.Description;
+                    //    var spotDescriptionHeight = MeasureHeight(_currentGraphics, description, new XFont("Arial", 13, XFontStyle.Regular), (int)_currentPage.Width + 160);
+                    //    CreateNewPageIfNeed(spotDescriptionHeight + 5);
+                    //    _formatter.DrawString("-", new XFont("Arial", 12, XFontStyle.Regular), XBrushes.Black,
+                    //        new XRect(93, _currentTop, _currentPage.Width - 50 - 93, spotDescriptionHeight),
+                    //        XStringFormats.TopLeft);
+                    //    _formatter.DrawString(description, new XFont("Arial", 12, XFontStyle.Regular), XBrushes.Black,
+                    //        new XRect(102, _currentTop, _currentPage.Width - 50 - 102, spotDescriptionHeight),
+                    //        XStringFormats.TopLeft);
 
-                        _currentTop += spotDescriptionHeight + 5;
-                    }
+                    //    _currentTop += spotDescriptionHeight + 5;
+                    //}
                 }
 
                 CreateNewPageIfNeed(20);

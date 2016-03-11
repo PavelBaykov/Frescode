@@ -9,10 +9,11 @@
 	var FileViewModel = function(){
 		var self=this;
 		self.id = ko.observable();
-		self.name=ko.observable();
+		self.name = ko.observable();
+		self.inspectionDrawingId = ko.observable();
 
 		self.onClickCommand = function(){
-			window.location.href="InspectionDrawing/"+self.id;
+		    window.location.href = "InspectionDrawing/" + self.inspectionDrawingId;
 		}
 	};
 
@@ -35,7 +36,7 @@
 				folders.push(val.splittedFolder[level()]);
 			}
 			else if (val.splittedFolder[level()]==="" && val.name!=""){
-				files.push({name:val.name,id:val.id});	
+			    files.push({ name: val.name, id: val.id, inspectionDrawingId: val.inspectionDrawingId });
 			}
 		});
 		var foldersunique=folders.filter(onlyUnique);

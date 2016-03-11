@@ -18,7 +18,7 @@ namespace Frescode.BL.CommandsHandler
 
         public async Task Handle(ChecklistItemChangeStateCommand notification)
         {
-            var item = _rootContext.ChecklistItems.Single(x => x.Id == notification.ItemId);
+            var item = _rootContext.ChecklistItemsForProject.Single(x => x.Id == notification.ItemId);
             item.Status = notification.State ? ChecklistItemStatus.Completed : ChecklistItemStatus.NotCompleted;
             await _rootContext.SaveChangesAsync();
         }

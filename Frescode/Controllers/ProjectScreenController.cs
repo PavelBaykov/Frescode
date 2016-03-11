@@ -38,7 +38,6 @@ namespace Frescode.Controllers
                 .Include(x => x.Checklists.Select(w => w.Items))
                 .SingleOrDefault(x => x.Id == projectId);
             var viewModel = new ChecklistsListViewModel();
-            viewModel.ProjectName = project.Name;
             foreach (var checklist in project.Checklists)
             {
                 var checklistViewModel = new ChecklistViewModel
@@ -60,6 +59,7 @@ namespace Frescode.Controllers
         {
             var structuresFromDb = Context.Structures
                 .Include(s=> s.Project)
+                .Include(s=> s.InspectionDrawing)
                 .Where(s => s.Project.Id == projectId);
 
             var structures = new StructuresListViewModel();
@@ -70,6 +70,7 @@ namespace Frescode.Controllers
                 tmpStruct.Name = s.Name;
                 tmpStruct.Path = s.Path;
                 tmpStruct.Id = s.Id;
+                tmpStruct.InsepctionDrawingId = s.InspectionDrawing?.Id;
 
                 structures.Structures.Add(tmpStruct);
             }
@@ -85,7 +86,6 @@ namespace Frescode.Controllers
             ChecklistsList = new List<ChecklistViewModel>();
         }
         public List<ChecklistViewModel> ChecklistsList { get; }
-        public string ProjectName { get; set; }
     }
 
     public class ChecklistViewModel
@@ -112,5 +112,6 @@ namespace Frescode.Controllers
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
+        public int? InsepctionDrawingId { get; set; }
     }
 }

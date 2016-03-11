@@ -19,13 +19,6 @@
             var self = this;
 
             self.ChecklistsList = ko.observableArray();
-            self.ProjectName = ko.observable("");
-            self.GenerateReportCommand = function() {
-                window.open(
-                  "/Report/GenerateReport?projectId=" + projectId,
-                  "_blank"
-                );
-            };
         }
 
         function ChecklistViewModel() {
@@ -96,7 +89,6 @@
         function fillViewModelWithChecklists(checklistsList) {
             $(document).ready(function() {
                 mainViewModel.Checklists.ChecklistsList.removeAll();
-                mainViewModel.Checklists.ProjectName(checklistsList.ProjectName);
                 _.each(checklistsList.ChecklistsList, function(checklist) {
                     var checklistViewModel = new ChecklistViewModel();
                     checklistViewModel.Id(checklist.Id);
@@ -118,6 +110,7 @@
                     structViewModel.id=structure.Id;
                     structViewModel.name=structure.Name;
                     structViewModel.folder=structure.Path;
+                    structViewModel.inspectiondrawingid = structure.InspectionDrawingId;
                     drawingArray.push(structViewModel);
                 });
 

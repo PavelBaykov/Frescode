@@ -153,10 +153,9 @@ namespace Frescode.Controllers
         [HttpGet]
         public ActionResult GetChecklistItemsList(int checklistId)
         {
-            var checklist = Context.Checklists
+            var checklist = Context.ChecklistsForProject
                 .Include(x => x.Items.Select(w => w.ItemTemplate))
                 .Include(x => x.Items.Select(w => w.ChangedBy))
-                .Include(x => x.Items.Select(w => w.DefectionSpots))
                 .Include(x => x.ChecklistTemplate)
                 .Include(x => x.Project)
                 .SingleOrDefault(x => x.Id == checklistId);

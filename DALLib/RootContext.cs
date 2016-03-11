@@ -20,15 +20,19 @@ namespace DALLib
         public DbSet<Project> Projects { get; set; }
         public DbSet<Structure> Structures { get; set; }
         
-        public DbSet<Checklist> Checklists { get; set; }
+        public DbSet<ChecklistForProject> ChecklistsForProject { get; set; }
+        public DbSet<ChecklistItemForProject> ChecklistItemsForProject { get; set; }
         public DbSet<ChecklistItemTemplate> ChecklistItemTemplates { get; set; }
-        public DbSet<ChecklistItem> ChecklistItems { get; set; }
         public DbSet<ChecklistTemplate> ChecklistTemplates { get; set; }
-        //public DbSet<InspectionDrawing> InspectionDrawings { get; set; }
-        //public DbSet<DefectionSpot> DefectionSpots { get; set; }
+
+        public DbSet<ChecklistForInspectionDrawing> ChecklistsForInspectionDrawing { get; set; }
+        public DbSet<ChecklistItemForInspectionDrawing> ChecklistItemsForInspectionDrawing { get; set; }
+        public DbSet<InspectionDrawing> InspectionDrawings { get; set; }
+        public DbSet<InspectionDrawingTemplate> InspectionDrawingTemplate { get; set; }
+        public DbSet<DefectionSpot> DefectionSpots { get; set; }
         //public DbSet<Picture> Pictures { get; set; }
         //public DbSet<PictureData> PicturesData { get; set; }
-        //public DbSet<InspectionDrawingTemplate> InspectionDrawingTemplate { get; set; }
+
 
 
 
@@ -71,47 +75,76 @@ namespace DALLib
                 .HasMany(customer => customer.Users)
                 .WithOptional(user => user.Customer);
 
-            modelBuilder.Entity<Checklist>()
+            modelBuilder.Entity<ChecklistForProject>()
                 .HasMany(checklist => checklist.Items)
                 .WithRequired(item => item.Checklist);
 
-            modelBuilder.Entity<Checklist>()
+            modelBuilder.Entity<ChecklistForProject>()
                 .HasRequired(checklist => checklist.ChecklistTemplate)
-                .WithMany(template => template.Descendants)
+                .WithMany(template => template.DescendantsForProject)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Checklist>()
+            modelBuilder.Entity<ChecklistForProject>()
                 .HasRequired(checklist => checklist.Project)
                 .WithMany(project => project.Checklists);
 
+            modelBuilder.Entity<ChecklistItemForProject>()
+                .HasRequired(item => item.Checklist)
+                .WithMany(checklist => checklist.Items);
+
+            modelBuilder.Entity<ChecklistItemForProject>()
+               .HasRequired(item => item.ItemTemplate)
+               .WithMany(template => template.DescendantsForProject)
+               .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ChecklistTemplate>()
-                .HasMany(template => template.Descendants)
+                .HasMany(template => template.DescendantsForProject)
                 .WithRequired(checklist => checklist.ChecklistTemplate);
 
-            //modelBuilder.Entity<ChecklistTemplate>()
-            //    .HasMany(template => template.Items)
-            //    .WithRequired(item => item.Checklist);
+            modelBuilder.Entity<ChecklistTemplate>()
+                .HasMany(template => template.Items)
+                .WithRequired(item => item.Checklist);
 
             modelBuilder.Entity<ChecklistItemTemplate>()
                 .HasRequired(item => item.Checklist)
                 .WithMany(template => template.Items);
 
             modelBuilder.Entity<ChecklistItemTemplate>()
-                .HasMany(itemTemplate => itemTemplate.Descendants)
+                .HasMany(itemTemplate => itemTemplate.DescendantsForProject)
                 .WithRequired(item => item.ItemTemplate);
 
-            //modelBuilder.Entity<ChecklistItem>()
-            //    .HasMany(item => item.DefectionSpots)
-            //    .WithRequired(spot => spot.ChecklistItem);
+            modelBuilder.Entity<Project>()
+                .HasMany(proj => proj.Structures)
+                .WithRequired(s => s.Project)
+                .WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<ChecklistItem>()
-                .HasRequired(item => item.Checklist)
-                .WithMany(checklist => checklist.Items);
+            modelBuilder.Entity<Structure>()
+                .HasOptional(structure => structure.InspectionDrawing)
+                .WithRequired(inspDrawing => inspDrawing.Structure)
+                .WillCascadeOnDelete(true);
 
-            //modelBuilder.Entity<ChecklistItem>()
-            //   .HasRequired(item => item.ItemTemplate)
-            //   .WithMany(template => template.Descendants)
-            //   .WillCascadeOnDelete(false);
+            modelBuilder.Entity<InspectionDrawing>()
+                .HasMany(drawing => drawing.DefectionSpots)
+                .WithRequired(spot => spot.InspectionDrawing)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<InspectionDrawing>()
+                .HasMany(drawing => drawing.Checklists)
+                .WithRequired(list => list.InspectionDrawing)
+                .WillCascadeOnDelete(true);
+
+            
+
+
+
+            //modelBuilder.Entity<ChecklistForInspectionDrawing>()
+            //    .HasMany(checklist =>checklist.Items)
+            //    .WithRequired(item=>item.)
+
+
+
+
+
 
             //modelBuilder.Entity<DefectionSpot>()
             //   .HasRequired(spot => spot.ChecklistItem)
@@ -138,10 +171,7 @@ namespace DALLib
             //    .HasRequired(structure => structure.InspectionDrawing)
             //    .WithRequiredDependent(id => id.Structure);
 
-            modelBuilder.Entity<Project>()
-                .HasMany(proj => proj.Structures)
-                .WithRequired(s => s.Project)
-                .WillCascadeOnDelete(true);
+
         }
     }
 }

@@ -59,12 +59,25 @@ namespace Frescode
                defaults: new { controller = "Checklist", action = "GetBreadcrumbText" }
             );
 
+           routes.MapRoute(
+              name: "nestedInspectionDrawingScreen",
+              url: "Project/{projectId}/InspectionDrawing/{drawingId}",
+              defaults: new { controller = "InspectionDrawingScreen", action = "InspectionDrawingsDetails" }
+           );
+
+            routes.MapRoute(
+              name: "InspectionDrawingBreadcrumb",
+              url: "Project/{projectId}/InspectionDrawing/{drawingId}/GetBreadcrumbText",
+              defaults: new { controller = "InspectionDrawingScreen", action = "GetBreadcrumbText" }
+           );
+
 
             routes.MapRoute(
                name: "nestedChecklistsList",
                url: "Project/{projectId}",
                defaults: new { controller = "ProjectScreen", action = "ProjectScreenList" }
             );
+
             routes.MapRoute(
                name: "ChecklistsListBreadcrumb",
                url: "Project/{projectId}/GetBreadcrumbText",

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DALLib.Entities
 {
@@ -7,10 +10,13 @@ namespace DALLib.Entities
     {
         public int Id { get; set; }
         public ChecklistItemStatus Status { get; set; }
-        public ICollection<DefectionSpot> DefectionSpots { get; set; }
         public DateTime DateOfLastChange { get; set; }
         public User ChangedBy { get; set; }
-        public Checklist Checklist { get; set; }
-        public ChecklistItemTemplate ItemTemplate { get; set; }/*Под вопросом*/
+        
+        
+    }
+    public enum ChecklistItemStatus
+    {
+        NotCompleted, Completed
     }
 }

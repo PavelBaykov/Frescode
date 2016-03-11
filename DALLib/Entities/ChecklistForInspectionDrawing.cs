@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace DALLib.Entities
 {
-    public class Structure
+    public class ChecklistForInspectionDrawing : Checklist
     {
-        public int Id { get; set; }
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public Project Project { get; set; }
         public InspectionDrawing InspectionDrawing { get; set; }
-
-        
+        public ICollection<ChecklistItemForInspectionDrawing> Items { get; set; }
+        public ChecklistTemplate ChecklistTemplate { get; set; }
     }
 }

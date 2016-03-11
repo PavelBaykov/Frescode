@@ -13,7 +13,7 @@ namespace DALLib.Entities
         public DateTime DateOfLastChange { get; set; }
         public User ChangedBy { get; set; }
         public ICollection<User> Members { get; set; }
-        public ICollection<Checklist> Checklists { get; set; }
+        public ICollection<ChecklistForProject> Checklists { get; set; }
         public Customer Customer { get; set; }
         public ProjectStatus Status { get; set; } /*Под вопросом*/
         public ICollection<Structure> Structures { get; set; }

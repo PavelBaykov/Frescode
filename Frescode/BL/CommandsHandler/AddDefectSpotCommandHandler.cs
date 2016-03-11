@@ -26,9 +26,9 @@ namespace Frescode.BL.CommandsHandler
             {
                 defectionSpot = new DefectionSpot
                 {
-                    DateCreated = DateTime.Now,
-                    AttachedPictures = new List<Picture>(),
-                    ChecklistItem = await _rootContext.ChecklistItems.SingleOrDefaultAsync(c => c.Id == notification.ChecklistItemId)
+                    //DateCreated = DateTime.Now,
+                    //AttachedPictures = new List<Picture>(),
+                    //ChecklistItem = await _rootContext.ChecklistItemsForProject.SingleOrDefaultAsync(c => c.Id == notification.ChecklistItemId)
                 };
                 //_rootContext.DefectionSpots.Add(defectionSpot);
             }
@@ -48,15 +48,15 @@ namespace Frescode.BL.CommandsHandler
 
         private async Task NormalizeOrderNumbers(int checklistItemId)
         {
-            var defectSpots = (await _rootContext.ChecklistItems
-                .Include(x => x.DefectionSpots)
-                .SingleAsync(x => x.Id == checklistItemId)).DefectionSpots.OrderBy(x => x.OrderNumber).ToList();
+            //var defectSpots = (await _rootContext.ChecklistItemsForProject
+            //    .Include(x => x.DefectionSpots)
+            //    .SingleAsync(x => x.Id == checklistItemId)).DefectionSpots.OrderBy(x => x.OrderNumber).ToList();
 
-            int index = 1;
-            foreach (var defectSpot in defectSpots)
-            {
-                defectSpot.OrderNumber = index++;
-            }
+            //int index = 1;
+            //foreach (var defectSpot in defectSpots)
+            //{
+            //    defectSpot.OrderNumber = index++;
+            //}
         }
     }
 }
