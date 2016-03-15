@@ -3,17 +3,17 @@
 
 	var FolderViewModel = function(){
 		var self=this;
-		self.name=ko.observable();
+		self.name="";
 	};
 
 	var FileViewModel = function(){
 		var self=this;
-		self.id = ko.observable();
-		self.name = ko.observable();
-		self.inspectionDrawingId = ko.observable();
+		self.id = null;
+		self.name = null;
+		self.inspectionDrawingId = null;
 
 		self.onClickCommand = function(){
-		    window.location.href = "InspectionDrawing/" + self.inspectionDrawingId;
+		    window.location.href = "InspectionDrawing/" + self.inspectionDrawingId + '/';
 		}
 	};
 
@@ -24,7 +24,7 @@
 	function initFunction(arr,drawingsStructure){
 		$.each(arr,function(key,val){
 			var splittedFolder = val.folder.split('/');
-			drawingsStructure.push({folder: val.folder,splittedFolder:splittedFolder,name:val.name, id:val.id});		
+			drawingsStructure.push({folder: val.folder,splittedFolder:splittedFolder,name:val.name, id:val.id, inspectionDrawingId : val.inspectionDrawingId});		
 		});
 	}
 
@@ -51,7 +51,8 @@
 		$.each(filesunique,function(key,val){
 			var fileItem=new FileViewModel();
 			fileItem.id=val.id;
-			fileItem.name=val.name;
+			fileItem.name = val.name;
+			fileItem.inspectionDrawingId  = val.inspectionDrawingId;
 			filesObserve.push(fileItem);
 		});
 	}

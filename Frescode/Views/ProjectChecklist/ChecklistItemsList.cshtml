@@ -64,14 +64,14 @@
             self.InitSubscribtions = function() {
                 self.Status.subscribe(function() {
                     $.getq('itemsStatus',
-                        '/ChecklistItems/ChecklistItemSet?checklistItemId=' + self.Id() + '&newState=' + self.Status()
+                        '/ProjectChecklist/ChecklistItemSet?checklistItemId=' + self.Id() + '&newState=' + self.Status()
                     );
                 });
             }
         }
 
         function getChecklistItems(callback) {
-            $.getJSON('/ChecklistItems/GetChecklistitemsList?userId=' + userId + '&checklistId=' + checklistId)
+            $.getJSON('/ProjectChecklist/GetChecklistitemsList?userId=' + userId + '&checklistId=' + checklistId)
                 .error(function(e) {
                     if (e.status == 500 || e.status == 400) {
                         var message = 'Error ' + e.status + '\r\n' +

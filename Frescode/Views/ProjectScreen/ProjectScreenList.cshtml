@@ -34,22 +34,8 @@
             }
         }
 
-        //function StructureViewModel() {
-        //    var self = this;
-
-        //    self.id = ko.observable();
-        //    self.name = ko.observable();
-        //    self.folder = ko.observable();
-        //}
-
-        //function StructuresViewModel() {
-        //    var self = this;
-
-        //    self.StructuresList = ko.observable(new FoldersList([],null));
-        //}
-
         function getChecklists(callback) {
-            $.getJSON('/ProjectScreen/GetChecklistsList?userId=' + userId + '&projectId=' + projectId)
+            $.getJSON('/ProjectScreen/GetProjectChecklistsList?userId=' + userId + '&projectId=' + projectId)
                 .error(function(e) {
                     if (e.status == 500 || e.status == 400) {
                         var message = 'Error ' + e.status + '\r\n' +
@@ -110,7 +96,7 @@
                     structViewModel.id=structure.Id;
                     structViewModel.name=structure.Name;
                     structViewModel.folder=structure.Path;
-                    structViewModel.inspectiondrawingid = structure.InspectionDrawingId;
+                    structViewModel.inspectionDrawingId = structure.InspectionDrawingId;
                     drawingArray.push(structViewModel);
                 });
 

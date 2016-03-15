@@ -20,15 +20,7 @@ namespace Frescode.Controllers
         public ProjectController(IMediator mediator, RootContext rootContext)
             : base(mediator, rootContext)
         {
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> GetBreadcrumbText(int projectId)
-        {
-            var project = await Context.Projects
-                .SingleOrDefaultAsync(x => x.Id == projectId);
-            return Json(new { Text = project?.Name }, JsonRequestBehavior.AllowGet);
-        }
+        }        
 
         [HttpGet]
         public ActionResult GetProjectsList()

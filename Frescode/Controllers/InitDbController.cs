@@ -292,47 +292,48 @@ namespace Frescode.Controllers
             Context.ChecklistItemsForProject.Add(checklistItem1);
             Context.ChecklistItemsForProject.Add(checklistItem2);
 
-            //checklist2.ChecklistInit(Context.);
-            //checklist3.ChecklistInit(Context.);
+            var defectSpot1 = new DefectionSpot
+            {
+                DateCreated = DateTime.UtcNow,
+                Description = "Description of defect spot",
+                X = 0.2,
+                Y = 0.5,
+                OrderNumber = 1,
+                AttachedPictures = new List<Picture>()
+            };
+            var defectSpot2 = new DefectionSpot
+            {
+                DateCreated = DateTime.UtcNow,
+                Description = "Description of defect spot",
+                X = 0.3,
+                Y = 0.1,
+                OrderNumber = 2,
+                AttachedPictures = new List<Picture>()
+            };
+            var picture1 = new Picture
+            {
+                DateCaptured = DateTime.UtcNow,
+                Name = "Picture 1",
+                PictureData = new PictureData
+                {
+                    Data = floorPlanBytes
+                }
+            };
+            var picture2 = new Picture
+            {
+                DateCaptured = DateTime.UtcNow,
+                Name = "Picture 2",
+                PictureData = new PictureData
+                {
+                    Data = floorPlanBytes
+                }
+            };
 
-            //var defectSpot1 = new DefectionSpot
-            //{
-            //    ChecklistItem = checklistItem1,
-            //    DateCreated = DateTime.UtcNow,
-            //    Description = "Description of defect spot",
-            //    X = 0.2,
-            //    Y = 0.5,
-            //    OrderNumber = 1,
-            //    AttachedPictures = new List<Picture>()
-            //};
-            //var defectSpot2 = new DefectionSpot
-            //{
-            //    ChecklistItem = checklistItem2,
-            //    DateCreated = DateTime.UtcNow,
-            //    Description = "Description of defect spot",
-            //    X = 0.3,
-            //    Y = 0.1,
-            //    OrderNumber = 1,
-            //    AttachedPictures = new List<Picture>()
-            //};
-            //var picture1 = new Picture
-            //{
-            //    DateCaptured = DateTime.UtcNow,
-            //    Name = "Picture 1",
-            //    PictureData = new PictureData
-            //    {
-            //        Data = floorPlanBytes
-            //    }
-            //};
-            //var picture2 = new Picture
-            //{
-            //    DateCaptured = DateTime.UtcNow,
-            //    Name = "Picture 2",
-            //    PictureData = new PictureData
-            //    {
-            //        Data = floorPlanBytes
-            //    }
-            //};
+            defectSpot1.AttachedPictures.Add(picture1);
+            defectSpot1.AttachedPictures.Add(picture2);
+
+            inspectionDrawing.DefectionSpots.Add(defectSpot1);
+            inspectionDrawing.DefectionSpots.Add(defectSpot2);
             //defectSpot1.AttachedPictures.Add(picture1);
             //defectSpot2.AttachedPictures.Add(picture2);
 
@@ -379,7 +380,7 @@ namespace Frescode.Controllers
             Context.ChecklistItemsForInspectionDrawing.Add(idchecklistItem3);
             Context.ChecklistItemsForInspectionDrawing.Add(idchecklistItem4);
 
-
+            
             Context.SaveChanges();
             return Json(new { ok = true }, JsonRequestBehavior.AllowGet);
         }

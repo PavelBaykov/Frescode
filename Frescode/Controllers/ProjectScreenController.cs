@@ -8,17 +8,24 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using DALLib.Entities;
+using System.Threading.Tasks;
 
 namespace Frescode.Controllers
 {
     [Authorize]
     public class ProjectScreenController : BaseController
     {
-
         public ProjectScreenController(IMediator mediator, RootContext rootContext)
             : base(mediator, rootContext)
         {
+        }
 
+        [HttpGet]
+        public async Task<ActionResult> GetBreadcrumbText(int projectId)
+        {
+            var project = await Context.Projects
+                .SingleOrDefaultAsync(x => x.Id == projectId);
+            return Json(new { Text = project?.Name }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: ProjectScreen
@@ -30,17 +37,17 @@ namespace Frescode.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetChecklistsList(int projectId)
+        public ActionResult GetProjectChecklistsList(int projectId)
         {
             var project = Context.Projects
                 .Include(x => x.Checklists.Select(w => w.ChecklistTemplate))
                 .Include(x => x.Checklists.Select(w => w.ChangedBy))
                 .Include(x => x.Checklists.Select(w => w.Items))
                 .SingleOrDefault(x => x.Id == projectId);
-            var viewModel = new ChecklistsListViewModel();
+            var viewModel = new ProjectChecklistsListViewModel();
             foreach (var checklist in project.Checklists)
             {
-                var checklistViewModel = new ChecklistViewModel
+                var checklistViewModel = new ProjectChecklistViewModel
                 {
                     Id = checklist.Id,
                     Name = checklist.ChecklistTemplate.Name,
@@ -70,7 +77,7 @@ namespace Frescode.Controllers
                 tmpStruct.Name = s.Name;
                 tmpStruct.Path = s.Path;
                 tmpStruct.Id = s.Id;
-                tmpStruct.InsepctionDrawingId = s.InspectionDrawing?.Id;
+                tmpStruct.InspectionDrawingId = s.InspectionDrawing?.Id;
 
                 structures.Structures.Add(tmpStruct);
             }
@@ -79,16 +86,16 @@ namespace Frescode.Controllers
         }
     }
 
-    public class ChecklistsListViewModel
+    public class ProjectChecklistsListViewModel
     {
-        public ChecklistsListViewModel()
+        public ProjectChecklistsListViewModel()
         {
-            ChecklistsList = new List<ChecklistViewModel>();
+            ChecklistsList = new List<ProjectChecklistViewModel>();
         }
-        public List<ChecklistViewModel> ChecklistsList { get; }
+        public List<ProjectChecklistViewModel> ChecklistsList { get; }
     }
 
-    public class ChecklistViewModel
+    public class ProjectChecklistViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -112,6 +119,6 @@ namespace Frescode.Controllers
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
-        public int? InsepctionDrawingId { get; set; }
+        public int? InspectionDrawingId { get; set; }
     }
 }

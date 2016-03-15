@@ -9,14 +9,14 @@ namespace Frescode.BL.Commands
         public int OrderNumber { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
-        public int ChecklistItemId { get; set; }
+        public int InspectionDrawingId { get; set; }
 
-        public AddDefectSpotCommand(int id, string description, int orderNumber, double x, double y, int checklistItemId)
+        public AddDefectSpotCommand(int id, string description, int orderNumber, double x, double y, int inspectionDrawingId)
         {
             Id = id;
             Description = description;
             OrderNumber = orderNumber;
-            ChecklistItemId = checklistItemId;
+            InspectionDrawingId = inspectionDrawingId;
             X = x;
             Y = y;
         }

@@ -13,50 +13,61 @@ namespace Frescode
 
             routes.MapRoute(
                name: "nestedDefectionDownloading",
-               url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/UploadFiles",
+               url: "Project/{projectId}/InspectionDrawing/{drawingId}/DefectSpot/{defectSpotId}/UploadFiles",
                defaults: new { controller = "DefectSpotPicture", action = "GetFiles" },
-               constraints: new { httpMethod = new HttpMethodConstraint("GET")}
+               constraints: new { httpMethod = new HttpMethodConstraint("GET") }
             );
 
             routes.MapRoute(
                name: "nestedDefectionUploadin",
-               url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/UploadFiles",
+               url: "Project/{projectId}/InspectionDrawing/{drawingId}/DefectSpot/{defectSpotId}/UploadFiles",
                defaults: new { controller = "DefectSpotPicture", action = "UploadFiles" },
-               constraints: new { httpMethod = new HttpMethodConstraint("POST")}
+               constraints: new { httpMethod = new HttpMethodConstraint("POST") }
             );
+
+            //routes.MapRoute(
+            //   name: "nestedDefectSpotItem",
+            //   url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}",
+            //   defaults: new { controller = "ChecklistItems", action = "DefectSpotAddition" }
+            //);
+            //routes.MapRoute(
+            //   name: "defectSpotBreadcrumb",
+            //   url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/GetBreadcrumbText",
+            //   defaults: new { controller = "ChecklistItems", action = "GetBreadcrumbDefectSpotText" }
+            //);
+
+            //routes.MapRoute(
+            //   name: "nestedChecklistItem",
+            //   url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}",
+            //   defaults: new { controller = "ChecklistItems", action = "ChecklistItemDetails" }
+            //);
+            //routes.MapRoute(
+            //   name: "checklistItemBreadcrumb",
+            //   url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/GetBreadcrumbText",
+            //   defaults: new { controller = "ChecklistItems", action = "GetBreadcrumbText" }
+            //);
 
             routes.MapRoute(
                name: "nestedDefectSpotItem",
-               url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}",
-               defaults: new { controller = "ChecklistItems", action = "DefectSpotAddition" }
+               url: "Project/{projectId}/InspectionDrawing/{drawingId}/DefectSpot/{defectSpotId}",
+               defaults: new { controller = "DefectSpot", action = "DefectSpotAddition" }
             );
             routes.MapRoute(
                name: "defectSpotBreadcrumb",
-               url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/DefectSpot/{defectSpotId}/GetBreadcrumbText",
-               defaults: new { controller = "ChecklistItems", action = "GetBreadcrumbDefectSpotText" }
-            );
-
-            routes.MapRoute(
-               name: "nestedChecklistItem",
-               url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}",
-               defaults: new { controller = "ChecklistItems", action = "ChecklistItemDetails" }
-            );
-            routes.MapRoute(
-               name: "checklistItemBreadcrumb",
-               url: "Project/{projectId}/Checklist/{checklistId}/Details/{checklistItemId}/GetBreadcrumbText",
-               defaults: new { controller = "ChecklistItems", action = "GetBreadcrumbText" }
+               url: "Project/{projectId}/InspectionDrawing/{drawingId}/DefectSpot/{defectSpotId}/GetBreadcrumbText",
+               defaults: new { controller = "DefectSpot", action = "GetBreadcrumbDefectSpotText" }
             );
 
 
             routes.MapRoute(
                name: "nestedChecklistItemsList",
                url: "Project/{projectId}/Checklist/{checklistId}",
-               defaults: new { controller = "ChecklistItems", action = "ChecklistItemsList" }
+               defaults: new { controller = "ProjectChecklist", action = "ChecklistItemsList" }
             );
             routes.MapRoute(
                name: "ChecklistItemsListBreadcrumb",
                url: "Project/{projectId}/Checklist/{checklistId}/GetBreadcrumbText",
-               defaults: new { controller = "Checklist", action = "GetBreadcrumbText" }
+               defaults: new { controller = "ProjectChecklist", action = "GetBreadcrumbText" }
             );
 
            routes.MapRoute(
@@ -73,15 +84,15 @@ namespace Frescode
 
 
             routes.MapRoute(
-               name: "nestedChecklistsList",
+               name: "nestedProjectScreen",
                url: "Project/{projectId}",
                defaults: new { controller = "ProjectScreen", action = "ProjectScreenList" }
             );
 
             routes.MapRoute(
-               name: "ChecklistsListBreadcrumb",
+               name: "ProjectScreenBreadcrumb",
                url: "Project/{projectId}/GetBreadcrumbText",
-               defaults: new { controller = "Project", action = "GetBreadcrumbText" }
+               defaults: new { controller = "ProjectScreen", action = "GetBreadcrumbText" }
             );
 
             routes.MapRoute(
@@ -90,11 +101,11 @@ namespace Frescode
                defaults: new { controller = "Project", action = "GetProjectsList" }
             );
 
-            routes.MapRoute(
-               name: "ProjectsListBreadcrumb",
-               url: "GetBreadcrumbText",
-               defaults: new { controller = "User", action = "GetBreadcrumbText" }
-            );
+            //routes.MapRoute(
+            //   name: "ProjectsListBreadcrumb",
+            //   url: "GetBreadcrumbText",
+            //   defaults: new { controller = "User", action = "GetBreadcrumbText" }
+            //);
 
 
             routes.MapRoute(

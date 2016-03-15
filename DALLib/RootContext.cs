@@ -30,8 +30,8 @@ namespace DALLib
         public DbSet<InspectionDrawing> InspectionDrawings { get; set; }
         public DbSet<InspectionDrawingTemplate> InspectionDrawingTemplate { get; set; }
         public DbSet<DefectionSpot> DefectionSpots { get; set; }
-        //public DbSet<Picture> Pictures { get; set; }
-        //public DbSet<PictureData> PicturesData { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
+        public DbSet<PictureData> PicturesData { get; set; }
 
 
 
@@ -133,44 +133,25 @@ namespace DALLib
                 .WithRequired(list => list.InspectionDrawing)
                 .WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<InspectionDrawing>()
+                .HasMany(drawing => drawing.DefectionSpots)
+                .WithRequired(spot => spot.InspectionDrawing)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<DefectionSpot>()
+               .HasMany(spot => spot.AttachedPictures)
+               .WithRequired(picture => picture.DefectionSpot);
+
+            modelBuilder.Entity<Picture>()
+                .HasRequired(picture => picture.DefectionSpot)
+                .WithMany(spot => spot.AttachedPictures);
+
+            modelBuilder.Entity<Picture>()
+                .HasRequired(picture => picture.PictureData)
+                .WithRequiredPrincipal()
+                .WillCascadeOnDelete(true);
+
             
-
-
-
-            //modelBuilder.Entity<ChecklistForInspectionDrawing>()
-            //    .HasMany(checklist =>checklist.Items)
-            //    .WithRequired(item=>item.)
-
-
-
-
-
-
-            //modelBuilder.Entity<DefectionSpot>()
-            //   .HasRequired(spot => spot.ChecklistItem)
-            //   .WithMany(item => item.DefectionSpots);
-
-            //modelBuilder.Entity<DefectionSpot>()
-            //   .HasMany(spot => spot.AttachedPictures)
-            //   .WithRequired(picture => picture.DefectionSpot);
-
-            //modelBuilder.Entity<Picture>()
-            //    .HasRequired(picture => picture.DefectionSpot)
-            //    .WithMany(spot => spot.AttachedPictures);
-
-            //modelBuilder.Entity<Picture>()
-            //    .HasRequired(picture => picture.PictureData)
-            //    .WithRequiredPrincipal()
-            //    .WillCascadeOnDelete(true);
-
-            //modelBuilder.Entity<InspectionDrawing>()
-            //    .HasRequired(inspectionDrawing => inspectionDrawing.InspectionDrawingData)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.InspectionDrawingDataId);
-            //modelBuilder.Entity<Structure>()
-            //    .HasRequired(structure => structure.InspectionDrawing)
-            //    .WithRequiredDependent(id => id.Structure);
-
 
         }
     }

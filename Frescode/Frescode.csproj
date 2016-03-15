@@ -286,8 +286,8 @@
     <Compile Include="BL\Commands\ChecklistItemChangeStateCommand.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ChecklistController.cs" />
-    <Compile Include="Controllers\ChecklistItemsController.cs" />
+    <Compile Include="Controllers\ProjectChecklistController.cs" />
+    <Compile Include="Controllers\DefectSpotController.cs" />
     <Compile Include="Controllers\DefectSpotPictureController.cs" />
     <Compile Include="Controllers\InitDbController.cs" />
     <Compile Include="Controllers\InspectionDrawingController.cs" />
@@ -297,7 +297,6 @@
     <Compile Include="Controllers\ProjectScreenController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
@@ -3781,7 +3780,7 @@
     <Content Include="starters\layout_navbar_fixed_main.html" />
     <Content Include="starters\layout_navbar_fixed_secondary.html" />
     <Content Include="starters\layout_sidebar_sticky.html" />
-    <Content Include="Views\Checklist\ChecklistsList.cshtml" />
+    <Content Include="Views\ProjectChecklist\ChecklistsList.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4036,9 +4035,9 @@
     <Content Include="Scripts\knockout.mapping.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\ChecklistItems\ChecklistItemsList.cshtml" />
-    <Content Include="Views\ChecklistItems\ChecklistItemDetails.cshtml" />
-    <Content Include="Views\ChecklistItems\DefectSpotAddition.cshtml" />
+    <Content Include="Views\ProjectChecklist\ChecklistItemsList.cshtml" />
+    <Content Include="Views\DefectSpot\ChecklistItemDetails.cshtml" />
+    <Content Include="Views\DefectSpot\DefectSpotAddition.cshtml" />
     <Content Include="Views\Shared\_Breadcrumb.cshtml" />
     <Content Include="Views\ProjectScreen\ProjectScreenList.cshtml" />
     <Content Include="Views\InspectionDrawingScreen\InspectionDrawingsDetails.cshtml" />

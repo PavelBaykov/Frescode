@@ -5,17 +5,145 @@
 }
 
 @section AdditionalScripts{
-
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" media="screen">
     <script type="text/javascript" src="/assetsfinal/js/plugins/tables/datatables/datatables.min.js"></script>
     <script type="text/javascript" src="/assetsfinal/js/plugins/forms/selects/select2.min.js"></script>
     <script type="text/javascript" src="/assetsfinal/js/plugins/media/fancybox.min.js"></script>
     <script type="text/javascript" src="/assetsfinal/js/pages/gallery.js"></script>
     <script type="text/javascript" src="/assetsfinal/js/pages/datatables_custom_checklists.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/jquery.fs.zoetrope.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/toe.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/imgViewer.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/libs/printThis.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/imgNotes/dist/imgNotes.min.js"></script>
+
 
     <script>
         userId = @Html.Raw(Json.Encode(ViewBag.UserId));
         projectId = @Html.Raw(Json.Encode(ViewBag.ProjectId));
         inspectionDrawingId = @Html.Raw(Json.Encode(ViewBag.DrawingId));
+
+        function InspectionDrawingDetailsViewModel() {
+            var self = this;
+            self.Id = inspectionDrawingId;
+            self.InspectionDrawingPath = ko.observable();
+            self.DefectSpotsList = ko.observableArray();
+
+            self.CreateDefectSpotCommand = function() {
+                var newDefectSpot = new DefectSpotViewModel();
+
+                newDefectSpot.Description("Defect spot description");
+                newDefectSpot.AttachedPictures("");
+                var defectSpotWithMaxOrderNumber = _.max(self.DefectSpotsList(), function(x) { return x.OrderNumber() });
+                if (!defectSpotWithMaxOrderNumber || !defectSpotWithMaxOrderNumber.OrderNumber || defectSpotWithMaxOrderNumber < 0)
+                    defectSpotWithMaxOrderNumber = 0;
+                else
+                    defectSpotWithMaxOrderNumber = defectSpotWithMaxOrderNumber.OrderNumber();
+                newDefectSpot.OrderNumber(defectSpotWithMaxOrderNumber + 1);
+                self.DefectSpotsList.push(newDefectSpot);
+                newDefectSpot.SaveDefectSpotCommand();
+
+                return newDefectSpot;
+            }
+
+            self.DeleteDefectSpotCommand = function(defectSpot) {
+                var getDeleteOpt = function() {
+                    return {
+                        url: '/InspectionDrawingScreen/DeleteDefectSpot?defectSpotId=' + defectSpot.Id(),
+                        type: 'get'
+                    }
+                }
+                $.ajaxq('item_' + defectSpot.InternalGuid(), getDeleteOpt);
+                self.DefectSpotsList.remove(defectSpot);
+            };
+        }
+
+        var internalMaxGuid = 1;
+        function DefectSpotViewModel() {
+            var self = this;
+
+            self.Id = ko.observable(-1);
+            self.InternalGuid = ko.observable(++internalMaxGuid);
+            self.OrderNumber = ko.observable();
+            self.Description = ko.observable();
+            self.AttachedPictures = ko.observableArray();
+            self.X = ko.observable();
+            self.Y = ko.observable();
+            self.EditDefectSpotCommand = function() {
+                if (self.Id() < 0) return;
+                window.location.href = "DefectSpot/" + self.Id() + "/";
+            };
+
+            
+
+            var getCreateOpt = function() {
+                var dto = {
+                    OrderNumber: self.OrderNumber(),
+                    X: self.X(),
+                    Y: self.Y(),
+                    Description: self.Description(),
+                    InspectionDrawingId: inspectionDrawingId,
+                    Id: self.Id()
+                }
+
+                return {
+                    url: '/InspectionDrawingScreen/AddDefectSpot',
+                    type: 'post',
+                    success: function(data) {
+                        self.Id(data.Id);
+                    },
+                    data: dto
+                };
+            }
+
+            self.SaveDefectSpotCommand = function() {
+                $.ajaxq('item_' + self.InternalGuid(), getCreateOpt);
+            }
+        }
+
+        function getInspectionDrawingDetails(callback) {
+            $.getJSON('/InspectionDrawingScreen/GetInspectionDrawingDetails?userId=' + userId + '&drawingId=' + inspectionDrawingId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        function fillViewModelWithInspectionDrawing(details){
+            mainViewModel.InspectionDrawing.InspectionDrawingPath(details.InspectionDrawingPath);
+            _.each(details.DefectSpotsList, function(defectSpot) {
+                var defectSpotViewModel = new DefectSpotViewModel();
+                defectSpotViewModel.Id(defectSpot.Id);
+                defectSpotViewModel.OrderNumber(defectSpot.OrderNumber);
+                defectSpotViewModel.Description(defectSpot.Description);
+                _.each(defectSpot.AttachedPictures, function(picturePath) {
+                    defectSpotViewModel.AttachedPictures.push(picturePath);
+                });
+                defectSpotViewModel.X(defectSpot.X);
+                defectSpotViewModel.Y(defectSpot.Y);
+                mainViewModel.InspectionDrawing.DefectSpotsList.push(defectSpotViewModel);
+            });
+
+            initFancyBox(window, document, jQuery);
+            initGallery();
+        }
+
+
+
+        getInspectionDrawingDetails(function(inspectionDrawingDetails) {
+            fillViewModelWithInspectionDrawing(inspectionDrawingDetails);
+        });
 
         function ChecklistsViewModel() {
             var self = this;
@@ -53,12 +181,12 @@
                 });
         }
 
-        rootViewModel.MainViewModel(new ChecklistsViewModel());
+        rootViewModel.MainViewModel({Checklists: new ChecklistsViewModel(), InspectionDrawing: new InspectionDrawingDetailsViewModel()});
         var mainViewModel = rootViewModel.MainViewModel();
 
         function fillViewModelWithChecklists(checklistsList) {
             $(document).ready(function () {
-                mainViewModel.ChecklistsList.removeAll();
+                mainViewModel.Checklists.ChecklistsList.removeAll();
                 _.each(checklistsList.ChecklistsList, function (checklist) {
                     var checklistViewModel = new ChecklistViewModel();
                     checklistViewModel.Id(checklist.Id);
@@ -66,7 +194,7 @@
                     checklistViewModel.DateOfLastChange(checklist.DateOfLastChange);
                     checklistViewModel.ChangedBy(checklist.ChangedBy);
                     checklistViewModel.Status(checklist.Status);
-                    mainViewModel.ChecklistsList.push(checklistViewModel);
+                    mainViewModel.Checklists.ChecklistsList.push(checklistViewModel);
                 });
                 initDataTables();
             });
@@ -102,46 +230,46 @@
 
                         <div class="tab-content">
                             <div class="tab-pane active" id="highlighted-tab1">
-                                @*<div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="thumbnail">
-                <div class="thumb">
-                    <img src="assets/images/placeholder.jpg" alt="">
-                    <div class="caption-overflow">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="thumbnail">
+                                            <div class="thumb">
+                                                <div id="imgdiv" style="text-align: center;">
+                                                    <img data-bind="attr : {src : InspectionDrawing.InspectionDrawingPath}">
+                                                    <br />
+                                                </div>
+                                                <div id=txt></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
+                            
                             <div class="tab-pane" id="highlighted-tab2">
-                                @*<div class="panel-group panel-group-control panel-group-control-right content-group-lg">
-                                    <!-- ko foreach: defectspotsList -->
-                                    <div class="panel panel-white">
-                                        <div class="panel-heading collapsed" data-toggle="collapse" data-bind="attr:{href:'#collapsible-control-right-group'+$index()}">
+                                <div class="panel-group panel-group-control panel-group-control-right content-group-lg">
+                                    <!-- ko foreach: InspectionDrawing.DefectSpotsList -->
+                                    <div class="panel panel-white" data-bind="style: { opacity: Id() < 0 ? 0.5 : 1 }">
+                                        <div class="panel-heading collapsed" data-toggle="collapse" data-bind="attr: { href: '#collapsible-control-right-group' + $index()}" >
                                             <div class="row">
-                                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" data-bind="text:$index()+1">
-
-                                                </div>
+                                                <div data-bind="html: OrderNumber" class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                                                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
                                                     <div class="panel-title">
-                                                        <a class="collapsed" data-toggle="collapse" data-bind="text:descr,attr:{href:'#collapsible-control-right-group'+$index()}">
-                                                        </a>
+                                                        <a class="collapsed" data-toggle="collapse" data-bind="text: Description, attr: { href: '#collapsible-control-right-group' + $index()}"></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div data-bind="attr:{'id':'collapsible-control-right-group'+$index()}" class="panel-collapse collapse">
+                                        <div data-bind="attr: { id: 'collapsible-control-right-group' + $index() }" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <!-- ko foreach: pictures -->
+                                                    <!-- ko foreach: AttachedPictures -->
                                                     <div class="col-lg-2 col-sm-3 col-xs-4">
                                                         <div class="thumbnail">
                                                             <div class="thumb">
                                                                 <span>
-                                                                    <a data-bind="attr:{href:$data}" data-popup="lightbox" rel="gallery1" class="btn border-white text-white btn-flat btn-icon btn-rounded" style="padding:0px">
-                                                                        <img data-bind="attr:{src:$data}" alt="">
+                                                                    <a data-bind="attr: { href: $data.FullPath , rel: 'gallery' + $parent.OrderNumber(), 'data-popup' : 'lightbox' }" class="btn border-white text-white btn-flat btn-icon btn-rounded fancybox.image" style="padding: 0px">
+                                                                        <img data-bind="attr: { src: $data.Thumb}" alt="">
                                                                     </a>
                                                                 </span>
                                                             </div>
@@ -150,23 +278,28 @@
                                                     <!-- /ko -->
                                                 </div>
                                                 <div class="row">
-                                                    <div class="text-center">
-                                                        <button type="button" class="btn  btn-success btn-labeled ">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <button type="button" class="btn  btn-success btn-labeled " style="margin:3px" data-bind="click: EditDefectSpotCommand">
                                                             <b><i class="icon-pencil7"></i></b> Edit defect spot
                                                         </button>
-                                                        <button type="button" class="btn  btn-success btn-labeled ">
+                                                        <button type="button" class="btn  btn-success btn-labeled " style="margin:3px" data-toggle="modal" data-target="#modal_default" data-bind="click: $parent.InspectionDrawing.DeleteDefectSpotCommand"> 
                                                             <b><i class="icon-bin"></i></b> Delete defect spot
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <!-- /ko -->
-
-                                </div>*@
-                            </div>
+                                    </div>
+                                    <p>
+                                        <button data-bind="click: InspectionDrawing.CreateDefectSpotCommand" type="button" class="btn  btn-success btn-labeled ">
+                                            <b><i class="icon-stack-plus"></i></b>
+                                            Add defect spot
+                                        </button>
+                                    </p>
+                                </div>
+                           
 
 
                             <div class="tab-pane" id="highlighted-tab3">
@@ -180,7 +313,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- ko foreach: ChecklistsList  -->
+                                        <!-- ko foreach: Checklists.ChecklistsList  -->
                                         <tr class="whitespace hoverhref" data-bind="click: GotoChecklistItemsListCommand">
                                             <td data-bind="text: Name"></td>
                                             <td data-bind="text: DateOfLastChange"></td>

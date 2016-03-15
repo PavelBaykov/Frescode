@@ -10,16 +10,15 @@
 }
 
 @section AdditionalScripts{
-    <script type="text/javascript" src="/assets/js/pages/datatables_custom_items.js"></script>
-
+    
     <!-- blueimp Gallery styles -->
     <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-    <link rel="stylesheet" href="/assets/add/css/jquery.fileupload.css">
-    <link rel="stylesheet" href="/assets/add/css/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="/assetsfinal/add/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="/assetsfinal/add/css/jquery.fileupload-ui.css">
     <!-- CSS adjustments for browsers with JavaScript disabled -->
-    <noscript><link rel="stylesheet" href="/assets/add/css/jquery.fileupload-noscript.css"></noscript>
-    <noscript><link rel="stylesheet" href="/assets/add/css/jquery.fileupload-ui-noscript.css"></noscript>
+    <noscript><link rel="stylesheet" href="/assetsfinal/add/css/jquery.fileupload-noscript.css"></noscript>
+    <noscript><link rel="stylesheet" href="/assetsfinal/add/css/jquery.fileupload-ui-noscript.css"></noscript>
 
     <script>
         ko.bindingHandlers.bootstrapSwitchOn = {
@@ -49,12 +48,12 @@
 
             //Defect spot Id
             self.Id = ko.observable();
-            self.OrderNumber = ko.observable("");
+            //self.OrderNumber = ko.observable("");
             self.Description = ko.observable();
             self.SaveDescriptionCommand = function() {
                 $.ajaxq("checklist_item_description_saving",
                 {
-                    url: '/ChecklistItems/SaveChecklistItemDescription',
+                    url: '/DefectSpot/SaveChecklistItemDescription',
                     type: 'post',
                     data: {
                         Id: self.Id(),
@@ -62,18 +61,18 @@
                     }
                 });
             }
-            self.AttachedPictures = ko.observableArray();
+            //self.AttachedPictures = ko.observableArray();
         }
 
-        function PictureViewModel() {
-            var self = this;
+        //function PictureViewModel() {
+        //    var self = this;
 
-            self.Path = ko.observable();
-            self.Timestamp = ko.observable();
-        }
+            //self.Path = ko.observable();
+            //self.Timestamp = ko.observable();
+        //}
 
         function getAddSpotViewModel(callback) {
-            $.getJSON('/ChecklistItems/GetDefectSpot?userId=' + userId + '&defectSpotId=' + defectSpotId)
+            $.getJSON('/DefectSpot/GetDefectSpot?userId=' + userId + '&defectSpotId=' + defectSpotId)
                 .error(function(e) {
                     if (e.status === 500 || e.status === 400) {
                         var message = 'Error ' + e.status + '\r\n' +
@@ -95,14 +94,14 @@
         function fillViewModel(defectSpot) {
             $(document).ready(function() {
                 mainViewModel.Id(defectSpot.Id);
-                mainViewModel.OrderNumber(defectSpot.OrderNumber);
+                //mainViewModel.OrderNumber(defectSpot.OrderNumber);
                 mainViewModel.Description(defectSpot.Description);
-                _.each(defectSpot.AttachedPictures, function(picture) {
-                    var pictureViewModel = new PictureViewModel();
-                    pictureViewModel.Path(picture.Path);
-                    pictureViewModel.Timestamp(picture.Timestamp);
-                    mainViewModel.AttachedPictures.push(pictureViewModel);
-                });
+                //_.each(defectSpot.AttachedPictures, function(picture) {
+                //    var pictureViewModel = new PictureViewModel();
+                //    pictureViewModel.Path(picture.Path);
+                //    pictureViewModel.Timestamp(picture.Timestamp);
+                //    mainViewModel.AttachedPictures.push(pictureViewModel);
+                //});
             });
         }
 
@@ -116,9 +115,6 @@
     <!-- Main content -->
     <div class="content-wrapper">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title"><i class=" icon-wrench"></i><span data-bind="text: 'Defect Spot #' + OrderNumber()"></span></h4>
-            </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-2 col-sm-2">
@@ -228,17 +224,17 @@
                     <div class="row fileupload-buttonbar">
                         <div class="col-lg-12">
                             <!-- The fileinput-button span is used to style the file input field as button -->
-                            <span class="btn btn-success fileinput-button btn-labeled btn-xlg">
-                                <b><i class="glyphicon glyphicon-plus"></i></b>Add defect spot picture
+                            <span class="btn btn-success fileinput-button btn-labeled">
+                                <b><i class="icon-plus3"></i></b>Add defect spot picture
                                 <input type="file" name="files[]">
                             </span>
-                            <button type="button" class="btn btn-success btn-labeled btn-xlg start">
-                                <b><i class="glyphicon glyphicon-upload"></i></b> Start upload
+                            <button type="button" class="btn btn-success btn-labeled start">
+                                <b><i class=" icon-upload4"></i></b> Start upload
                             </button>
-                            <button type="button" class="btn btn-success btn-labeled btn-xlg" data-bind="click: SaveDescriptionCommand">
+                            <button type="button" class="btn btn-success btn-labeled " data-bind="click: SaveDescriptionCommand">
                                 <b><i class="icon-floppy-disk"></i></b> Save description
                             </button>
-                            <button type="button" class="btn btn-danger btn-labeled btn-xlg delete">
+                            <button type="button" class="btn btn-danger btn-labeled  delete">
                                 <b><i class="icon-bin"></i></b> Delete selected pictures
                             </button>
                             <!-- The global file processing state -->
@@ -289,7 +285,7 @@
 
 
 </script>
-<script src="/assets/add/js/vendor/jquery.ui.widget.js"></script>
+<script src="/assetsfinal/add/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
 <script src="http://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
@@ -299,17 +295,17 @@
 <!-- blueimp Gallery script -->
 <script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="/assets/add/js/jquery.iframe-transport.js"></script>
+<script src="/assetsfinal/add/js/jquery.iframe-transport.js"></script>
 <!-- The basic File Upload plugin -->
-<script src="/assets/add/js/jquery.fileupload.js"></script>
+<script src="/assetsfinal/add/js/jquery.fileupload.js"></script>
 <!-- The File Upload processing plugin -->
-<script src="/assets/add/js/jquery.fileupload-process.js"></script>
+<script src="/assetsfinal/add/js/jquery.fileupload-process.js"></script>
 <!-- The File Upload image preview & resize plugin -->
-<script src="/assets/add/js/jquery.fileupload-image.js"></script>
+<script src="/assetsfinal/add/js/jquery.fileupload-image.js"></script>
 <!-- The File Upload user interface plugin -->
-<script src="/assets/add/js/jquery.fileupload-ui.js"></script>
+<script src="/assetsfinal/add/js/jquery.fileupload-ui.js"></script>
 <!-- The main application script -->
-<script src="/assets/add/js/main.js"></script>
+<script src="/assetsfinal/add/js/main.js"></script>
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
 <!--[if (gte IE 8)&(lt IE 10)]>
 <script src="/js/cors/jquery.xdr-transport.js"></script>
