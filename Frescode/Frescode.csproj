@@ -280,12 +280,16 @@
     <Compile Include="Auth\UserIdentity.cs" />
     <Compile Include="Auth\UserProvider.cs" />
     <Compile Include="BL\CommandsHandler\AddDefectSpotCommandHandler.cs" />
-    <Compile Include="BL\CommandsHandler\ChecklistItemChangeStateCommandHandler.cs" />
+    <Compile Include="BL\CommandsHandler\ProjectChecklistItemChangeStateCommandHandler.cs" />
     <Compile Include="BL\CommandsHandler\CommandHandlerBase.cs" />
+    <Compile Include="BL\CommandsHandler\InspectionDrawingChecklistItemChangeStateCommandHandler.cs" />
     <Compile Include="BL\Commands\AddDefectSpotCommand.cs" />
     <Compile Include="BL\Commands\ChecklistItemChangeStateCommand.cs" />
+    <Compile Include="BL\Commands\InspectionDrawingChecklistItemChangeStateCommand.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\InspectionDrawingChecklistController.cs" />
+    <Compile Include="Controllers\PictureTestController.cs" />
     <Compile Include="Controllers\ProjectChecklistController.cs" />
     <Compile Include="Controllers\DefectSpotController.cs" />
     <Compile Include="Controllers\DefectSpotPictureController.cs" />
@@ -321,11 +325,13 @@
     <Content Include="assetsfinal\css\custom_old.css" />
     <Content Include="assetsfinal\css\icons\icomoon\fonts\icomoon.svg" />
     <Content Include="assetsfinal\css\icons\icomoon\styles.css" />
+    <Content Include="assetsfinal\images\1.svg" />
     <Content Include="assetsfinal\images\demo\0.png" />
     <Content Include="assetsfinal\images\demo\1.png" />
     <Content Include="assetsfinal\images\demo\2.png" />
     <Content Include="assetsfinal\images\folder-icon.png" />
     <Content Include="assetsfinal\images\folder-icon1.png" />
+    <Content Include="assetsfinal\images\GetPicture.png" />
     <Content Include="assetsfinal\images\Icon-Blue.png" />
     <Content Include="assetsfinal\images\Icon-Blue1.png" />
     <Content Include="assetsfinal\images\logo_light.png" />
@@ -4041,6 +4047,8 @@
     <Content Include="Views\Shared\_Breadcrumb.cshtml" />
     <Content Include="Views\ProjectScreen\ProjectScreenList.cshtml" />
     <Content Include="Views\InspectionDrawingScreen\InspectionDrawingsDetails.cshtml" />
+    <Content Include="Views\PictureTest\Index.cshtml" />
+    <Content Include="Views\InspectionDrawingChecklist\ChecklistItemsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

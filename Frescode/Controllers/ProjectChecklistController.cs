@@ -47,9 +47,9 @@ namespace Frescode.Controllers
                 .SingleOrDefault(x => x.Id == checklistId);
 
             var viewModel = new ChecklistItemsListViewModel();
-            viewModel.ChecklistName = checklist.ChecklistTemplate.Name;
-            viewModel.ChecklistProjectName = checklist.Project.Name;
-            viewModel.ChecklistProjectId = checklist.Project.Id;
+            //viewModel.ChecklistName = checklist.ChecklistTemplate.Name;
+            //viewModel.ChecklistProjectName = checklist.Project.Name;
+            //viewModel.ChecklistProjectId = checklist.Project.Id;
             foreach (var item in checklist.Items)
             {
                 var checklistItemViewModel = new ChecklistItemViewModel
@@ -70,7 +70,7 @@ namespace Frescode.Controllers
         [HttpGet]
         public async Task<ActionResult> ChecklistItemSet(int checklistItemId, bool newState)
         {
-            await Mediator.PublishAsync(new ChecklistItemChangeStateCommand(checklistItemId, newState));
+            await Mediator.PublishAsync(new ProjectChecklistItemChangeStateCommand(checklistItemId, newState));
 
             return Json(new { ok = true }, JsonRequestBehavior.AllowGet);
         }

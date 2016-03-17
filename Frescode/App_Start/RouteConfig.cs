@@ -48,6 +48,17 @@ namespace Frescode
             //);
 
             routes.MapRoute(
+               name: "nestedInspectionDrawingChecklist",
+               url: "Project/{projectId}/InspectionDrawing/{drawingId}/Checklist/{checklistId}",
+               defaults: new { controller = "InspectionDrawingChecklist", action = "ChecklistItemsList" }
+            );
+            routes.MapRoute(
+               name: "InspectionDrawingChecklistBreadcrumb",
+               url: "Project/{projectId}/InspectionDrawing/{drawingId}/Checklist/{checklistId}/GetBreadcrumbText",
+               defaults: new { controller = "InspectionDrawingChecklist", action = "GetBreadcrumbText" }
+            );
+
+            routes.MapRoute(
                name: "nestedDefectSpotItem",
                url: "Project/{projectId}/InspectionDrawing/{drawingId}/DefectSpot/{defectSpotId}",
                defaults: new { controller = "DefectSpot", action = "DefectSpotAddition" }

@@ -12,6 +12,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
+using System.IO;
+using System.Drawing;
 
 namespace Frescode.Controllers
 {
@@ -83,6 +85,28 @@ namespace Frescode.Controllers
             {
                 Data = floorPlanBytes,
                 Name = "InspectionDrawing1"
+            };
+
+            byte[] byteArray = new byte[0];
+            var img =Image.FromFile(Server.MapPath(@"~\assetsfinal\images\GetPicture.png"));
+            using (MemoryStream stream = new MemoryStream())
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Close();
+                byteArray = stream.ToArray();
+            }
+
+            var inspectionDrawingTemplate2 = new InspectionDrawingTemplate
+            {
+                Data = byteArray,
+                Name = "InspectionDrawing2"
+            };
+
+            var inspectionDrawing2 = new InspectionDrawing
+            {
+                InspectionDrawingTemplate = inspectionDrawingTemplate2,
+                Checklists = new List<ChecklistForInspectionDrawing>(),
+                DefectionSpots = new List<DefectionSpot>()
             };
 
             var inspectionDrawing = new InspectionDrawing
@@ -344,7 +368,8 @@ namespace Frescode.Controllers
                 new Structure() { Path = "Folder1/", Name = "", Project = project1,InspectionDrawing = null },
                 new Structure() { Path = "Folder2/", Name = "", Project = project1,InspectionDrawing = null },
                 new Structure() { Path = "Folder1/Folder3/", Name = "", Project = project1,InspectionDrawing = null },
-                new Structure() { Path = "Folder1/", Name = "InspectionDrawing", Project = project1, InspectionDrawing = inspectionDrawing}
+                new Structure() { Path = "Folder1/", Name = "InspectionDrawing", Project = project1, InspectionDrawing = inspectionDrawing},
+                new Structure() { Path = "Folder1/", Name = "InspectionDrawing2", Project = project1, InspectionDrawing = inspectionDrawing2}
             };
 
             Context.Structures.AddRange(structures);
@@ -364,6 +389,8 @@ namespace Frescode.Controllers
 
             Context.InspectionDrawings.Add(inspectionDrawing);
             Context.InspectionDrawingTemplate.Add(inspectionDrawingTemplate);
+            Context.InspectionDrawings.Add(inspectionDrawing2);
+            Context.InspectionDrawingTemplate.Add(inspectionDrawingTemplate2);
             Context.ChecklistItemsForProject.Add(checklistItem1);
             Context.ChecklistItemsForProject.Add(checklistItem2);
             Context.ChecklistTemplates.Add(checklistTemplate);

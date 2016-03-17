@@ -45,9 +45,9 @@
             var self = this;
 
             self.ChecklistItemsList = ko.observableArray();
-            self.ChecklistName = ko.observable();
-            self.ChecklistProjectName = ko.observable();
-            self.ChecklistProjectId = ko.observable();
+            //self.ChecklistName = ko.observable();
+            //self.ChecklistProjectName = ko.observable();
+            //self.ChecklistProjectId = ko.observable();
         }
 
         function ChecklistItemViewModel() {
@@ -93,9 +93,9 @@
         function fillViewModel(checklistitemsList) {
             $(document).ready(function() {
                 mainViewModel.ChecklistItemsList.removeAll();
-                mainViewModel.ChecklistName(checklistitemsList.ChecklistName);
-                mainViewModel.ChecklistProjectName(checklistitemsList.ChecklistProjectName);
-                mainViewModel.ChecklistProjectId(checklistitemsList.ChecklistProjectId);
+                //mainViewModel.ChecklistName(checklistitemsList.ChecklistName);
+                //mainViewModel.ChecklistProjectName(checklistitemsList.ChecklistProjectName);
+                //mainViewModel.ChecklistProjectId(checklistitemsList.ChecklistProjectId);
                 _.each(checklistitemsList.ChecklistItemsList, function(checklistItem) {
                     var checklistViewModel = new ChecklistItemViewModel();
                     checklistViewModel.Id(checklistItem.Id);

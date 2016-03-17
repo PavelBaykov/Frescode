@@ -2,12 +2,12 @@
 
 namespace Frescode.BL.Commands
 {
-    public class ChecklistItemChangeStateCommand : IAsyncNotification
+    public class ProjectChecklistItemChangeStateCommand : IAsyncNotification
     {
         public int ItemId { get; }
         public bool State { get; }
 
-        public ChecklistItemChangeStateCommand(int itemId, bool state)
+        public ProjectChecklistItemChangeStateCommand(int itemId, bool state)
         {
             ItemId = itemId;
             State = state;

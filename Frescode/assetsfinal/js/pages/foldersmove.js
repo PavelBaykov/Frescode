@@ -3,14 +3,14 @@
 
 	var FolderViewModel = function(){
 		var self=this;
-		self.name="";
+		self.name=ko.observable();
 	};
 
 	var FileViewModel = function(){
 		var self=this;
-		self.id = null;
-		self.name = null;
-		self.inspectionDrawingId = null;
+		self.id = "";
+		self.name="";
+        self.inspectionDrawingId="";
 
 		self.onClickCommand = function(){
 		    window.location.href = "InspectionDrawing/" + self.inspectionDrawingId + '/';
@@ -24,7 +24,7 @@
 	function initFunction(arr,drawingsStructure){
 		$.each(arr,function(key,val){
 			var splittedFolder = val.folder.split('/');
-			drawingsStructure.push({folder: val.folder,splittedFolder:splittedFolder,name:val.name, id:val.id, inspectionDrawingId : val.inspectionDrawingId});		
+			drawingsStructure.push({folder: val.folder,splittedFolder:splittedFolder,name:val.name, id:val.id,inspectionDrawingId: val.inspectionDrawingId});		
 		});
 	}
 
@@ -51,8 +51,8 @@
 		$.each(filesunique,function(key,val){
 			var fileItem=new FileViewModel();
 			fileItem.id=val.id;
-			fileItem.name = val.name;
-			fileItem.inspectionDrawingId  = val.inspectionDrawingId;
+			fileItem.name=val.name;
+            fileItem.inspectionDrawingId = val.inspectionDrawingId;
 			filesObserve.push(fileItem);
 		});
 	}
@@ -97,7 +97,7 @@
 			
 			var self = this;
 			self.level=ko.observable(0);
-			self.path="";
+			self.path=ko.observable("");
 			self.folders=ko.observableArray();
 			self.files = ko.observableArray();
 
@@ -111,23 +111,23 @@
 
 
 			self.folderOut = function(elem){
-				var arr = self.path.split('/');
+				var arr = self.path().split('/');
 				arr.splice(arr.length-2,2);
 				var cuttedPath=arr.join("/");
 				if (cuttedPath!=="") {
 					cuttedPath=cuttedPath+'/';
 				};
-				self.path=cuttedPath;
+				self.path(cuttedPath);
 				self.level(self.level()-1);
-				foldersMove(self.level,self.drawingsStructure,self.path,self.folders,self.files);
+				foldersMove(self.level,self.drawingsStructure,self.path(),self.folders,self.files);
 
 				addAnimation();
 			};
 
 			self.folderIn = function(elem){
-				self.path=self.path+elem+'/';
+				self.path(self.path()+elem+'/');
 				self.level(self.level()+1);
-				foldersMove(self.level,self.drawingsStructure,self.path,self.folders,self.files);
+				foldersMove(self.level,self.drawingsStructure,self.path(),self.folders,self.files);
 		
 		        addAnimation();
 			};			

@@ -1,0 +1,156 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Checklist screen";
+}
+
+@section Header
+{
+    @Html.Partial("_Breadcrumb")
+}
+
+@section AdditionalScripts{
+    <script type="text/javascript" src="/assetsfinal/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/selects/select2.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/pages/datatables_custom_items.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/pages/form_checkboxes_radios.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/styling/uniform.min.js"></script>
+    <script type="text/javascript" src="/assetsfinal/js/plugins/forms/styling/switch.min.js"></script>
+
+
+
+    <script>
+        ko.bindingHandlers.bootstrapSwitchOn = {
+            init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                $elem = $(element);
+                $(element).bootstrapSwitch();
+                $(element).bootstrapSwitch('state', ko.utils.unwrapObservable(valueAccessor())); // Set intial state
+                $(element).on('switchChange.bootstrapSwitch', function(event, state) {
+                    valueAccessor()(state);
+                });
+            },
+            update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                var vStatus = $(element).bootstrapSwitch('state');
+                var vmStatus = ko.utils.unwrapObservable(valueAccessor());
+                if (vStatus != vmStatus) {
+                    $(element).bootstrapSwitch('state', vmStatus);
+                }
+            }
+        };
+
+        userId = @Html.Raw(Json.Encode(ViewBag.UserId));
+        checklistId = @Html.Raw(Json.Encode(ViewBag.ChecklistId));
+
+        function ChecklistItemsListViewModel() {
+            var self = this;
+
+            self.ChecklistItemsList = ko.observableArray();
+            //self.ChecklistName = ko.observable();
+            //self.ChecklistProjectName = ko.observable();
+            //self.ChecklistProjectId = ko.observable();
+        }
+
+        function ChecklistItemViewModel() {
+            var self = this;
+
+            self.Id = ko.observable();
+            self.Name = ko.observable();
+            self.DateOfLastChange = ko.observable();
+            self.ChangedBy = ko.observable();
+            self.Status = ko.observable();
+
+            //self.DefectSpotsCount = ko.observable();
+            self.Description = ko.observable();
+            self.InitSubscribtions = function() {
+                self.Status.subscribe(function() {
+                    $.getq('itemsStatus',
+                        '/InspectionDrawingChecklist/ChecklistItemSet?checklistItemId=' + self.Id() + '&newState=' + self.Status()
+                    );
+                });
+            }
+        }
+
+        function getChecklistItems(callback) {
+            $.getJSON('/InspectionDrawingChecklist/GetChecklistitemsList?userId=' + userId + '&checklistId=' + checklistId)
+                .error(function(e) {
+                    if (e.status == 500 || e.status == 400) {
+                        var message = 'Error ' + e.status + '\r\n' +
+                            'Response: ' + e.responseText;
+                        console.log(message);
+                        alert(message);
+                    }
+                })
+                .done(function(data) {
+                    if ($.isFunction(callback)) {
+                        callback(data);
+                    }
+                });
+        }
+
+        rootViewModel.MainViewModel(new ChecklistItemsListViewModel());
+        var mainViewModel = rootViewModel.MainViewModel();
+
+        function fillViewModel(checklistitemsList) {
+            $(document).ready(function() {
+                mainViewModel.ChecklistItemsList.removeAll();
+                //mainViewModel.ChecklistName(checklistitemsList.ChecklistName);
+                //mainViewModel.ChecklistProjectName(checklistitemsList.ChecklistProjectName);
+                //mainViewModel.ChecklistProjectId(checklistitemsList.ChecklistProjectId);
+                _.each(checklistitemsList.ChecklistItemsList, function(checklistItem) {
+                    var checklistViewModel = new ChecklistItemViewModel();
+                    checklistViewModel.Id(checklistItem.Id);
+                    checklistViewModel.Name(checklistItem.Name);
+                    checklistViewModel.DateOfLastChange(checklistItem.DateOfLastChange);
+                    checklistViewModel.ChangedBy(checklistItem.ChangedBy);
+                    checklistViewModel.Status(checklistItem.Status);
+                    //checklistViewModel.DefectSpotsCount(checklistItem.DefectSpotsCount);
+                    checklistViewModel.Description(checklistItem.Description);
+                    mainViewModel.ChecklistItemsList.push(checklistViewModel);
+                    checklistViewModel.InitSubscribtions();
+                });
+                initCheckboxes();
+                initDataTables();
+            });
+        }
+
+        getChecklistItems(function(checklistItems) {
+            fillViewModel(checklistItems);
+        });
+    </script>
+}
+
+<div class="page-content" id="main_content">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table datatable-basic table-hover">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Last Edited</th>
+                            <th>Edited by</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- ko foreach: ChecklistItemsList -->
+                        <tr class="whitespace hoverhref" data-url="#" data-bind="attr: { 'data-description' : Description}">
+                            <td data-bind="html: Name"></td>
+                            <td data-bind="html: DateOfLastChange"></td>
+                            <td data-bind="html: ChangedBy"></td>
+                            <td class='checkboxcolumn'>
+                                <input type="checkbox" data-on-color="success" data-off-color="danger" data-on-text="<i class=' icon-checkmark2'></i>"
+                                       data-off-text="<i class=' icon-cross'></i>" class="switch" data-size="mini"
+                                       data-bind="bootstrapSwitchOn: Status">
+                            </td>
+                        </tr>
+                        <!-- /ko -->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
